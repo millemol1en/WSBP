@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from Infrastructure.Course import Course
+from DataObjects.Course import Course
 import re
 
 def sanitize_course_literature(text):

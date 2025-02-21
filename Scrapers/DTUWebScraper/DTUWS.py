@@ -2,6 +2,7 @@ from typing import List
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
+from DataObjects.Department import Department
 
 EXCLUDE_KEY_WORDS = {"Project", "Thesis", "Internship", "Academic", "Bachelor", "Search"}
 
@@ -28,13 +29,18 @@ def extract_info_from_table(driver, link):
             
         else:
             continue
-        # !
     
     return course_urls
 
 def extract_courses_by_departments(driver):
+    print("        !~~~~~~~~~~~~~~~~~~~~~~~~~~Getting Courses by Department~~~~~~~~~~~~~~~~~~~~~~~~~~!")
     driver.implicitly_wait(1)
+
+    # []
     department_links : List[(str, str)] = []
+
+    # [] 
+    sanitized_departments : List[Department] = []
 
     dep_sec_tag = driver.find_element(By.ID, "Department")
     dep_sec_obj = Select(dep_sec_tag)
@@ -51,30 +57,26 @@ def extract_courses_by_departments(driver):
             department_links.append((option_text, department_link))
 
     for (depName, depLink) in department_links:
-        print(f"      !~~~~~~~~~~~~~~~~~~~~{depName}~~~~~~~~~~~~~~~~~~!")
+        print(f"            |======================={depName}=======================|")
 
         extracted_courses = extract_info_from_table(driver, depLink)
-        print(f"          := Number of courses extracted: {len(extracted_courses)}")
+        new_department = Department(depName, extracted_courses)
+        sanitized_departments.append(new_department)
+        print(f"            $= {len(extracted_courses)}")
 
-        print("      !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!")
+        print("             |=======================================================|")
+    
+    print("        !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!")
 
     # driver.get_element(By.CLASS_NAME, "table")
 
 
-def dtuws(service):
-    print("!===========================================DTUWS=======================================================!")
+def dtuws(driver):
+    print("    !---------------------------------------------DTUWS---------------------------------------------!")
 
-    # []
-    driver_options = webdriver.ChromeOptions()
-    driver_options.add_argument('--headless')
-
-    # []
-    driver = webdriver.Chrome(options=driver_options, service=service)
-
-    # [] Get the DTU courses website:
+    # [] Get the KU web course:
     driver.get("https://kurser.dtu.dk/")
 
-    # [] Extract all courses via the various departments:
     extract_courses_by_departments(driver)
 
-    print("!===================================================================================================!")
+    print("    !----------------------------------------------------------------------------------------------!")
