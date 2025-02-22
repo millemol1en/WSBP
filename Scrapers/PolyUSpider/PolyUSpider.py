@@ -1,8 +1,11 @@
 from typing import List
+from urllib.parse import urlparse
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from Infrastructure.UniSpider import UniSpider
 from DataObjects.Department import Department
+
+KEYWORDS = ["subject synopsis", "list of subjects", "subject library", "subject syllabi", "syllabus", "subject list", "subjects"]
 
 class PolyUSpider(UniSpider):
     """ INHERITED FUNCTIONS """
@@ -40,53 +43,68 @@ class PolyUSpider(UniSpider):
             # [] Retrieve the container <div> tags which hold all of the faculties:
             links = fac_div.find_elements(By.XPATH, ".//ul[contains(@class, 'border-link-list')]/li/a")  # Locate <a> inside <ul>
 
-            # []
+            # [] For each department, we get its URL and append the search query string:
             for link in links:
-                dep_link = link.get_attribute("href")
+                # [] Get the URL
+                dep_link = link.get_attribute("href").strip()
+                
+                # [] Get the name of the department
                 dep_name = link.text.strip()
-                if dep_link and dep_name:  # Ensure no empty values
-                    department_links.append((dep_name, dep_link))
+
+                # [] 
+                if dep_link and dep_name:                                           # Ensure no empty values
+                    sanitized_dep_link = self.sanitize_department_url(dep_link)     # Sanitize the department URL, shifting around the URL if necessary [MENTION IN REPORT]
+                    sanitized_dep_link += "/search-result/?query=Subject+List"      # Append the desired search query in the URL
+                    department_links.append((dep_name, sanitized_dep_link))         # Add to the outgoing list
 
         return department_links
 
-    
     def get_department_courses(self, driver, departments):
         # []
+        subject_lists = []
+
+        # []
         for (depName, depLink) in departments:
-            
-            # [] We then call function nr. '4'
-            subject_list_href = self.get_subject_list_url(driver, depLink)
-            
-            print(f"         := {depName}: {subject_list_href}")
+            # [] 
+            driver.get(depLink)
+
+            # []
+            search_results = driver.find_elements(By.TAG_NAME, "article")
+
+            # []
+            print(f"      := {depName} ~ {depLink} ~ {len(search_results)}")
+            try:
+                for result in search_results:
+                    link_element = result.find_element(By.CSS_SELECTOR, "a.underline-link")
+                    link_text = link_element.text.lower()
+
+                    if any(keyword in link_text for keyword in KEYWORDS):
+                        print(f"           => {link_text}")
+                        subject_lists.append(link_element.get_attribute("href"))
+                        break
+                    else:
+                        print(f"           -: {link_text}")
+
+            except Exception as e:
+                print(e)
+        
+        return subject_lists
 
     
     def scrape_single_course(self, driver):
         return super().scrape_single_course(driver)
     
-    """ LOCAL FUNCTIONS """
-    # [4] This function is used to find the links containing the departments subject list:
-    def get_subject_list_url(self, driver, department_url):
-        # [] 
-        driver.get(department_url)
+    def sanitize_department_url(self, dep_link):
+        print(f"Original: {dep_link}")
 
-        # [] 
-        programs_url = []
+        parsed_url = urlparse(dep_link)
 
-        # [] 
-        nav_menu = driver.find_element(By.CLASS_NAME, "mn__nav")
-
-        """ CASE 2 """
-        # [] 
-        links = nav_menu.find_elements(By.TAG_NAME, "a")
-
-        # [] 
-        for link in links:
-            text = link.get_attribute("href").strip().lower()
-            if "subject" in text:  # Check for keyword match
-                return link.get_attribute("href")
+        if parsed_url.netloc.endswith("polyu.edu.hk") and parsed_url.netloc != "www.polyu.edu.hk":
+            subdomain = parsed_url.netloc.split(".")[0]
+            print(f"Altered: {dep_link}")
+            return f"https://www.polyu.edu.hk/{subdomain}/"
         
-        # [] In case we fail
-        return None
+        return dep_link
     
 
 """
@@ -97,7 +115,7 @@ class PolyUSpider(UniSpider):
     - Department of Computing                                   :: SKIP!
     - Department of Data Science and Artificial Intelligence    :: YES # https://www.polyu.edu.hk/dsai/search-result/?query=Subject+List 
     - Department of Building Environment and Energy Engineering :: YES # https://www.polyu.edu.hk/beee/search-result/?query=Subject+List
-                                                                    ^ !!! This one doesn't have a specific 'Subject List' but instead 
+                                                                    ^ !!! This one doesn't have a specific 'Subject List' but instead a collection of "Subject Description Form"s in the results
     - Department of Building and Real Estate                    :: YES # https://www.polyu.edu.hk/bre/search-result/?query=Subject+List
     - Department of Civil and Environmental Engineering         :: YES # https://www.polyu.edu.hk/cee/search-result/?query=Subject+List
     - Department of Land Surveying and Geo-Informatics          :: YES # https://www.polyu.edu.hk/lsgi/search-result/?query=Subject+List 
@@ -110,22 +128,29 @@ class PolyUSpider(UniSpider):
     - Department of Mechanical Engineering                      :: YES # https://www.polyu.edu.hk/me/search-result/?query=Subject+List
     - Department of Applied Social Sciences                     :: YES # https://www.polyu.edu.hk/apss/search-result/?query=Subject+List 
                                                                     ^ !!! The target document is untitled
-    - Department of Health Technology and Informatics           :: 
-    - Department of Rehabilitation Sciences                     :: 
-    - School of Nursing                                         :: 
-    - School of Optometry                                       :: 
-    - Department of Chinese History and Culture                 :: 
-    - Department of Chinese and Bilingual Studies               :: 
-    - Department of English and Communication                   :: 
-    - Chinese Language Centre                                   :: 
-    - Confucius Institute of Hong Kong                          :: 
-    - English Language Centre                                   ::
-    - Department of Applied Biology and Chemical Technology     :: 
-    - Department of Applied Physics                             :: 
-    - Department of Food Science and Nutrition                  :: 
-    - School of Design                                          :: 
-    - School of Fashion and Textiles                            :: 
-    - School of Hotel and Tourism Management                    :: 
+    - Department of Health Technology and Informatics           :: YES # https://www.polyu.edu.hk/hti/search-result/?query=Subject+List
+                                                                    ^ !!! This one doesn't have a specific 'Subject List' but instead a collection of "Subject Description Form"s in the results
+    - Department of Rehabilitation Sciences                     :: YES # https://www.polyu.edu.hk/rs/search-result/?query=Subject+List
+                                                                    ^ !!! This one doesn't have a specific 'Subject List' but instead a collection of "Subject Description Form"s in the results
+    - School of Nursing                                         :: SKIP!
+    - School of Optometry                                       :: YES # https://www.polyu.edu.hk/so/search-result/?query=Subject+List
+                                                                    ^ !!! This one doesn't have a specific 'Subject List' but instead a collection of "Subject Description Form"s in the results
+
+    - Department of Chinese History and Culture                 :: NO! For this we would have to specifically search for "文學士" and "科目表"
+    - Department of Chinese and Bilingual Studies               :: NO! For this we would have to specifically search: "https://www.polyu.edu.hk/cbs/search-result/?query=Subjects+Subject+List"
+    - Department of English and Communication                   :: YES # https://www.polyu.edu.hk/engl/search-result/?query=Subject+List
+    - Chinese Language Centre                                   :: NO! For this we would have to specifically search for the key term "科目"
+    - Confucius Institute of Hong Kong                          :: NO!
+    - English Language Centre                                   :: YES # https://www.polyu.edu.hk/elc/search-result/?query=Subject+List 
+    - Department of Applied Biology and Chemical Technology     :: YES # https://www.polyu.edu.hk/abct/search-result/?query=Subject+List
+                                                                    ^ !!! Good example to make you aware of "Undergrad" VS "Postgrad"
+    - Department of Applied Physics                             :: YES # https://www.polyu.edu.hk/ap/search-result/?query=Subject+List
+                                                                    ^ !!! Be aware of "Bachelor Program", "Master Programme" and "Research Postgraduate Programme"
+    - Department of Food Science and Nutrition                  :: YES # https://www.polyu.edu.hk/fsn/search-result/?query=Subject+List 
+    - School of Design                                          :: NO!
+    - School of Fashion and Textiles                            :: NO! # https://www.polyu.edu.hk/sft/search-result/?query=Subject+Synopsis
+                                                                    ^ !!! Needs this stupid special case.
+    - School of Hotel and Tourism Management                    :: YES # https://www.polyu.edu.hk/shtm/search-result/?query=Subject+List
 
     |========================================================SEARCH QUERY HTML========================================================|
 
@@ -143,13 +168,17 @@ class PolyUSpider(UniSpider):
     |=================================================================================================================================|
                                 
     Key words we a looking for in the nested <a> tag are [order in which we search]: 
-        1. "List of Subjects"
-        1. "Subject Syllabi" 
-        2. "Syllabus"
-        3. "Subject List"
-        5. "... Bachelors" [for further specification]
+        1. "Subject Synopsis"
+        2. "List of Subjects"
+        3. "Subject Syllabi" 
+        4. "Syllabus"
+        5. "Subject List"
+        6. "... Bachelors" [for further specification]
 
     Things to exclude:
         1. Any text containing the word "Form" will be entirely excluded
 
+        
+
+    THE URLS ARE FUCKED FROM THE START PAGE - THEY NEED TO BE SHIFTED AROUND
 """
