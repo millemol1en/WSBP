@@ -1,6 +1,7 @@
 from selenium import webdriver
-from Scrapers.KUWebScraper.KUWS import KUSpider
-from Scrapers.DTUWebScraper.DTUWS import dtuws
+from Scrapers.KUSpider.KUSpider import KUSpider
+from Scrapers.DTUSpider.DTUSpider import DTUSpider
+from Scrapers.PolyUSpider.PolyUSpider import PolyUSpider
 
 # []
 def scraper_core(service):
@@ -19,15 +20,15 @@ def scraper_core(service):
     driver.execute_cdp_cmd("Network.setBlockedURLs", {"urls": ["*.css", "*.jpg", "*.png", "*.gif", "*.svg", "*.woff", "*.woff2"]})
     driver.execute_cdp_cmd("Network.enable", {})
 
-    # [] 
-    # kuws(driver)
-    # dtuws(driver)
-    # puws(driver)
+    # []
+    # ku_spider = KUSpider("København Universitet", "https://kurser.ku.dk/")
+    # ku_spider.run_spider(driver)
 
-    ku_spider = KUSpider("København Universitet", "https://kurser.ku.dk/")
-    ku_spider.run_spider(driver)
+    # dtu_spider = DTUSpider("DTU", "https://kurser.dtu.dk/")
+    # dtu_spider.run_spider(driver)
 
-
+    polyu_spider = PolyUSpider("PolyU", "https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
+    polyu_spider.run_spider(driver)
 
     driver.quit()
     print("!===============================================================================================================================!")

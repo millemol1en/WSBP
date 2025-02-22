@@ -1,15 +1,11 @@
 from typing import List
-from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
-
-from DataObjects.Department import Department
 from Infrastructure.UniSpider import UniSpider
-from Scrapers.KUWebScraper.KUSSC import scrap_single_course
+from DataObjects.Department import Department
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class KUSpider(UniSpider):
-    # []
+class DTUSpider(UniSpider):
     def run_spider(self, driver):
         # TODO: Remove!
         print(f"    !---------------------------------------------{self.name}---------------------------------------------!")
@@ -18,36 +14,35 @@ class KUSpider(UniSpider):
         driver.get(self.url)
 
         # []
-        uni_departments = self.get_departments(driver)
+        departments = self.get_departments(driver)
         
         # []
-        department_courses = self.get_department_courses(driver, uni_departments)
+        department_courses = self.get_department_courses(driver, departments)
 
+        # TODO: Remove!
         print(f"LENGTH: {len(department_courses)}")
+        print("    !----------------------------------------------------------------------------------------------!")
 
-    print("    !----------------------------------------------------------------------------------------------!")
-
-
-    # []
     def get_departments(self, driver):
         print(f"        !~~~~~~~~~~~~~~~~~~~~~~~~~~Getting Courses from URL: {self.url}~~~~~~~~~~~~~~~~~~~~~~~~~~!")
+        driver.implicitly_wait(1)
 
-        # [] 
+        # []
         department_links : List[(str, str)] = []
 
-        # [] 
-        dep_sec_tag = driver.find_element(By.ID, "departments")
+        # []
+        dep_sec_tag = driver.find_element(By.ID, "Department")
         dep_sec_obj = Select(dep_sec_tag)
+        # &CourseType=DTU_BSC
 
-        # [] Retrieve URLs for all the departments:
         for option in dep_sec_obj.options:
-            # [] The website sets the text for the <option> tags to be hidden, so we have to use JS to
-            #    harvest the information
-            option_text  = driver.execute_script("return arguments[0].textContent;", option).strip()
+            option_text  = option.text.strip()
             option_value = option.get_attribute("value")
 
             if option_value and option_text:
-                department_link = "https://kurser.ku.dk/search?programme=BA&departments=" + option_value
+                # [] We are currently forcefully attaching the level (bachelors niveau) to the URL
+                #    and in the future we might change this.
+                department_link = "https://kurser.dtu.dk/search?CourseType=DTU_BSC&Department=" + option_value
                 department_links.append((option_text, department_link))
 
         # TODO: Remove!
@@ -55,15 +50,14 @@ class KUSpider(UniSpider):
         
         return department_links
 
-    # []
-    def get_department_courses(self, driver, uni_departments):
+    def get_department_courses(self, driver, departments):
         # []
         department_list : List[Department] = []
 
         # [] 
-        for (depName, depLink) in uni_departments:
+        for (depName, depLink) in departments:
             # TODO: Remove!
-            print(f"             |======================={depName}=======================|")
+            print(f"             |==============================={depName}===============================|")
 
             # []
             new_department = Department(depName, depLink)
@@ -82,7 +76,7 @@ class KUSpider(UniSpider):
                 course_name = course.text.strip()
                 course_link = course.get_attribute("href")
 
-                if not any(keyword in course_name for keyword in EXCLUDE_KEY_WORDS):
+                if course_name and not any(keyword in course_name for keyword in EXCLUDE_KEY_WORDS) and any(keyword in course_link for keyword in "course"):
                     course_urls.append(course_link)
                     print(f"            := {course_name}: {course_link}")
                 
@@ -94,11 +88,6 @@ class KUSpider(UniSpider):
             department_list.append(new_department)
 
             # TODO: Remove!
-            print("             |=======================================================|")
+            print("             |======================================================================|")
 
         return department_list
-
-    def scrape_single_course(self, driver):
-        # TODO....
-
-        print(f"Scraping single course")
