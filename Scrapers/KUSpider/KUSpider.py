@@ -9,13 +9,13 @@ class KUSpider(UniSpider):
     def run_spider(self, driver):
         print(f"    !---------------------------------------------{self.name}---------------------------------------------!")
 
-        # []
+        # [] 
         driver.get(self.url)
 
-        # []
+        # [] 
         self.get_departments(driver)
         
-        # []
+        # [] 
         self.scrap_department_courses(driver)
 
         print(f"    ?= Number of Departments: {len(self.departments)}")
@@ -77,6 +77,7 @@ class KUSpider(UniSpider):
 
             # TODO: Remove!
             print("           |======================================================================|")
+
 
     def scrape_single_course(self, driver):
         return super().scrape_single_course(driver)
