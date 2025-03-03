@@ -22,5 +22,5 @@ class UniSpider(ABC):
         pass
 
     @abstractmethod
-    def scrape_single_course(self, driver):
+    def scrape_single_course(self, driver, course_url):
         pass

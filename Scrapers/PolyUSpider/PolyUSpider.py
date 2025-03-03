@@ -1,9 +1,14 @@
 import re
+import io
+import requests
 from typing import List
 from enum import Enum
-from urllib.parse import urlparse, unquote
+from urllib.parse import urlparse, unquote, urljoin
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
+from PyPDF2 import PdfReader
+import pymupdf
+
 from Infrastructure.UniSpider import UniSpider
 from DataObjects.Department import Department
 
@@ -35,6 +40,8 @@ class PolyUSpider(UniSpider):
         # TODO: Remove!
         print("    !----------------------------------------------------------------------------------------------!")
 
+
+    # []
     def get_departments(self, driver):
         # [] Each faculty is stored inside a <div> tag which we need to get and iterate over to locate
         #    all the associated departments:
@@ -89,16 +96,22 @@ class PolyUSpider(UniSpider):
     # TODO: Remove all "print()" functions
     def scrap_department_courses(self, driver):
         for department in self.departments:
-            if department.abbr in EXCLUDE_DEPARTMENTS: continue
+            # if department.abbr in EXCLUDE_DEPARTMENTS: continue
+            if department.abbr != "sft": continue
+            # if department.abbr not in { "hti", "rs", "sn", "so" }: continue
             
             # [] 
-            (url, format_type, check) = self.scrap_course_from_department_subject_list(department.abbr)
+            (subject_lists, format_type, check) = self.scrap_course_from_department_subject_list(driver, department)
             
+            # []
+            # TODO: Change to List[Course]
+            scraped_courses : List[str] = []
+
             match format_type:
                 # [] Case #1: <main> & <a>
                 case SubjectListFormatType.A:
                     # [] 
-                    subject_list_url : str = (f"{department.url}{url[0]}")
+                    subject_list_url : str = (f"{department.url}{subject_lists[0]}")
                     driver.get(subject_list_url)
                     driver.implicitly_wait(0.2)
 
@@ -114,20 +127,47 @@ class PolyUSpider(UniSpider):
                     for course in a_tags:
                         course_url = course.get_attribute("href")
                         course_txt = course.text.strip()
-                        if self.is_url_valid(course_url, department.url, False):
-                            print(f"            -> {course_txt} [VALID]")
+                        if self.is_url_valid(course_url, department.abbr, check):
+                            # print(f"            -> {course_txt} [VALID]")
+                            self.scrape_single_course(driver, course_url)
                         else:
                             print(f"            -> {course_txt} [INVALID]")
 
                 # []
                 case SubjectListFormatType.B:
-                    subject_list_url : str = (f"{department.url}{url[0]}")
+                    subject_list_url : str = (f"{department.url}{subject_lists[0]}")
+                    driver.get(subject_list_url)
+                    driver.implicitly_wait(0.2)
 
                     print(f"        *= [B :: {check}] {department.name} - {subject_list_url}")
 
+                    # [] Container for courses:
+                    main_tag = driver.find_element(By.TAG_NAME, "main")
+
+                    # []
+                    tr_tags = main_tag.find_elements(By.TAG_NAME, "tr")
+
+                    print(f"          -> Number of <tr> tags: {len(tr_tags)}")
+                    # []
+                    test_counter : int = 0 #TODO: REMOVE!
+                    for course in tr_tags:
+                        if test_counter > 3: continue #TODO: REMOVE!
+                        course_url = course.get_attribute("data-href")
+                        course_name_parts = course.find_elements(By.TAG_NAME, "td")
+
+                        if course_name_parts: 
+                            course_txt = course_name_parts[0].text.strip()
+                            if self.is_url_valid(course_url, department.abbr, check):
+                                # print(f"            -> {course_txt} [VALID]")
+                                self.scrape_single_course(driver, course_url)
+                            else:
+                                print(f"            -> {course_txt} [INVALID]")
+
+                        test_counter = (test_counter + 1) #TODO: REMOVE!
+
                 # []
                 case SubjectListFormatType.C:
-                    subject_list_url : str = (f"{department.url}{url[0]}")
+                    subject_list_url : str = (f"{department.url}{subject_lists[0]}")
                     
                     print(f"        *= [C :: {check}] {department.name} - {subject_list_url}")
 
@@ -151,8 +191,7 @@ class PolyUSpider(UniSpider):
                         # [] These <tr> tags are all the courses for that specific page:
                         tr_tags  = driver.find_elements(By.TAG_NAME, "tr")
 
-
-                        print(f"          ?= Page Number: {pg_num}")
+                        print(f"          ?= Page Number: {pg_num}") # TODO: REMOVE!
                         # [] 
                         for course in tr_tags:
                             td_tags = course.find_elements(By.TAG_NAME, "td")
@@ -168,26 +207,107 @@ class PolyUSpider(UniSpider):
                                     print(f"            -> {full_course_code} [INVALID]")
 
                 case SubjectListFormatType.D:
-                    subject_list_url : str = (f"{department.url}{url[0]}")
+                    subject_list_url : str = (f"{department.url}{subject_lists[0]}")
 
                     print(f"        *= [D :: {check}] {department.name} - {subject_list_url}")
 
 
                 case SubjectListFormatType.E:
-                    subject_list_url : str = (f"{department.url}{url[0]}")
+                    subject_list_length : int = len(subject_lists)
 
-                    print(f"        *= [E :: {check}] {department.name} - {subject_list_url}")
+                    print(f"        *= [E :: {check}] {department.name} - Subject List Length: {subject_list_length}")
 
 
                 case _: 
                     print(f"        *= [Type None] {department.name}")
 
-                
+    # SCRAP COURSE LITERATURE METHOD #1
+    # TODO: Remove 'driver' from arguments...
+    # []
+    def scrape_single_course_II(self, driver, course_url):
+        # []
+        parsed_url = urlparse(course_url)
+        base_url = "https://www.polyu.edu.hk/"
 
-        
-    def scrape_single_course(self, driver):
-        return super().scrape_single_course(driver)
-                
+        if not parsed_url.netloc: 
+            course_url = urljoin(base_url, course_url)
+
+        # []
+        r = requests.get(course_url)
+        f = io.BytesIO(r.content)
+
+        # []
+        reader = PdfReader(f)
+
+        # []
+        full_text = []
+        for page in reader.pages:
+            text = page.extract_text()
+            if text:
+                full_text.append(text)
+
+        # []
+        full_text = "\n".join(full_text)
+        lines = full_text.split('\n')
+
+        # []
+        subject_code  = None
+        subject_title = None
+        reading_list  = []
+        capture_lit   = False
+
+        for i, line in enumerate(lines):
+            if "Subject Code" in line:
+                subject_code = line.replace("Subject Code", "").strip()
+            if "Subject Title" in line:
+                subject_title = line.replace("Subject Title", "").strip()
+            if "Reading List and" in line:  
+                print("Reading list located!")
+                capture_lit = True  # Start capturing references
+                continue  # Skip the header line itself
+
+            if capture_lit:  
+                reading_list.append(line.strip())
+
+        print(f"            => Subject Code: {subject_code}")
+        print(f"            => Subject Title: {subject_title}")
+        print(f"            => Reading List and References:")
+        print("\n".join(reading_list))
+
+    # SCRAP COURSE LITERATURE METHOD #2
+    def scrape_single_course(self, driver, course_url):
+        print(f"{'-'*30}")
+        parsed_url = urlparse(course_url)
+        base_url = "https://www.polyu.edu.hk/"
+
+        if not parsed_url.netloc: 
+            course_url = urljoin(base_url, course_url)
+
+        req       = requests.get(course_url)
+        req_data  = req.content
+        pdf_doc   = pymupdf.Document(stream=req_data, filetype="pdf")
+        num_pages = len(pdf_doc)
+
+        # print(f"Number of pages: {len(pdf_doc)}") 
+
+        # [] Get the first page in the document and locate the table(s) in it:
+        pdf_page = pdf_doc[0]
+        tables   = pdf_page.find_tables()
+        table    = tables[0]
+
+        for pg_idx in range(0, num_pages, 1):
+            curr_page   = pdf_doc[pg_idx]
+            curr_tables = curr_page.find_tables()
+            curr_table  = curr_tables[0]
+            
+            for row_idx, row in enumerate(curr_table.extract()):
+                if row[0] in ['Subject Code', 'Subject Title', 'Reading List and\nReferences']:
+                    print(row_idx, row)
+
+        print(f"{'-'*30}")
+        # for i, tab in enumerate(tabs):  
+
+        #     print(f"Table {i} column names: {tab.header.names}, external: {tab.header.external}")          
 
     # [] 
     def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
@@ -237,50 +357,77 @@ class PolyUSpider(UniSpider):
     #           3. SubjectListFormatType.C = <main> & <tr> & <pagination>
     #           4. SubjectListFormatType.D = <a>
     #           5. SubjectListFormatType.A = "buildup"
-    def scrap_course_from_department_subject_list(self, dep_abbr) -> (List[str] | SubjectListFormatType | bool):
-        match dep_abbr:
-            case "lgt":  return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.C, False)                                                                                    # Department of Logistics and Maritime Studies              :: URL LOC = <tr> tags; Get course code via first <td>;     [NO NEED TO CHECK]
-            case "mm":   return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.A, False)                                                                                    # Department of Management and Marketing                    :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
-            case "af":   return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.C, True)                                                                                    # Department of Accounting and Finance                      :: URL LOC = <tr> tags; Get course code via first <td>;     [YES NEED TO CHECK]
+    def scrap_course_from_department_subject_list(self, driver, department) -> (List[str] | SubjectListFormatType | bool):
+        match department.abbr:
+            case "lgt":  return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.C, False) # Department of Logistics and Maritime Studies              :: 
+            case "mm":   return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.A, False) # Department of Management and Marketing                    :: 
+            case "af":   return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.C, True)  # Department of Accounting and Finance                      :: 
             
-            case "ama":  return (["/study/subject-library/"],                                                                               SubjectListFormatType.B, False)                                                                                   # Department of Applied Mathematics                         :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK] (BROKEN URL)
-            case "dsai": return (["/study/ug/bsc-scheme-in-data-science-and-artificial-intelligence/subjects/"],                            SubjectListFormatType.B, False)                                # Department of Data Science and Artificial Intelligence    :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
+            case "ama":  return (["/study/subject-library/"],                                                                               SubjectListFormatType.B, False) # Department of Applied Mathematics                         :: 
+            case "dsai": return (["/study/ug/bsc-scheme-in-data-science-and-artificial-intelligence/subjects/"],                            SubjectListFormatType.B, False) # Department of Data Science and Artificial Intelligence    :: 
             
-            case "bre":  return (["/study/undergraduate-programmes/subjects_syllabi/2023-2024/"],                                           SubjectListFormatType.A, True)                                               # Department of Building and Real Estate                    :: URL LOC = <a>  tags; Get course code via URL = YES;      [YES NEED TO CHECK]
-            case "cee":  return (["/current-students/teaching-and-learning/syllabus/"],                                                     SubjectListFormatType.A, False)                                                         # Department of Civil and Environmental Engineering         :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
-            case "lsgi": return (["/study/lsgi-subject-list/"],                                                                             SubjectListFormatType.A, False)                                                                                 # Department of Land Surveying and Geo-Informatics          :: URL LOC = <a>  tags; Get course code via URL = DIFFICULT;[NO NEED TO CHECK]
+            case "bre":  return (["/study/undergraduate-programmes/subjects_syllabi/2023-2024/"],                                           SubjectListFormatType.A, True)  # Department of Building and Real Estate                    :: 
+            case "cee":  return (["/current-students/teaching-and-learning/syllabus/"],                                                     SubjectListFormatType.A, False) # Department of Civil and Environmental Engineering         :: 
+            case "lsgi": return (["/study/lsgi-subject-list/"],                                                                             SubjectListFormatType.A, False) # Department of Land Surveying and Geo-Informatics          :: 
             
-            case "aae":  return (["/study/subject-list/"],                                                                                  SubjectListFormatType.A, False)                                                                                      # Department of Aeronautical and Aviation Engineering       :: URL LOC = <a>  tags; Get course code via URL = NO;       [NO NEED TO CHECK]
+            case "aae":  return (["/study/subject-list/"],                                                                                  SubjectListFormatType.A, False) # Department of Aeronautical and Aviation Engineering       :: 
             case "bme":  return (["/study/undergraduate-programme/admissions/list-of-subjects-and-subject-description-forms/", 
-                                  "/study/taught-postgraduate-programme/master-of-science-in-biomedical-engineering/programme-structure/"], SubjectListFormatType.A, True)     # Department of Biomedical Engineering                      :: URL LOC = <a> / fst <td>  tags; Get course code via URL = YES;      [YES NEED TO CHECK]
-            case "ise":  return (["/study/information-for-current-students/programme-related-info/subject-syllabi/"],                       SubjectListFormatType.A, False)                           # Department of Industrial and Systems Engineering          :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK] (AUTO-DOWNLOAD)
-            case "eee":  return (["/study/information-for-current-students/subject-syllabi/"],                                              SubjectListFormatType.A, False)                                                  # Department of Electrical and Electronic Engineering       :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
-            case "me":   return (["/study/course-info/subject-list/"],                                                                      SubjectListFormatType.A, False)                                                                          # Department of Mechanical Engineering                      :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
+                                  "/study/taught-postgraduate-programme/master-of-science-in-biomedical-engineering/programme-structure/"], SubjectListFormatType.A, True)  # Department of Biomedical Engineering                      :: 
+            case "ise":  return (["/study/information-for-current-students/programme-related-info/subject-syllabi/"],                       SubjectListFormatType.A, False) # Department of Industrial and Systems Engineering          :: 
+            case "eee":  return (["/study/information-for-current-students/subject-syllabi/"],                                              SubjectListFormatType.A, False) # Department of Electrical and Electronic Engineering       :: 
+            case "me":   return (["/study/course-info/subject-list/"],                                                                      SubjectListFormatType.A, False) # Department of Mechanical Engineering                      :: 
 
-            case "apss": return (["docdrive/subject/"],                                                                                     SubjectListFormatType.D, False)                                                                                         # Department of Applied Social Sciences                     :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
+            case "apss": return (["docdrive/subject/"],                                                                                     SubjectListFormatType.D, False) # Department of Applied Social Sciences                     :: 
+            case "hti":  return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
+            case "rs":   return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
+            case "sn":   return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
+            case "so":   return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
+            
             # TODO ... add the others ... 
 
             case "cbs":  return (["/study/undergraduate-programmes/gur-subjects-offered-by-cbs/cluster-area-requirements/", 
-                                  "/study/undergraduate-programmes/gur-subjects-offered-by-cbs/service-learning/"],                         SubjectListFormatType.A, False)                             # Chinese and Bilingual Studies                             :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
-            case "chc":  return (["/study/undergraduate-programmes/bachc--list-of-all-subjects/"],                                          SubjectListFormatType.A, True)                                              # The Chinese History Center                                :: URL LOC = <a>  tags; Get course code via URL = YES;      [YES NEED TO CHECK] - same as "bme"
+                                  "/study/undergraduate-programmes/gur-subjects-offered-by-cbs/service-learning/"],                         SubjectListFormatType.A, False) # Chinese and Bilingual Studies                             :: 
+            case "chc":  return (["/study/undergraduate-programmes/bachc--list-of-all-subjects/"],                                          SubjectListFormatType.A, True)  # The Chinese History Center                                :: 
 
             case "clc":  return (["/subjects/chinese-discipline-specific-requirement-subjects/subject-information/", 
                                   "/subjects/chinese-language-and-communication-requirement-subjects/", 
-                                  "/subjects/chinese-subjects-for-non-chinese-speaking-students/"],                                         SubjectListFormatType.A, True)                                             # Chinese Language Center                                   :: URL LOC = <a>  tags; Get course code via URL = YES;      [YES NEED TO CHECK]
-            case "engl": return (["/study/full-subject-list/"],                                                                             SubjectListFormatType.A, False)                                                                                 # Department of English & Communication                     :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
-            case "elc":  return (["/subjects/all-subjects/"],                                                                               SubjectListFormatType.A, True)                                                                                   # English Language Center                                   :: URL LOC = <a>  tags; Get course code via URL = YES;      [YES NEED TO CHECK]
+                                  "/subjects/chinese-subjects-for-non-chinese-speaking-students/"],                                         SubjectListFormatType.A, True)  # Chinese Language Center                                   :: 
+            case "engl": return (["/study/full-subject-list/"],                                                                             SubjectListFormatType.A, False) # Department of English & Communication                     :: 
+            case "elc":  return (["/subjects/all-subjects/"],                                                                               SubjectListFormatType.A, True)  # English Language Center                                   :: 
 
-            case "ap":   return (["/study/subject-list/bachelor-programme/", "/study/subject-list/master-programme/"],                      SubjectListFormatType.B, False)                          # Department of Applied Physics                             :: URL LOC = <td> tags; Get course code via URL = YES;      [NO NEED TO CHECK]
+            case "ap":   return (["/study/subject-list/bachelor-programme/", "/study/subject-list/master-programme/"],                      SubjectListFormatType.B, False) # Department of Applied Physics                             :: 
 
             case "abct": return (["/study/undergraduate-programmes/list-of-all-subjects_ug/", 
                                  "/study/taught-postgraduate-programmes/list-of-all-subjects_tpg/", 
-                                 "/study/research-postgraduate-programme/list-of-all-subjects_rpg/"],                                       SubjectListFormatType.A, False)                                           # Department of Applied Biology and Chemical Technology     :: URL LOC = <a>  tags; Get course code via URL = NO;      [NO NEED TO CHECK]
+                                 "/study/research-postgraduate-programme/list-of-all-subjects_rpg/"],                                       SubjectListFormatType.A, False) # Department of Applied Biology and Chemical Technology     :: 
 
-            case "fsn":  return (["/study/list-of-all-subjects/"],                                                                          SubjectListFormatType.A, True)                                                                              # Department of Food Science and Nutrition                  :: URL LOC = <a>  tags; Get course code via URL = YES;      [YES NEED TO CHECK]
-            case "sft":  return (["/programme-information/subject-synopsis/"],                                                              SubjectListFormatType.B, False)                                                                  # School of Fashion and Textiles                            :: URL LOC = <tr> tags; Get course code via first <td>;     [NO NEED TO CHECK]
+            case "fsn":  return (["/study/list-of-all-subjects/"],                                                                          SubjectListFormatType.A, True)  # Department of Food Science and Nutrition                  :: 
+            case "sft":  return (["/programme-information/subject-synopsis/"],                                                              SubjectListFormatType.B, False) # School of Fashion and Textiles                            :: 
 
-            case _:      return ([],                                                                                                        SubjectListFormatType.F, False)
+            case _:      return ([],                                                                                                        SubjectListFormatType.F, False) 
 
+
+    # []
+    def query_for_course_urls(self, driver, department) -> List[str]:
+        # [] 
+        query_string_url = f"{department.url}/search-result/?query=Subject+Description+Form"
+
+        # [] 
+        driver.get(query_string_url)
+        search_results = driver.find_elements(By.TAG_NAME, "article")
+
+        # [] 
+        subject_urls = [] 
+
+        # [] 
+        for result in search_results:
+            res_tag  = result.find_element(By.CSS_SELECTOR, "a.underline-link")  # The <a> tag within the first of 3 <p> tags
+            res_url  = res_tag.get_attribute("href")
+
+            if res_url:
+                subject_urls.append(res_url)
+
+        return subject_urls
 
     #############################################
     #                                           #

@@ -86,5 +86,5 @@ class DTUSpider(UniSpider):
             # TODO: Remove!
             print("             |======================================================================|")
 
-    def scrape_single_course(self, driver):
+    def scrape_single_course(self, driver, course_url):
         return super().scrape_single_course(driver)
