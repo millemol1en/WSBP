@@ -290,24 +290,76 @@ class PolyUSpider(UniSpider):
 
         # print(f"Number of pages: {len(pdf_doc)}") 
 
-        # [] Get the first page in the document and locate the table(s) in it:
-        pdf_page = pdf_doc[0]
-        tables   = pdf_page.find_tables()
-        table    = tables[0]
-
+        # [] For each page in the PDF document, we locate the 'Subject Code', 'Subject Title' and 'Reading List and References'
         for pg_idx in range(0, num_pages, 1):
+            # [] Get the current PDF page, locate the tables inside it and target the first (as there is only one table):
             curr_page   = pdf_doc[pg_idx]
             curr_tables = curr_page.find_tables()
             curr_table  = curr_tables[0]
+
+            # []
+            subject_code, subject_title, literature = None, None, []
             
             for row_idx, row in enumerate(curr_table.extract()):
                 if row[0] in ['Subject Code', 'Subject Title', 'Reading List and\nReferences']:
-                    print(row_idx, row)
+                    if row[0] == 'Subject Code':
+                        subject_code = row[1].strip()
+                        print(f"Subject Code: {subject_code}")
+                    elif row[0] == 'Subject Title':
+                        subject_title = row[1].strip()
+                        print(f"Subject Title: {subject_title}")
+                    elif row[0].startswith('Reading List'):
+                        raw_references = row[1]
+                        print(self.clean_citation_text(raw_references))
+                        #book_entries = self.extract_citation(self.clean_citation_text(raw_references))
+                        #literature.extend(book_entries)
+
+        for lit in literature:
+            print(lit)
 
         print(f"{'-'*30}")
-        # for i, tab in enumerate(tabs):  
+        
+    # []
+    # All citations are stored in APA citation format:
+    def extract_citation(self, text):
+        # Step 3: Regex to match citations in APA format
+        citation_pattern = re.compile(r"([A-Za-z\s.,&'-]+)\((\d{4})\)\. (.+?)\.\s*([A-Za-z\s&:,]+)\.")
+        
+        citations = []
+        for match in citation_pattern.finditer(text):
+            authors = match.group(1).strip()
+            year = match.group(2).strip()
+            title = match.group(3).strip()
+            publisher = match.group(4).strip()
 
-        #     print(f"Table {i} column names: {tab.header.names}, external: {tab.header.external}")          
+            citations.append({
+                "authors": authors,
+                "year": year,
+                "title": title,
+                "publisher": publisher
+            })
+
+        return citations
+    
+    # [] Clean Citation Pipeline:
+    def clean_citation_text(self, raw_text):
+        # Step 1: Remove unwanted newlines within a citation
+        cleaned_text = re.sub(r"(\w)-\n(\w)", r"\1\2", raw_text)        # Fix hyphenated words split by newlines
+        cleaned_text = re.sub(r"\n+", " ", cleaned_text)                # Replace newlines with spaces within citations
+        cleaned_text = re.sub(r"\s{2,}", " ", cleaned_text).strip()     # Remove extra spaces
+
+        # Step 2: Ensure correct punctuation spacing
+        cleaned_text = re.sub(r" ,", ",", cleaned_text)                 # Fix space before commas
+        cleaned_text = re.sub(r" \.", ".", cleaned_text)                # Fix space before periods
+        cleaned_text = re.sub(r" :", ":", cleaned_text)                 # Fix space before colons
+        cleaned_text = re.sub(r"\.(?=\w)", ". ", cleaned_text)          # Ensure space after periods
+        
+        # Step 3: 
+        cleaned_text = re.sub(r"\((\d{4})\),", r"(\1).", cleaned_text)  # Commas proceeding a publication year will be converted to full-stop
+        cleaned_text = re.sub(r"\b(ed|edition)\b", "Edition", cleaned_text, flags=re.IGNORECASE)  # Standardize "ed" and "edition"
+        # cleaned_text = re.sub(r"\b(\d+)(st|nd|rd|th) Edition\b", r"\1 Edition", cleaned_text)
+
+        return cleaned_text
 
     # [] 
     def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
