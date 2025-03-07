@@ -1,8 +1,13 @@
 from enum import Enum
 
-# [] Keywords for filtering courses:
+# [] Keywords to remove from Courses:
 EXCLUDE_KEY_WORDS   = {"Project", "Thesis", "Internship", "Academic", "Bachelor"}
 
+# [] Keywords to remove from Literature List:
+EXCLUDE_TRAILING_FROM_LIT = {r"Websites:.*", r"• Academic papers.*", r"Proposed Magazine & Periodicals.*", r"• Cases.*"}
+EXCLUDE_EXACT_FROM_LIT    = {"Books:", "References:", "Reference", "Textbook:", "Textbook", "Useful References", "Recommended Textbooks and References", "Reference Books", "Useful Journals", "Further reading:", "Required Reading:", "Recommended reading"}
+
+# TODO: Combine some of these 'markers', currently too many. NO REPETITION!
 # [] Keywords for filtering literature:
 BOOK_START_MARKERS  = {"Lærebog:", "Litteratur", "Course books", "Course literature"}
 EDITION_MARKERS     = {"studieudgave", "Studieudgave", "udg.", "Udg.", "udgave" , "Udgave", "ed.", "Ed.", "edition", "Edition", "Vol.", "vol.", "volume", "Volume" ,"kapitel", "Kapitel", "kap.", "Kap." "kapitler", "Kapitler", "chapter", "Chapter", "chapters", "Chapters"}

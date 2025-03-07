@@ -27,8 +27,8 @@ def scraper_core(service):
     # dtu_spider = DTUSpider("DTU", "https://kurser.dtu.dk/")
     # dtu_spider.run_spider(driver)
 
-    # polyu_spider = PolyUSpider("PolyU", "https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
-    # polyu_spider.run_spider(driver)
+    polyu_spider = PolyUSpider("PolyU", "https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
+    polyu_spider.run_spider(driver)
 
     driver.quit()
     print("!===============================================================================================================================!")
