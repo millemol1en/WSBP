@@ -11,6 +11,7 @@ import pymupdf
 
 from Infrastructure.UniSpider import UniSpider
 from DataObjects.Department import Department
+from DataObjects.Book import Book
 
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
 
@@ -310,7 +311,8 @@ class PolyUSpider(UniSpider):
                         print(f"Subject Title: {subject_title}")
                     elif row[0].startswith('Reading List'):
                         raw_references = row[1]
-                        print(self.clean_citation_text(raw_references))
+                        print(row)
+                        #print(row)
                         #book_entries = self.extract_citation(self.clean_citation_text(raw_references))
                         #literature.extend(book_entries)
 
@@ -319,47 +321,22 @@ class PolyUSpider(UniSpider):
 
         print(f"{'-'*30}")
         
-    # []
-    # All citations are stored in APA citation format:
-    def extract_citation(self, text):
-        # Step 3: Regex to match citations in APA format
-        citation_pattern = re.compile(r"([A-Za-z\s.,&'-]+)\((\d{4})\)\. (.+?)\.\s*([A-Za-z\s&:,]+)\.")
-        
-        citations = []
-        for match in citation_pattern.finditer(text):
-            authors = match.group(1).strip()
-            year = match.group(2).strip()
-            title = match.group(3).strip()
-            publisher = match.group(4).strip()
+    # [] 
+    def clean_literature(self, raw_text : str) -> str:
+        cleaned_text = re.sub(r"Websites:.*", "", raw_text, flags=re.DOTALL)
+        cleaned_text = re.sub(r"Proposed Magazine & Periodicals.*", "", cleaned_text, flags=re.DOTALL)
+        cleaned_text = re.sub(r"• Academic papers.*", "", cleaned_text, flags=re.DOTALL)
+        cleaned_text = re.sub(r"\s{2,}", " ", cleaned_text).strip()
 
-            citations.append({
-                "authors": authors,
-                "year": year,
-                "title": title,
-                "publisher": publisher
-            })
-
-        return citations
-    
-    # [] Clean Citation Pipeline:
-    def clean_citation_text(self, raw_text):
-        # Step 1: Remove unwanted newlines within a citation
-        cleaned_text = re.sub(r"(\w)-\n(\w)", r"\1\2", raw_text)        # Fix hyphenated words split by newlines
-        cleaned_text = re.sub(r"\n+", " ", cleaned_text)                # Replace newlines with spaces within citations
-        cleaned_text = re.sub(r"\s{2,}", " ", cleaned_text).strip()     # Remove extra spaces
-
-        # Step 2: Ensure correct punctuation spacing
-        cleaned_text = re.sub(r" ,", ",", cleaned_text)                 # Fix space before commas
-        cleaned_text = re.sub(r" \.", ".", cleaned_text)                # Fix space before periods
-        cleaned_text = re.sub(r" :", ":", cleaned_text)                 # Fix space before colons
-        cleaned_text = re.sub(r"\.(?=\w)", ". ", cleaned_text)          # Ensure space after periods
-        
-        # Step 3: 
-        cleaned_text = re.sub(r"\((\d{4})\),", r"(\1).", cleaned_text)  # Commas proceeding a publication year will be converted to full-stop
-        cleaned_text = re.sub(r"\b(ed|edition)\b", "Edition", cleaned_text, flags=re.IGNORECASE)  # Standardize "ed" and "edition"
-        # cleaned_text = re.sub(r"\b(\d+)(st|nd|rd|th) Edition\b", r"\1 Edition", cleaned_text)
 
         return cleaned_text
+
+    def harvest_book(self, raw_text : str) -> Book:
+        new_book = Book()
+
+        return new_book
+    
+   
 
     # [] 
     def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
