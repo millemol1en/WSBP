@@ -14,7 +14,7 @@ class UniSpider(ABC):
         pass
 
     @abstractmethod
-    def get_departments(self, driver):
+    def scrap_departments(self, driver):
         pass
 
     @abstractmethod
@@ -22,5 +22,14 @@ class UniSpider(ABC):
         pass
 
     @abstractmethod
+    def scrap_department_course_content(self, driver):
+        pass
+
+    @abstractmethod
     def scrape_single_course(self, driver, course_url):
         pass
+
+    # TODO: Consider adding this function:
+    # @abstractmethod
+    # def harvest_book():
+    #     pass

@@ -2,6 +2,7 @@ from selenium import webdriver
 from Scrapers.KUSpider.KUSpider import KUSpider
 from Scrapers.DTUSpider.DTUSpider import DTUSpider
 from Scrapers.PolyUSpider.PolyUSpider import PolyUSpider
+from Scrapers.GroningenSpider.GroningenSpider import GroningenSpider
 
 # []
 def scraper_core(service):
@@ -27,8 +28,11 @@ def scraper_core(service):
     # dtu_spider = DTUSpider("DTU", "https://kurser.dtu.dk/")
     # dtu_spider.run_spider(driver)
 
-    polyu_spider = PolyUSpider("PolyU", "https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
-    polyu_spider.run_spider(driver)
+    # polyu_spider = PolyUSpider("PolyU", "https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
+    # polyu_spider.run_spider(driver)
+
+    groningen_spider = GroningenSpider("Groningen University", "https://ocasys.rug.nl/current/catalog")
+    groningen_spider.run_spider(driver)
 
     driver.quit()
     print("!===============================================================================================================================!")

@@ -1,7 +1,7 @@
 from enum import Enum
 
 # [] Keywords to remove from Courses:
-EXCLUDE_KEY_WORDS   = {"Project", "Thesis", "Internship", "Academic", "Bachelor"}
+EXCLUDE_KEY_WORDS   = {"Project", "Thesis", "Internship", "Academic", "Bachelor", "Research"}
 
 # [] Keywords to remove from Literature List:
 EXCLUDE_TRAILING_FROM_LIT = {r"Websites:.*", r"• Academic papers.*", r"Proposed Magazine & Periodicals.*", r"• Cases.*"}
