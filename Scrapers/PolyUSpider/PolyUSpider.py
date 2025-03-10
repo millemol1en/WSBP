@@ -32,17 +32,17 @@ class PolyUSpider(UniSpider):
         driver.implicitly_wait(1.0)
 
         # []
-        self.scrap_departments(driver)
+        self.scrape_departments(driver)
 
         # []
-        self.scrap_department_courses(driver)
+        self.scrape_department_courses(driver)
 
         # TODO: Remove!
         print("    !----------------------------------------------------------------------------------------------!")
 
 
     # []
-    def scrap_departments(self, driver):
+    def scrape_departments(self, driver):
         # [] Each faculty is stored inside a <div> tag which we need to get and iterate over to locate
         #    all the associated departments:
         faculty_containers = driver.find_elements(By.CLASS_NAME, "ITS_Content_News_Highlight_Collection")
@@ -94,14 +94,14 @@ class PolyUSpider(UniSpider):
     #    For every conceivable approach, there will always be one or more departments which are the outliers to the established system:
     #           1. 
     # TODO: Remove all "print()" functions
-    def scrap_department_courses(self, driver):
+    def scrape_department_courses(self, driver):
         for department in self.departments:
             # if department.abbr in EXCLUDE_DEPARTMENTS: continue
             if department.abbr != "sft": continue
             # if department.abbr not in { "hti", "rs", "sn", "so" }: continue
             
             # [] 
-            (subject_lists, format_type, check) = self.scrap_course_from_department_subject_list(driver, department)
+            (subject_lists, format_type, check) = self.scrape_course_from_department_subject_list(driver, department)
             
             # []
             # TODO: Change to List[Course]
@@ -222,8 +222,8 @@ class PolyUSpider(UniSpider):
                     print(f"        *= [Type None] {department.name}")
 
     # [STEP. 03]
-    def scrap_department_course_content(self, driver):
-        return super().scrap_department_course_content(driver)
+    def scrape_department_course_content(self, driver):
+        return super().scrape_department_course_content(driver)
 
     # SCRAP COURSE LITERATURE METHOD #2
     def scrape_single_course(self, driver, course_url):
@@ -334,7 +334,7 @@ class PolyUSpider(UniSpider):
     #           3. SubjectListFormatType.C = <main> & <tr> & <pagination>
     #           4. SubjectListFormatType.D = <a>
     #           5. SubjectListFormatType.A = "buildup"
-    def scrap_course_from_department_subject_list(self, driver, department) -> (List[str] | SubjectListFormatType | bool):
+    def scrape_course_from_department_subject_list(self, driver, department) -> (List[str] | SubjectListFormatType | bool):
         match department.abbr:
             case "lgt":  return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.C, False) # Department of Logistics and Maritime Studies              :: 
             case "mm":   return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.A, False) # Department of Management and Marketing                    :: 
@@ -436,7 +436,7 @@ class PolyUSpider(UniSpider):
     #          1. URL stored in "href" is flawed
     #          2. In most cases, the URL will contain the department abbreviation - but not always
     #          3. Some departments will have different abbreviations for their course codes, for example "lms" has LGT and "sft" will have "ICT" and "SFT"
-    # def scrap_course_from_department_subject_list(self, dep_abbr) -> List[str]:
+    # def scrape_course_from_department_subject_list(self, dep_abbr) -> List[str]:
     #     match dep_abbr:
     #         case "lms": return (["/study/subject-syllabi/"])                                                                                    # Department of Logistics and Maritime Studies              :: URL LOC = <tr> tags; Get course code via first <td>;     [NO NEED TO CHECK]
     #         case "mm":  return (["/study/subject-syllabi/"])                                                                                    # Department of Management and Marketing                    :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]

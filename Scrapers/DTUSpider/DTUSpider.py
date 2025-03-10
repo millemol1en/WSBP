@@ -15,10 +15,10 @@ class DTUSpider(UniSpider):
         driver.get(self.url)
 
         # []
-        self.scrap_departments(driver)
+        self.scrape_departments(driver)
         
         # []
-        self.scrap_department_courses(driver)
+        self.scrape_department_courses(driver)
 
         # TODO: Remove!
         print(f"    ?= Number of Departments: {len(self.departments)}")
@@ -29,7 +29,7 @@ class DTUSpider(UniSpider):
         print("    !----------------------------------------------------------------------------------------------!")
 
     # [Step .1]
-    def scrap_departments(self, driver):
+    def scrape_departments(self, driver):
         print(f"        !~~~~~~~~~~~~~~~~~~~~~~~~~~Getting Courses from URL: {self.url}~~~~~~~~~~~~~~~~~~~~~~~~~~!")
         driver.implicitly_wait(1)
 
@@ -55,7 +55,7 @@ class DTUSpider(UniSpider):
         print("        !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!")
         
     # [Step .2]
-    def scrap_department_courses(self, driver):
+    def scrape_department_courses(self, driver):
         # [] 
         for department in self.departments:
             # TODO: Remove!
@@ -89,8 +89,8 @@ class DTUSpider(UniSpider):
             print("             |======================================================================|")
 
     # [Step .3]
-    def scrap_department_course_content(self, driver):
-        return super().scrap_department_course_content(driver)
+    def scrape_department_course_content(self, driver):
+        return super().scrape_department_course_content(driver)
 
     # [Step .4]
     def scrape_single_course(self, driver, course_url):

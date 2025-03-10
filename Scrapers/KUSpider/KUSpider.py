@@ -13,10 +13,10 @@ class KUSpider(UniSpider):
         driver.get(self.url)
 
         # [] 
-        self.scrap_departments(driver)
+        self.scrape_departments(driver)
         
         # [] 
-        self.scrap_department_courses(driver)
+        self.scrape_department_courses(driver)
 
         print(f"    ?= Number of Departments: {len(self.departments)}")
 
@@ -27,7 +27,7 @@ class KUSpider(UniSpider):
 
     # TODO: Update the names - more universal naming conventions and structure:
     # []
-    def scrap_departments(self, driver):
+    def scrape_departments(self, driver):
         # [] Get the department - stored as a <section> tag in HTML
         dep_sec_tag = driver.find_element(By.ID, "departments")
         dep_sec_obj = Select(dep_sec_tag)
@@ -48,7 +48,7 @@ class KUSpider(UniSpider):
                     self.departments.append(new_department_obj)
 
     # [] Here we use visit the department URL and collect the associated courses
-    def scrap_department_courses(self, driver):
+    def scrape_department_courses(self, driver):
         for department in self.departments:
             # TODO: Remove!
             print(f"           |==============================={department.name}===============================|")
@@ -79,8 +79,8 @@ class KUSpider(UniSpider):
             # TODO: Remove!
             print("           |======================================================================|")
 
-    def scrap_department_course_content(self, driver):
-        return super().scrap_department_course_content(driver)
+    def scrape_department_course_content(self, driver):
+        return super().scrape_department_course_content(driver)
     
     def scrape_single_course(self, driver):
         return super().scrape_single_course(driver)

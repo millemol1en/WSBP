@@ -9,22 +9,27 @@ class UniSpider(ABC):
         self.name = _name
         self.url  = _url
 
+    """ Step 1 - Execute the Spider """
     @abstractmethod
     def run_spider(self, driver):
         pass
 
+    """ Step 2 - Gather the University Departments """
     @abstractmethod
-    def scrap_departments(self, driver):
+    def scrape_departments(self, driver):
         pass
 
+    """ Step 3 - Gather the course URLs for each Department """
     @abstractmethod
-    def scrap_department_courses(self, driver):
+    def scrape_department_courses(self, driver):
         pass
 
+    """ Step 4 - Gather all content from the Courses """
     @abstractmethod
-    def scrap_department_course_content(self, driver):
+    def scrape_department_course_content(self, driver):
         pass
 
+    """ Step 5 - Gather content from a Course """
     @abstractmethod
     def scrape_single_course(self, driver, course_url):
         pass
