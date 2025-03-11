@@ -6,6 +6,7 @@ from DataObjects.Department import Department
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
 class DTUSpider(UniSpider):
+    # [Step .0]
     def run_spider(self, driver):
         # TODO: Remove!
         print(f"    !---------------------------------------------{self.name}---------------------------------------------!")
@@ -14,21 +15,21 @@ class DTUSpider(UniSpider):
         driver.get(self.url)
 
         # []
-        # TODO: Remove return from functions...
-        self.get_departments(driver)
+        self.scrape_departments(driver)
         
         # []
-        self.scrap_department_courses(driver)
+        self.scrape_department_courses(driver)
 
         # TODO: Remove!
         print(f"    ?= Number of Departments: {len(self.departments)}")
 
         for department in self.departments:
-            print(f"    ?= {department.name}: Num Courses: {len(department.courses)}")
+            print(f"    ?= {department.name}: Num Courses: {len(department.courseURLs)}")
 
         print("    !----------------------------------------------------------------------------------------------!")
 
-    def get_departments(self, driver):
+    # [Step .1]
+    def scrape_departments(self, driver):
         print(f"        !~~~~~~~~~~~~~~~~~~~~~~~~~~Getting Courses from URL: {self.url}~~~~~~~~~~~~~~~~~~~~~~~~~~!")
         driver.implicitly_wait(1)
 
@@ -44,16 +45,17 @@ class DTUSpider(UniSpider):
             if option_value and option_text:
                 # [] We are currently forcefully attaching the level (bachelors niveau) to the URL
                 #    and in the future we might change this.
-                department_link = "https://kurser.dtu.dk/search?CourseType=DTU_BSC&Department=" + option_value
+                department_url = "https://kurser.dtu.dk/search?CourseType=DTU_BSC&Department=" + option_value
 
                 # [] We create a new Department object and append it to the universities list:
-                new_department_obj = Department(option_text, department_link)
+                new_department_obj = Department(_depName = option_text, _depURL = department_url)
                 self.departments.append(new_department_obj)
 
         # TODO: Remove!
         print("        !~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!")
         
-    def scrap_department_courses(self, driver):
+    # [Step .2]
+    def scrape_department_courses(self, driver):
         # [] 
         for department in self.departments:
             # TODO: Remove!
@@ -71,20 +73,25 @@ class DTUSpider(UniSpider):
             # []
             for course in courses:
                 course_name = course.text.strip()
-                course_link = course.get_attribute("href")
+                course_url  = course.get_attribute("href")
 
-                if course_name and not any(keyword in course_name for keyword in EXCLUDE_KEY_WORDS) and any(keyword in course_link for keyword in "course"):
-                    course_urls.append(course_link)
-                    print(f"            := {course_name}: {course_link}")
+                if course_name and not any(keyword in course_name for keyword in EXCLUDE_KEY_WORDS) and any(keyword in course_url for keyword in "course"):
+                    course_urls.append(course_url)
+                    print(f"            := {course_name}: {course_url}")
                 
                 else:
                     continue
 
             # []
-            department.courses = course_urls
+            department.courseURLs = course_urls
 
             # TODO: Remove!
             print("             |======================================================================|")
 
+    # [Step .3]
+    def scrape_department_course_content(self, driver):
+        return super().scrape_department_course_content(driver)
+
+    # [Step .4]
     def scrape_single_course(self, driver, course_url):
         return super().scrape_single_course(driver)

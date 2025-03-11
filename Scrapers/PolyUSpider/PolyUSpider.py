@@ -6,7 +6,6 @@ from enum import Enum
 from urllib.parse import urlparse, unquote, urljoin
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
-from PyPDF2 import PdfReader
 import pymupdf
 
 from Infrastructure.UniSpider import UniSpider
@@ -33,17 +32,17 @@ class PolyUSpider(UniSpider):
         driver.implicitly_wait(1.0)
 
         # []
-        self.get_departments(driver)
+        self.scrape_departments(driver)
 
         # []
-        self.scrap_department_courses(driver)
+        self.scrape_department_courses(driver)
 
         # TODO: Remove!
         print("    !----------------------------------------------------------------------------------------------!")
 
 
     # []
-    def get_departments(self, driver):
+    def scrape_departments(self, driver):
         # [] Each faculty is stored inside a <div> tag which we need to get and iterate over to locate
         #    all the associated departments:
         faculty_containers = driver.find_elements(By.CLASS_NAME, "ITS_Content_News_Highlight_Collection")
@@ -81,7 +80,7 @@ class PolyUSpider(UniSpider):
             #    themselves are stored with department code "lgt". Why? I don't know.
             if abbreviation == "lms": abbreviation = "lgt"
             
-            return (Department(d_name, sanitized_dep_link, [], abbreviation))
+            return (Department(_depName = d_name, _depURL = sanitized_dep_link, _abbreviation = abbreviation))
         else:
             None
 
@@ -95,14 +94,14 @@ class PolyUSpider(UniSpider):
     #    For every conceivable approach, there will always be one or more departments which are the outliers to the established system:
     #           1. 
     # TODO: Remove all "print()" functions
-    def scrap_department_courses(self, driver):
+    def scrape_department_courses(self, driver):
         for department in self.departments:
             # if department.abbr in EXCLUDE_DEPARTMENTS: continue
             if department.abbr != "sft": continue
             # if department.abbr not in { "hti", "rs", "sn", "so" }: continue
             
             # [] 
-            (subject_lists, format_type, check) = self.scrap_course_from_department_subject_list(driver, department)
+            (subject_lists, format_type, check) = self.scrape_course_from_department_subject_list(driver, department)
             
             # []
             # TODO: Change to List[Course]
@@ -222,58 +221,9 @@ class PolyUSpider(UniSpider):
                 case _: 
                     print(f"        *= [Type None] {department.name}")
 
-    # SCRAP COURSE LITERATURE METHOD #1
-    # TODO: Remove 'driver' from arguments...
-    # []
-    def scrape_single_course_II(self, driver, course_url):
-        # []
-        parsed_url = urlparse(course_url)
-        base_url = "https://www.polyu.edu.hk/"
-
-        if not parsed_url.netloc: 
-            course_url = urljoin(base_url, course_url)
-
-        # []
-        r = requests.get(course_url)
-        f = io.BytesIO(r.content)
-
-        # []
-        reader = PdfReader(f)
-
-        # []
-        full_text = []
-        for page in reader.pages:
-            text = page.extract_text()
-            if text:
-                full_text.append(text)
-
-        # []
-        full_text = "\n".join(full_text)
-        lines = full_text.split('\n')
-
-        # []
-        subject_code  = None
-        subject_title = None
-        reading_list  = []
-        capture_lit   = False
-
-        for i, line in enumerate(lines):
-            if "Subject Code" in line:
-                subject_code = line.replace("Subject Code", "").strip()
-            if "Subject Title" in line:
-                subject_title = line.replace("Subject Title", "").strip()
-            if "Reading List and" in line:  
-                print("Reading list located!")
-                capture_lit = True  # Start capturing references
-                continue  # Skip the header line itself
-
-            if capture_lit:  
-                reading_list.append(line.strip())
-
-        print(f"            => Subject Code: {subject_code}")
-        print(f"            => Subject Title: {subject_title}")
-        print(f"            => Reading List and References:")
-        print("\n".join(reading_list))
+    # [STEP. 03]
+    def scrape_department_course_content(self, driver):
+        return super().scrape_department_course_content(driver)
 
     # SCRAP COURSE LITERATURE METHOD #2
     def scrape_single_course(self, driver, course_url):
@@ -335,8 +285,6 @@ class PolyUSpider(UniSpider):
         new_book = Book()
 
         return new_book
-    
-   
 
     # [] 
     def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
@@ -386,7 +334,7 @@ class PolyUSpider(UniSpider):
     #           3. SubjectListFormatType.C = <main> & <tr> & <pagination>
     #           4. SubjectListFormatType.D = <a>
     #           5. SubjectListFormatType.A = "buildup"
-    def scrap_course_from_department_subject_list(self, driver, department) -> (List[str] | SubjectListFormatType | bool):
+    def scrape_course_from_department_subject_list(self, driver, department) -> (List[str] | SubjectListFormatType | bool):
         match department.abbr:
             case "lgt":  return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.C, False) # Department of Logistics and Maritime Studies              :: 
             case "mm":   return (["/study/subject-syllabi/"],                                                                               SubjectListFormatType.A, False) # Department of Management and Marketing                    :: 
@@ -488,7 +436,7 @@ class PolyUSpider(UniSpider):
     #          1. URL stored in "href" is flawed
     #          2. In most cases, the URL will contain the department abbreviation - but not always
     #          3. Some departments will have different abbreviations for their course codes, for example "lms" has LGT and "sft" will have "ICT" and "SFT"
-    # def scrap_course_from_department_subject_list(self, dep_abbr) -> List[str]:
+    # def scrape_course_from_department_subject_list(self, dep_abbr) -> List[str]:
     #     match dep_abbr:
     #         case "lms": return (["/study/subject-syllabi/"])                                                                                    # Department of Logistics and Maritime Studies              :: URL LOC = <tr> tags; Get course code via first <td>;     [NO NEED TO CHECK]
     #         case "mm":  return (["/study/subject-syllabi/"])                                                                                    # Department of Management and Marketing                    :: URL LOC = <a>  tags; Get course code via URL = YES;      [NO NEED TO CHECK]
