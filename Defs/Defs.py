@@ -1,8 +1,7 @@
 from enum import Enum
 
 # [] Keywords to remove from Courses:
-# TODO: Combine these together as they essentially accomplish the same thing:
-EXCLUDE_KEY_WORDS   = { "project", "thesis", "internship", "academic", "bachelor", "research" }
+EXCLUDE_KEY_WORDS   = { "project", "thesis", "internship", "academic", "bachelor", "research", "ceramony" }
 
 # TODO: TELL VIGGO I MADE THIS ALL TO SMALLER
 NON_BOOK_MARKERS    = { "papers", "list of", "various", "videos", "speeches", "artikler:", "domme:", "supplerende litteratur:", "supplementary literature:", "tidsskrifter:", "exercises:", "øvelser:", "extra reading:", "yderligere litteratur:", "cases:", "syllabus" }

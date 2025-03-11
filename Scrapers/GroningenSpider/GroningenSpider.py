@@ -99,9 +99,8 @@ class GroningenSpider(UniSpider):
     def scrape_department_courses(self, department):
         # [] Iterate over every department and create temporary storage
         dep_course_urls = []
-        
+        # TODO: Remove!
         print(f"  =* {department.name}")
-        # []
         for program_url in department.courseURLs:
             response = requests.get(program_url)
 
@@ -118,25 +117,27 @@ class GroningenSpider(UniSpider):
                         course_offering = entry.get("courseOffering", {})
                         course_data = course_offering.get("course", {})
                         course_code = course_data.get("code")
-                        print(f"Course Code: {course_code}")
+                        course_name = course_data.get("titleEn")
+                        if any(keyword in course_name.lower() for keyword in EXCLUDE_KEY_WORDS): continue
                         course_json_data = (f"https://ocasys.rug.nl/api/2024-2025/course/page/{course_code}")
                         dep_course_urls.append(course_json_data)
+                        print(f"{course_name} - {course_code}") # TODO: Remove!
                 
             department.courseURLs = dep_course_urls
 
     """ Step 4 """
-    # []
+    # [4.1]
     def scrape_department_course_raw(self, _):
         for department in self.departments:
             self.scrape_department_course_content(self, department)
 
-    # []
+    # [4.2]
     def scrape_department_course_threaded(self, _):
         with ThreadPoolExecutor() as executor:
         # Each department runs in its own thread
             executor.map(lambda department: self.scrape_department_course_content(department), self.departments)
 
-    # []
+    # [4.3]
     def scrape_department_course_content(self, department):
         print(f"Course Lit Size: {len(department.courseURLs)}")
     
@@ -147,7 +148,7 @@ class GroningenSpider(UniSpider):
             course.__print__()
 
     """ Step 5 """
-    # []
+    # [5.1]
     def scrape_single_course(self, course_url) -> Course:
         response = requests.get(course_url)
 
