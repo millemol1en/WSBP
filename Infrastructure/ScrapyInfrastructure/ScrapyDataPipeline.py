@@ -12,7 +12,7 @@ class DataPipeline:
         return item
     
     def close_spider(self, spider):
-        print(f"Scraped {len(self.departments)} courses")
         for department in self.departments:
-            print(f"Department: {department['department']}")
-            print(f"Courses: {department['dep_course_urls']}")
+            print(f"  *= Department: {department['department']}")
+            for course in department['dep_course_urls']:
+                print(f"       - Course URL: {course}")

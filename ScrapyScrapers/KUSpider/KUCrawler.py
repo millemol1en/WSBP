@@ -2,7 +2,7 @@ import scrapy
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import DepartmentDTO
 
-class KUSpider(ScrapyAbstractCrawler):
+class KUCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 
