@@ -5,7 +5,7 @@ from Infrastructure.ScrapyInfrastructure.ScrapyDTO import DepartmentDTO
 
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class GroningenSpider(ScrapyAbstractCrawler):
+class GroningenCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 
