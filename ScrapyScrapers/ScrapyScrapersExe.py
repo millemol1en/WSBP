@@ -11,9 +11,9 @@ def scrapy_scraper_executor():
         # 'FEEDS': {
         #     'university.json': {'format': 'json', 'overwrite': True}
         # },
-        'ITEM_PIPELINES': {
-            'Infrastructure.ScrapyInfrastructure.ScrapyDataPipeline.DataPipeline': 1
-        }
+        # 'ITEM_PIPELINES': {
+        #     'Infrastructure.ScrapyInfrastructure.ScrapyDataPipeline.DataPipeline': 1
+        # }
     })
 
     """ KU Crawler """
