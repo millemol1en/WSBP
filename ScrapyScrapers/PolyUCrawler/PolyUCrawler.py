@@ -45,7 +45,7 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                 dep_url  = self.sanitize_department_url(dep_url)
                 dep_abbr = self.get_department_abbreviation(dep_url)
 
-                if dep_name != "Department of Applied Social Sciences": continue
+                if dep_name != "Department of Logistics and Maritime Studies": continue
                 # []
                 (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(dep_url, dep_abbr)
 
@@ -60,23 +60,23 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                 )
 
             # Specialty case required for Faculties which are also departments:
-            if fac_name == "School of Fashion and Textiles":
-                # []
-                fac_url  = fac_header.css("a::attr(href)").get()
-                fac_url  = self.sanitize_department_url(fac_url)
-                fac_abbr = self.get_department_abbreviation(fac_url)
+            # if fac_name == "School of Fashion and Textiles":
+            #     # []
+            #     fac_url  = fac_header.css("a::attr(href)").get()
+            #     fac_url  = self.sanitize_department_url(fac_url)
+            #     fac_abbr = self.get_department_abbreviation(fac_url)
                 
-                # []
-                (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(fac_url, fac_abbr)
+            #     # []
+            #     (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(fac_url, fac_abbr)
 
-                # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
-                if len(subject_list_urls) < 1: continue
+            #     # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
+            #     if len(subject_list_urls) < 1: continue
 
-                yield scrapy.Request(
-                    url=subject_list_urls[0],  
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': fac_name, 'department_abbr': fac_abbr, 'format_type': format_type, 'check': check}
-                )
+            #     yield scrapy.Request(
+            #         url=subject_list_urls[0],  
+            #         callback=self.scrape_department_courses,
+            #         meta={'department_name': fac_name, 'department_abbr': fac_abbr, 'format_type': format_type, 'check': check}
+            #     )
 
     def scrape_department_courses(self, response):
         department_name   = response.meta['department_name']
@@ -121,6 +121,23 @@ class PolyUCrawler(ScrapyAbstractCrawler):
             case SubjectListFormatType.C:
                 print(f"   *= {department_name}: {response.request.url} - {check}")
             
+                main_tag = response.css("main")
+
+                pag_elements = main_tag.css("li.pagination-list__itm.pagination-list__itm--number a::text").getall()
+                if pag_elements:
+                    last_element_num = int(pag_elements[-1].strip())
+
+                    for pg_num in range(1, last_element_num + 1):
+                        pag_url = (f"{response.request.url}?page={pg_num}")
+                        print(f"        -> {pag_url}")
+                        
+                        yield scrapy.Request(
+                            url=pag_url,
+                            callback=self.handle_format_type_c,
+                            meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
+                        )
+
+
             # [Case #4] ...
             case SubjectListFormatType.D:
                 print(f"   *= {department_name}: {response.request.url} - {check}")
@@ -146,11 +163,6 @@ class PolyUCrawler(ScrapyAbstractCrawler):
 
             case _:
                 print(f"   *= {department_name}: None!")
-
-        yield DepartmentDTO(
-            department=department_name,
-            dep_course_urls=[]
-        )
 
     # []
     def scrape_single_course(self, response):
@@ -302,3 +314,22 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                 return False
         
         return True
+    
+    # []
+    def handle_format_type_c(self, response):
+        department_name = response.meta['department_name']
+        department_abbr = response.meta['department_abbr']
+        check           = response.meta['check']
+
+        tr_tags    = response.css("tr.ITS_clickableTableRow")
+        
+        for course in tr_tags:
+            course_url = course.css("::attr(data-href)").get()
+
+            if self.is_url_valid(course_url, department_abbr, check):
+                
+                yield scrapy.Request(
+                    url=course_url,
+                    callback=self.scrape_single_course,
+                    meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
+                )
