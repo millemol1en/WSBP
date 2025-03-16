@@ -4,7 +4,7 @@ import re
 import requests
 from urllib.parse import urlparse, unquote, urljoin
 from enum import Enum
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import DepartmentDTO
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
 

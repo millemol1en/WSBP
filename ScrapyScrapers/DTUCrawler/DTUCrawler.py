@@ -1,6 +1,6 @@
 import scrapy
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import DepartmentDTO
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
@@ -48,7 +48,7 @@ class DTUCrawler(ScrapyAbstractCrawler):
     def scrape_department_courses(self, response):
         department_name = response.meta['department_name']
 
-        course_urls = []
+        course_urls = [] # TODO: Remove!
 
         course_links = response.css('a')
 
@@ -60,15 +60,16 @@ class DTUCrawler(ScrapyAbstractCrawler):
                 full_course_url = (f"https://kurser.dtu.dk{course_url}")
                 
                 if course_name and any(keyword in course_url for keyword in ["course"]):
-                    course_urls.append(full_course_url)
+                    course_urls.append(full_course_url) # TODO: Remove!
+
+                    yield scrapy.Request(
+                        url=full_course_url,
+                        callback=self.scrape_single_course,
+                        meta={ 'department_name': department_name }
+                    )
+
                 else: continue
 
-        department_item = DepartmentDTO(
-            department=department_name,
-            dep_course_urls=course_urls
-        )
-
-        yield department_item
     
     """ Step 4 """
     def scrape_single_course(self, response, course_url):

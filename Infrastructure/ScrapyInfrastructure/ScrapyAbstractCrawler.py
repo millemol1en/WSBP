@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import List
 import scrapy
 from DataObjects.Department import Department
 
 class ScrapyAbstractCrawler(scrapy.Spider, ABC):
-    departments : List[Department] = []
+    departments : list[Department] = []
 
     def __init__(self, _name="", _url="", **kwargs):
         self.name = _name
@@ -28,5 +27,5 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
     
     """ Step 4 """
     @abstractmethod
-    def scrape_single_course(self, response, course_url):
+    def scrape_single_course(self, response):
         pass

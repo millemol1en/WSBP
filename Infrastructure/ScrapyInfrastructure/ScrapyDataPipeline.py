@@ -1,18 +1,45 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import DepartmentDTO
+from DataObjects.Department import Department, Course
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 class DataPipeline:
     def __init__(self):
-        self.departments = []
+        self.departments : dict[str, Department] = {}
 
     def process_item(self, item, spider):
-        if isinstance(item, DepartmentDTO):  # Check if the item is an instance of DepartmentItem
-            self.departments.append(item)
+        if isinstance(item, CourseDTO):  
+            department_name = item['department']
+
+            # [1] If department isn't already there, make a new one:
+            if department_name not in self.departments:
+                self.departments[department_name] = Department(
+                    _depName=department_name,
+                    _depCourses=[],
+                    _depCourseURLs=[]
+                )
+
+            # [2] Extract course details:
+            new_course = Course(
+                _name       = item['name'],
+                _code       = item['code'],
+                _semester   = "",
+                _points     = "",
+                _literature = item.get('literature', []),
+                _level      = item.get('level', [])
+            )
+
+            # [3] 
+            department = self.departments[department_name]
+
+            if not any(course.code == new_course.code for course in department.courses):
+                department.courses.append(new_course)
+
         return item
     
     def close_spider(self, spider):
-        for department in self.departments:
-            print(f"  *= Department: {department['department']}")
-            for course in department['dep_course_urls']:
-                print(f"       - Course URL: {course}")
+        for _, department in self.departments.items():
+            print(f"  *= Department: {department.name}")
+            for course in department.courses:
+                if isinstance(course, Course):
+                    print(f"      -> {course.name}")

@@ -1,8 +1,8 @@
 import scrapy
 
 class CourseDTO(scrapy.Item):
-    literature = scrapy.Field()
-
-class DepartmentDTO(scrapy.Item):
-    department = scrapy.Field()
-    dep_course_urls = scrapy.Field()
+    name        = scrapy.Field()
+    code        = scrapy.Field()
+    literature  = scrapy.Field()
+    department  = scrapy.Field()
+    level       = scrapy.Field()

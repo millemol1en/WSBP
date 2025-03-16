@@ -1,6 +1,6 @@
 import scrapy
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import DepartmentDTO
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 class KUCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
@@ -44,13 +44,12 @@ class KUCrawler(ScrapyAbstractCrawler):
                 full_course_url = (f"https://kurser.ku.dk/{course_url}")
                 course_urls.append(full_course_url)
 
-        department_item = DepartmentDTO(
-            department=department_name,
-            dep_course_urls=course_urls
-        )
-
-        yield department_item
+                yield scrapy.Request(
+                    url=full_course_url,
+                    callback=self.scrape_single_course,
+                    meta={ 'department_name': department_name }
+                )
     
     """ Step 4 """
-    def scrape_single_course(self, response, course_url):
+    def scrape_single_course(self, response):
         pass
