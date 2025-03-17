@@ -25,18 +25,16 @@ class DTUCrawler(ScrapyAbstractCrawler):
 
     """ Step 2 - """
     def scrape_departments(self, response):
-        # print(response.text)
-        #departments_select = response.css('select[id="Department"]')
-        departments_select = response.css('select#Department')
-        departments_option = departments_select.css('option')
+        department_options = response.xpath('//select[@id="Department"]/option')
 
-        for dep_option in departments_option:
-            option_text = dep_option.css("::text").get().strip()
-            option_value = dep_option.css("::attr(value)").get()
+        for dep_option in department_options:
+            option_text = dep_option.xpath('normalize-space(text())').get()
+            option_value = dep_option.xpath('@value').get()
             # print(f"Department: {option_text}, Value: {option_value}")
 
             if option_text and option_value:
-                department_url = (f"https://kurser.dtu.dk/search?CourseType=DTU_BSC&Department={option_value}")
+                # TODO: Remove the "CourseType=DTU_BSC&" - ONLY FOR TESTING
+                department_url = (f"https://kurser.dtu.dk/search?Department={option_value}")
 
                 yield scrapy.Request(
                     url=department_url,
@@ -50,17 +48,24 @@ class DTUCrawler(ScrapyAbstractCrawler):
 
         course_urls = [] # TODO: Remove!
 
-        course_links = response.css('a')
+        rows = response.xpath('//table//tr') # Get the table... 
 
-        for course in course_links:
-            course_name = course.css("::text").get().strip()
-            course_url = course.css("::attr(href)").get()
+        print(f"     *= {department_name} - {len(rows)}")
 
-            if course_url:
+        if len(rows) == 0: return                # Skip the departments with only 1 course as it will always be "Study Planner"
+        for row in rows:
+            course_link  = row.xpath('./td[2]/a')
+            course_name  = course_link.xpath('normalize-space(text())').get()
+            course_url   = course_link.xpath('@href').get()
+            course_level = row.xpath('./td[3]/text()').get()
+ 
+            if course_name and course_url and course_level:
                 full_course_url = (f"https://kurser.dtu.dk{course_url}")
                 
-                if course_name and any(keyword in course_url for keyword in ["course"]):
+                if course_name and any(keyword in course_url for keyword in ["course"]) and course_name != "Study Planner": # TODO: Clean this up!
                     course_urls.append(full_course_url) # TODO: Remove!
+
+                    print(f"        -> {course_name} - {course_level.strip()}")
 
                     yield scrapy.Request(
                         url=full_course_url,
@@ -72,5 +77,5 @@ class DTUCrawler(ScrapyAbstractCrawler):
 
     
     """ Step 4 """
-    def scrape_single_course(self, response, course_url):
+    def scrape_single_course(self, response):
         pass
