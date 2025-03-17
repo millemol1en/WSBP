@@ -22,7 +22,8 @@ class GroningenCrawler(ScrapyAbstractCrawler):
             faculty_programs = faculty.get("programs")
 
             faculty_program_urls = []
-            # Testing purposes: Let's isolate "Law"
+
+            # Testing purposes: Isolates "Law"
             if faculty_name != "Law": continue
             
             for program in faculty_programs:

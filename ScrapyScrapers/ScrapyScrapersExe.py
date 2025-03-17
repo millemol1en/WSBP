@@ -3,6 +3,7 @@ from ScrapyScrapers.KUCrawler.KUCrawler import KUCrawler
 from ScrapyScrapers.GroningenCrawler.GroningenCrawler import GroningenCrawler
 from ScrapyScrapers.DTUCrawler.DTUCrawler import DTUCrawler
 from ScrapyScrapers.PolyUCrawler.PolyUCrawler import PolyUCrawler
+from time import time
 
 # TODO: Add Multithreading
 def scrapy_scraper_executor():
@@ -11,9 +12,9 @@ def scrapy_scraper_executor():
         # 'FEEDS': {
         #     'university.json': {'format': 'json', 'overwrite': True}
         # },
-        'ITEM_PIPELINES': {
-            'Infrastructure.ScrapyInfrastructure.ScrapyDataPipeline.DataPipeline': 1
-        }
+        # 'ITEM_PIPELINES': {
+        #     'Infrastructure.ScrapyInfrastructure.ScrapyDataPipeline.DataPipeline': 1
+        # }
     })
 
     """ KU Crawler """
@@ -21,16 +22,16 @@ def scrapy_scraper_executor():
     # process.start()
 
     """ Groningen Crawler """
-    process.crawl(GroningenCrawler, _name="Groningen University", _url="https://ocasys.rug.nl/api/faculty/catalog/2024-2025")
-    process.start()
+    # process.crawl(GroningenCrawler, _name="Groningen University", _url="https://ocasys.rug.nl/api/faculty/catalog/2024-2025")
+    # process.start()
 
     """ DTU Crawler """
     # process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")
     # process.start()
 
     """ PolyU Crawler """
-    # process.crawl(PolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
-    # process.start()
+    process.crawl(PolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
+    process.start()
 
 
 """

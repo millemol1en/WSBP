@@ -1,4 +1,3 @@
-from typing import List
 from DataObjects.Book import Book
 
 class Course:
@@ -7,7 +6,7 @@ class Course:
                  _code        : str = "",
                  _semester    : str = "",       # TODO: Remove?
                  _points      : str = "",       # TODO: Remove?
-                 _literature  : List[Book] = [],
+                 _literature  : list[Book] = [],
                  _level       : str = ""        
     ):
         self.name       = _name

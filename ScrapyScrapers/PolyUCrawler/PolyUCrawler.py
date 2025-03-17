@@ -45,10 +45,11 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                 dep_url  = self.sanitize_department_url(dep_url)
                 dep_abbr = self.get_department_abbreviation(dep_url)
 
-                if dep_name != "Department of Logistics and Maritime Studies": continue
                 # []
                 (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(dep_url, dep_abbr)
 
+                if format_type != SubjectListFormatType.E: continue
+                
                 # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
                 if len(subject_list_urls) < 1: continue
 
@@ -59,6 +60,7 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                     meta={'department_name': dep_name, 'department_abbr': dep_abbr, 'subject_list_urls': subject_list_urls, 'format_type': format_type, 'check': check}
                 )
 
+            # TODO: UNDO THIS! + CODE DUPLICATION
             # Specialty case required for Faculties which are also departments:
             # if fac_name == "School of Fashion and Textiles":
             #     # []
@@ -158,8 +160,19 @@ class PolyUCrawler(ScrapyAbstractCrawler):
         
             # [Case #5] ...
             case SubjectListFormatType.E:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
 
+                search_results = response.css("article p a")
+                print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
+
+                for search_result in search_results:
+                    search_result_link = search_result.css("::attr(href)").get()
+                    # print(f"       -> {search_result_link}")
+
+                    yield scrapy.Request(
+                        url=search_result_link,
+                        callback=self.scrape_single_course,
+                        meta={'department_name': department_name}
+                    )
 
             case _:
                 print(f"   *= {department_name}: None!")
@@ -239,8 +252,8 @@ class PolyUCrawler(ScrapyAbstractCrawler):
         return abbreviation
 
     # [LM #3] ...
-    def search_for_course_urls(self, response, dep_url):
-        query_string_url = (f"{dep_url}/search-result/?query=Subject+Description+Form")
+    def search_for_course_urls(self, response):
+        print("is being called yo!")
 
     # [LM #4] ...
     def scrape_course_from_department_subject_list(self, dep_url, dep_abbr) -> (list[str] | SubjectListFormatType | bool):
@@ -265,10 +278,10 @@ class PolyUCrawler(ScrapyAbstractCrawler):
 
             case "apss": return ([(f"{dep_url}docdrive/subject/")],                                                                                     SubjectListFormatType.D, False) # Department of Applied Social Sciences                     :: 
             # TODO: Think of a nifty solution... rip
-            # case "hti":  return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
-            # case "rs":   return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
-            # case "sn":   return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
-            # case "so":   return (self.query_for_course_urls(driver, department), SubjectListFormatType.E, False)
+            case "hti":  return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
+            case "rs":   return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
+            case "sn":   return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
+            case "so":   return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
             
             case "cbs":  return ([(f"{dep_url}/study/undergraduate-programmes/gur-subjects-offered-by-cbs/cluster-area-requirements/"), 
                                   (f"{dep_url}/study/undergraduate-programmes/gur-subjects-offered-by-cbs/service-learning/")],                         SubjectListFormatType.A, False) # Chinese and Bilingual Studies                             :: 
@@ -333,3 +346,6 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                     callback=self.scrape_single_course,
                     meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
                 )
+
+    def spider_closed():
+        print("PolyU Finished!")

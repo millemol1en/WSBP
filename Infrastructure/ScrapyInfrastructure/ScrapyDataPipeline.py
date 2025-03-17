@@ -1,17 +1,20 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
+
 from DataObjects.Department import Department, Course
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 class DataPipeline:
+    # [0] Initalize our static Department dictionary:
     def __init__(self):
         self.departments : dict[str, Department] = {}
 
+    # [1] Once an item has been located it will be automatically processed by the following function:
     def process_item(self, item, spider):
         if isinstance(item, CourseDTO):  
             department_name = item['department']
 
-            # [1] If department isn't already there, make a new one:
+            # [1.1] If department isn't already there, make a new one:
             if department_name not in self.departments:
                 self.departments[department_name] = Department(
                     _depName=department_name,
@@ -19,7 +22,7 @@ class DataPipeline:
                     _depCourseURLs=[]
                 )
 
-            # [2] Extract course details:
+            # [1.2] Extract course details:
             new_course = Course(
                 _name       = item['name'],
                 _code       = item['code'],
@@ -29,7 +32,7 @@ class DataPipeline:
                 _level      = item.get('level', [])
             )
 
-            # [3] 
+            # [1.3] 
             department = self.departments[department_name]
 
             if not any(course.code == new_course.code for course in department.courses):
@@ -37,6 +40,7 @@ class DataPipeline:
 
         return item
     
+    # [] 
     def close_spider(self, spider):
         for _, department in self.departments.items():
             print(f"  *= Department: {department.name}")
