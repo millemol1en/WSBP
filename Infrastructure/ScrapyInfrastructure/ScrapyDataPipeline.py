@@ -1,3 +1,5 @@
+import time
+
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
@@ -8,6 +10,7 @@ class DataPipeline:
     # [0] Initalize our static Department dictionary:
     def __init__(self):
         self.departments : dict[str, Department] = {}
+        self.delta_time  : float                 = time.time()
 
     # [1] Once an item has been located it will be automatically processed by the following function:
     def process_item(self, item, spider):
@@ -42,8 +45,12 @@ class DataPipeline:
     
     # [] 
     def close_spider(self, spider):
+        print(f"Finished executing for {spider.name} - {len(self.departments)}")
+
         for _, department in self.departments.items():
             print(f"  *= Department: {department.name}")
             for course in department.courses:
-                if isinstance(course, Course):
-                    print(f"      -> {course.name}")
+                print(f"      -> {course.name}")
+
+        self.delta_time = time.time() - self.delta_time
+        print(f"RUN-TIME DURATION: {self.delta_time} seconds")

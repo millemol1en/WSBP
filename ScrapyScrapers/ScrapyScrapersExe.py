@@ -8,8 +8,10 @@ from time import time
 # TODO: Add Multithreading
 def scrapy_scraper_executor():
     process = CrawlerProcess({
-        # 
-        'LOG_LEVEL': 'ERROR', # INFO, ERROR, CRITICAL
+        # [] Logging:
+        'LOG_LEVEL': 'DEBUG', # INFO, ERROR, CRITICAL, DEBUG
+
+        # [] ...:
         # 'FEEDS': {
         #     'university.json': {'format': 'json', 'overwrite': True}
         # },
@@ -20,19 +22,20 @@ def scrapy_scraper_executor():
         },
 
         # Performance Optimization
+        'CONCURRENT_ITEMS': 256,
         'CONCURRENT_REQUESTS': 64,                  # Increase concurrency
         'CONCURRENT_REQUESTS_PER_DOMAIN': 32,       # Balance load per domain
-        'DOWNLOAD_DELAY': 0.25,                     # Prevent overload (0.25 sec delay)
+        'DOWNLOAD_DELAY': 0.0,                      # At "0.0" this may cause an overloader so 0.25 would be safer
         
         # AutoThrottle (Adaptive Speed Control)
-        'AUTOTHROTTLE_ENABLED': True,
-        'AUTOTHROTTLE_START_DELAY': 1,
-        'AUTOTHROTTLE_MAX_DELAY': 5,
-        'AUTOTHROTTLE_TARGET_CONCURRENCY': 10,
+        # 'AUTOTHROTTLE_ENABLED': True,
+        # 'AUTOTHROTTLE_START_DELAY': 1,
+        # 'AUTOTHROTTLE_MAX_DELAY': 5,
+        # 'AUTOTHROTTLE_TARGET_CONCURRENCY': 10,
 
         # Middleware Optimizations
         'DOWNLOADER_MIDDLEWARES': {
-            'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 300,
+            'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
             'scrapy.downloadermiddlewares.retry.RetryMiddleware': 550,
             'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware': 580,
         },
