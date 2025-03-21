@@ -1,8 +1,8 @@
 from selenium import webdriver
-from Scrapers.KUSpider.KUSpider import KUSpider
-from Scrapers.DTUSpider.DTUSpider import DTUSpider
-from Scrapers.PolyUSpider.PolyUSpider import PolyUSpider
-from Scrapers.GroningenSpider.GroningenSpider import GroningenSpider
+from SeleniumScrapers.KUSpider.KUSpider import KUSpider
+from SeleniumScrapers.DTUSpider.DTUSpider import DTUSpider
+from SeleniumScrapers.PolyUSpider.PolyUSpider import PolyUSpider
+from SeleniumScrapers.GroningenSpider.GroningenSpider import GroningenSpider
 
 # []
 def scraper_core(service):

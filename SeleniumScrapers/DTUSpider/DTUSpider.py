@@ -1,7 +1,7 @@
 from typing import List
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
-from Infrastructure.UniSpider import UniSpider
+from Infrastructure.SeleniumInfrastructure.SeleniumAbstractCrawler import UniSpider
 from DataObjects.Department import Department
 from Defs.Defs import EXCLUDE_KEY_WORDS
 

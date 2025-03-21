@@ -1,5 +1,3 @@
-from typing import List
-
 class Book:
     def __init__(self, 
                  _title     : str = "",

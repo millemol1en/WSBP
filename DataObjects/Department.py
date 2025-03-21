@@ -1,13 +1,14 @@
-from typing import List
 from DataObjects.Course import Course
+from dataclasses import dataclass
 
+@dataclass
 class Department:
     def __init__(self, _depName = "", _depURL = "", _abbreviation = "", _depCourses = [], _depCourseURLs = []):
         self.name       : str           = _depName
         self.url        : str           = _depURL
         self.abbr       : str           = _abbreviation
-        self.courses    : List[Course]  = _depCourses
-        self.courseURLs : List[str]     = _depCourseURLs
+        self.courses    : list[Course]  = _depCourses
+        self.courseURLs : list[str]     = _depCourseURLs
 
 
     def __print__(self):

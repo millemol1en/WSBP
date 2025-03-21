@@ -1,14 +1,13 @@
-from typing import List
 from DataObjects.Book import Book
 
 class Course:
     def __init__(self, 
                  _name        : str = "",
                  _code        : str = "",
-                 _semester    : str = "",
-                 _points      : str = "",
-                 _literature  : List[Book] = [],
-                 _level       : str = ""
+                 _semester    : str = "",       # TODO: Remove?
+                 _points      : str = "",       # TODO: Remove?
+                 _literature  : list[Book] = [],
+                 _level       : str = ""        
     ):
         self.name       = _name
         self.code       = _code
