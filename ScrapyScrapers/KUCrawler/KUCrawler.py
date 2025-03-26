@@ -10,6 +10,7 @@ class KUCrawler(ScrapyAbstractCrawler):
         yield from self.scrape_departments(response)
 
     """ Step 2 - """
+    # TODO: Replace ".css" with XPath
     def scrape_departments(self, response):
         departments_select = response.css('select#departments')
         departments_option = departments_select.css('option')
@@ -20,7 +21,7 @@ class KUCrawler(ScrapyAbstractCrawler):
             # print(f"Department: {option_text}, Value: {option_value}")
 
             if option_text and option_value:
-                department_url = (f"https://kurser.ku.dk/search?programme=BA&departments={option_value}")
+                department_url = (f"https://kurser.ku.dk/search?programme=BA&departments={option_value}") # TODO: Consider Masters Courses???
 
                 yield scrapy.Request(
                     url=department_url,
