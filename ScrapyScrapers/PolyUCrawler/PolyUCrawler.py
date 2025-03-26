@@ -8,6 +8,7 @@ from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
 
+# TODO: Move to "Defs.py"
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
 
 class SubjectListFormatType(Enum):
