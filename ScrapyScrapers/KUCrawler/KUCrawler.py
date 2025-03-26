@@ -22,12 +22,14 @@ class KUCrawler(ScrapyAbstractCrawler):
 
             if option_text and option_value:
                 department_url = (f"https://kurser.ku.dk/search?programme=BA&departments={option_value}") # TODO: Consider Masters Courses???
-
-                yield scrapy.Request(
-                    url=department_url,
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': option_text}
-                )
+                
+                
+                if option_value == "DEPARTMENT_0013":
+                    yield scrapy.Request(
+                        url=department_url,
+                        callback=self.scrape_department_courses,
+                        meta={'department_name': option_text}
+                    )
 
     """ Step 4 """
     def scrape_department_courses(self, response):
@@ -53,4 +55,21 @@ class KUCrawler(ScrapyAbstractCrawler):
     
     """ Step 4 """
     def scrape_single_course(self, response):
-        pass
+        course_code = response.xpath('//h1/text()').get().strip().split()[0]
+        course_name = ' '.join(response.xpath('//h1/text()').get().strip().split()[1:])
+
+        #Fetch coursre meta data.
+        dl_element = response.xpath('//dl[@class="dl-horizontal"]')
+        dt_elements = dl_element.xpath('./dt/text()').getall()
+        dd_elements = dl_element.xpath('./dd/text()').getall()
+
+        for dt, dd in zip(dt_elements, dd_elements):
+            if dt == "Credit" or "Point":
+                course_points = dd.split()[0]
+                break
+        
+
+        
+        print(f"--> Course Code: {course_code}")
+        print(f"--> Course name: {course_name}")
+        print(f"--> Points: {course_points}")
