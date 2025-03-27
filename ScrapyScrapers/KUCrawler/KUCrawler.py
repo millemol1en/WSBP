@@ -1,6 +1,7 @@
 import scrapy
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
+from Infrastructure.lit_cleaner import sanitize_course_literature, extract_books, new_fixer
 
 class KUCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
@@ -40,6 +41,7 @@ class KUCrawler(ScrapyAbstractCrawler):
         course_links = response.css('a')
 
         for course in course_links:
+            
             course_name = course.css("::text").get().strip()
             course_url = course.css("::attr(href)").get()
 
@@ -68,8 +70,21 @@ class KUCrawler(ScrapyAbstractCrawler):
                 course_points = dd.split()[0]
                 break
         
+        raw_literature = ' '.join(response.xpath('normalize-space(//div[@id="course-materials"])').getall())
+        
+        #sanitized_lines = sanitize_course_literature(raw_literature)
+
+        book_list = new_fixer(raw_literature)
+
+
+        print(f"--> Course Code: {course_code}")
+        #print(f"--> Course name: {course_name}")
+        #print(f"--> Points: {course_points}")
+        
+        print(raw_literature)
 
         
-        print(f"--> Course Code: {course_code}")
-        print(f"--> Course name: {course_name}")
-        print(f"--> Points: {course_points}")
+
+
+
+    # Fetch course literature
