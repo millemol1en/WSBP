@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from Defs.Defs import EXCLUDE_KEY_WORDS, NON_BOOK_MARKERS
-from Infrastructure.SeleniumInfrastructure.SeleniumAbstractCrawler import UniSpider
+from Infrastructure.SeleniumInfrastructure.AbstractSeleniumCrawler import UniSpider
 from DataObjects.Book import Book
 from DataObjects.Course import Course
 from DataObjects.Department import Department

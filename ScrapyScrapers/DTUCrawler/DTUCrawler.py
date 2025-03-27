@@ -1,6 +1,6 @@
 import re
 import scrapy
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.AbstractScrapyCrawler import ScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Defs.Defs import EXCLUDE_KEY_WORDS

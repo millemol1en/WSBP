@@ -3,13 +3,15 @@ from ScrapyScrapers.KUCrawler.KUCrawler import KUCrawler
 from ScrapyScrapers.GroningenCrawler.GroningenCrawler import GroningenCrawler
 from ScrapyScrapers.DTUCrawler.DTUCrawler import DTUCrawler
 from ScrapyScrapers.PolyUCrawler.PolyUCrawler import PolyUCrawler
+from ScrapyScrapers.LLMScrapers.LLMBasicCrawler import LLMBasicCrawler
+
 from time import time
 
 # TODO: Add Multithreading
 def scrapy_scraper_executor():
     process = CrawlerProcess({
         # [] Logging:
-        'LOG_LEVEL': 'DEBUG', # INFO, ERROR, CRITICAL, DEBUG
+        'LOG_LEVEL': 'ERROR', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
         # 'FEEDS': {
@@ -17,9 +19,9 @@ def scrapy_scraper_executor():
         # },
 
         # Pipeline Configuration:
-        'ITEM_PIPELINES': {
-            'Infrastructure.ScrapyInfrastructure.ScrapyDataPipeline.DataPipeline': 1
-        },
+        # 'ITEM_PIPELINES': {
+        #     'Infrastructure.ScrapyInfrastructure.ScrapyDataPipeline.DataPipeline': 1
+        # },
 
         # Performance Optimization
         'CONCURRENT_ITEMS': 256,
@@ -55,13 +57,16 @@ def scrapy_scraper_executor():
     # process.start()
 
     """ DTU Crawler """
-    process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")
-    process.start()
+    # process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")
+    # process.start()
 
     """ PolyU Crawler """
     # process.crawl(PolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
     # process.start()
 
+    """ AI Crawler """
+    process.crawl(LLMBasicCrawler, _name="LLMBC", _url=["https://web.archive.org/web/20201001192436/https://www.polyu.edu.hk/en/education/faculties-schools-departments/", "https://web.archive.org/web/20241209031021/https://www.polyu.edu.hk/en/education/faculties-schools-departments/"])
+    process.start()
 
 """
     For spiders, the scraping cycle goes through something like this:

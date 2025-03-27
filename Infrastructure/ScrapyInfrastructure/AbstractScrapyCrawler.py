@@ -7,7 +7,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
 
     def __init__(self, _name="", _url="", **kwargs):
         self.name = _name
-        self.start_urls = [_url] 
+        self.start_urls = [_url]
         super().__init__(**kwargs)
 
     """ Step 1 - Required Method in for Scrapy to execute """

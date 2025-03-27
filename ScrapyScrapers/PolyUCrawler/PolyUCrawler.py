@@ -6,7 +6,7 @@ from urllib.parse import urlparse, unquote, urljoin
 from enum import Enum
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.AbstractScrapyCrawler import ScrapyAbstractCrawler
 
 # TODO: Move to "Defs.py"
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }

@@ -1,5 +1,5 @@
 import scrapy
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.AbstractScrapyCrawler import ScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 class KUCrawler(ScrapyAbstractCrawler):

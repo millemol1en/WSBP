@@ -8,7 +8,7 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 import pymupdf
 
-from Infrastructure.SeleniumInfrastructure.SeleniumAbstractCrawler import UniSpider
+from Infrastructure.SeleniumInfrastructure.AbstractSeleniumCrawler import UniSpider
 from DataObjects.Department import Department
 from DataObjects.Book import Book
 
