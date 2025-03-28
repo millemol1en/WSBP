@@ -59,13 +59,13 @@ class KUCrawler(ScrapyAbstractCrawler):
     def scrape_single_course(self, response):
         course_code = response.xpath('//h1/text()').get().strip().split()[0]
         course_title = ' '.join(response.xpath('//h1/text()').get().strip().split()[1:])
-        course_department = response.xpath('(//h5[@class="panel-title"])[3]/following-sibling::ul[@class="list-unstyled"][1]/li/text()').get()
+        #course_department = response.xpath('(//h5[@class="panel-title"])[3]/following-sibling::ul[@class="list-unstyled"][1]/li/text()').get()
+        course_department = response.meta['department_name']
         course_points = "NA"
         course_level = "NA"
         #Fetch coursre meta data.
         dl_element = response.xpath('//dl[@class="dl-horizontal"]')
-        
-
+    
 
         dt_elements = dl_element.xpath('./dt')
         dd_elements = dl_element.xpath('./dd')
@@ -78,20 +78,13 @@ class KUCrawler(ScrapyAbstractCrawler):
                 course_points = dd_text[0]
             elif dt_text.strip() in ["Level", "Niveau"]:
                 course_level = dd_text[0]
-                
-
-
         
         raw_literature = ' '.join(response.xpath('normalize-space(//div[@id="course-materials"])').getall())
         
         #sanitized_lines = sanitize_course_literature(raw_literature)
         course_literature = ""
-        # course_literature = new_fixer(raw_literature)
-
-
-        print(f"--> Course Code: {course_code}")
-        #print(f"--> Course name: {course_name}")
-        #print(f"--> Points: {course_points}")
+        course_literature = new_fixer(raw_literature)
+        
         
         courseDTO = CourseDTO(
             name = course_title,

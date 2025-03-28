@@ -2,7 +2,7 @@ import re
 from DataObjects.Book import Book
 from Defs.Defs import BOOK_START_MARKERS, EDITION_MARKERS, PUBLISHING_MARKERS, NON_BOOK_MARKERS
 
-def new_fixer(text) -> list[Book]:
+def new_fixer(text) -> list:
     # SET UP
     lines = [line.strip() for line in text.splitlines() if line.strip()] # Split by lines and remove empty lines
     pattern = re.compile(
@@ -15,16 +15,18 @@ def new_fixer(text) -> list[Book]:
     matches = pattern.finditer(text)
     books = []
     for match in matches:
-        book = Book()  # Create a new Book instance for each match
-        book.title = match.group("title").strip()
-        book.author = match.group("author").strip()
-        book.isbn = match.group("isbn").strip()
+        book = {
+            "title": f"{match.group("title").strip()}",
+            "year": f"2023",
+            "author": f"{match.group("author").strip()}",
+            "edition": f"1",
+            "isbn": f"{match.group("isbn").strip()}",
+            "pubFirm": f"Some Publisher"
+        }
         books.append(book)
     
-    for b in books:
-        print(f"** TITLE: {b.title}")
-        print(f"** BY: {b.author}")
-        print(f"** ISBN: {b.isbn}\n --")
+
+    return books
 
 
 def sanitize_course_literature(text) -> list[str]:

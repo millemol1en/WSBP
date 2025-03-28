@@ -9,12 +9,12 @@ from time import time
 def scrapy_scraper_executor():
     process = CrawlerProcess({
         # [] Logging:
-        'LOG_LEVEL': 'DEBUG', # INFO, ERROR, CRITICAL, DEBUG
+        'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
-        # 'FEEDS': {
-        #     'university.json': {'format': 'json', 'overwrite': True}
-        # },
+        'FEEDS': {
+             'university.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+        },
 
         # Pipeline Configuration:
         'ITEM_PIPELINES': {
