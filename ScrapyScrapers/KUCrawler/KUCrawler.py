@@ -58,30 +58,51 @@ class KUCrawler(ScrapyAbstractCrawler):
     """ Step 4 """
     def scrape_single_course(self, response):
         course_code = response.xpath('//h1/text()').get().strip().split()[0]
-        course_name = ' '.join(response.xpath('//h1/text()').get().strip().split()[1:])
-
+        course_title = ' '.join(response.xpath('//h1/text()').get().strip().split()[1:])
+        course_department = response.xpath('(//h5[@class="panel-title"])[3]/following-sibling::ul[@class="list-unstyled"][1]/li/text()').get()
+        course_points = "NA"
+        course_level = "NA"
         #Fetch coursre meta data.
         dl_element = response.xpath('//dl[@class="dl-horizontal"]')
-        dt_elements = dl_element.xpath('./dt/text()').getall()
-        dd_elements = dl_element.xpath('./dd/text()').getall()
+        
+
+
+        dt_elements = dl_element.xpath('./dt')
+        dd_elements = dl_element.xpath('./dd')
 
         for dt, dd in zip(dt_elements, dd_elements):
-            if dt == "Credit" or "Point":
-                course_points = dd.split()[0]
-                break
+            dt_text = dt.xpath('normalize-space(.)').get() 
+            dd_text = dd.xpath('.//text()').getall()
+            
+            if dt_text.strip() in ["Credit", "Point"]:
+                course_points = dd_text[0]
+            elif dt_text.strip() in ["Level", "Niveau"]:
+                course_level = dd_text[0]
+                
+
+
         
         raw_literature = ' '.join(response.xpath('normalize-space(//div[@id="course-materials"])').getall())
         
         #sanitized_lines = sanitize_course_literature(raw_literature)
-
-        book_list = new_fixer(raw_literature)
+        course_literature = ""
+        # course_literature = new_fixer(raw_literature)
 
 
         print(f"--> Course Code: {course_code}")
         #print(f"--> Course name: {course_name}")
         #print(f"--> Points: {course_points}")
         
-        print(raw_literature)
+        courseDTO = CourseDTO(
+            name = course_title,
+            code = course_code,
+            literature = course_literature,
+            department = course_department,
+            level      = course_level,
+            points     = course_points
+        )
+
+        yield courseDTO
 
         
 
