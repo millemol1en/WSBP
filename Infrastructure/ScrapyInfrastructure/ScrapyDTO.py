@@ -6,3 +6,4 @@ class CourseDTO(scrapy.Item):
     literature  = scrapy.Field()
     department  = scrapy.Field()
     level       = scrapy.Field()
+    points      = scrapy.Field()

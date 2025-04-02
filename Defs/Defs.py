@@ -4,6 +4,7 @@ from enum import Enum
 EXCLUDE_KEY_WORDS   = { "project", "thesis", "internship", "academic", "bachelor", "research", "ceramony" }
 
 # TODO: TELL VIGGO I MADE THIS ALL TO SMALLER
+
 NON_BOOK_MARKERS    = { "papers", "list of", "various", "videos", "speeches", "artikler:", "domme:", "supplerende litteratur:", "supplementary literature:", "tidsskrifter:", "exercises:", "øvelser:", "extra reading:", "yderligere litteratur:", "cases:", "syllabus" }
 
 
@@ -17,21 +18,26 @@ EDITION_MARKERS     = {"studieudgave", "Studieudgave", "udg.", "Udg.", "udgave" 
 
 
 PUBLISHING_MARKERS  = {
-    "Gyldendal", 
-    "Politikens Forlag", 
-    "Lindhardt og Ringhof", 
-    "Forlaget Forum",               # DK
-    "Rosinante",                    
-    "Jensens Forlag", 
-    "Oxford University Press", 
-    "Cambridge University Press", 
-    "Penguin Random House", 
-    "HarperCollins", 
-    "Simon & Schuster", 
-    "Macmillan Publishers", 
-    "Hachette Book Group", 
-    "Wiley",
-}
+    "Gyldendal",
+    "Politikens Forlag",
+    "Lindhardt og Ringhof",
+    "Forlaget Forum", "Rosinante",
+    "Jensens Forlag",
+    "Jurist- og Økonomforbundets Forlag",
+    "Djøf Forlag", "Djøf", "Gads Forlag",
+    "Gads", "Karnov",
+    "Karnov Group",
+    "KarnovGroup",
+    "Hans Reitzels Forlag",
+    "Hans Reitzel"
+    # International publishing firms
+    "Oxford University Press",
+    "Cambridge University Press",
+    "Penguin Random House",
+    "HarperCollins", "Simon & Schuster",
+    "Macmillan Publishers",
+    "Hachette Book Group",
+    "Wiley"}
 
 
 

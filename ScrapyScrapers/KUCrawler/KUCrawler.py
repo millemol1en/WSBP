@@ -1,6 +1,7 @@
 import scrapy
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
+from Infrastructure.lit_cleaner import sanitize_course_literature, extract_books, new_fixer
 
 class KUCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
@@ -22,12 +23,14 @@ class KUCrawler(ScrapyAbstractCrawler):
 
             if option_text and option_value:
                 department_url = (f"https://kurser.ku.dk/search?programme=BA&departments={option_value}") # TODO: Consider Masters Courses???
-
-                yield scrapy.Request(
-                    url=department_url,
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': option_text}
-                )
+                
+                
+                if option_value == "DEPARTMENT_0013":
+                    yield scrapy.Request(
+                        url=department_url,
+                        callback=self.scrape_department_courses,
+                        meta={'department_name': option_text}
+                    )
 
     """ Step 4 """
     def scrape_department_courses(self, response):
@@ -38,6 +41,7 @@ class KUCrawler(ScrapyAbstractCrawler):
         course_links = response.css('a')
 
         for course in course_links:
+            
             course_name = course.css("::text").get().strip()
             course_url = course.css("::attr(href)").get()
 
@@ -53,4 +57,48 @@ class KUCrawler(ScrapyAbstractCrawler):
     
     """ Step 4 """
     def scrape_single_course(self, response):
-        pass
+        course_code = response.xpath('//h1/text()').get().strip().split()[0]
+        course_title = ' '.join(response.xpath('//h1/text()').get().strip().split()[1:])
+        #course_department = response.xpath('(//h5[@class="panel-title"])[3]/following-sibling::ul[@class="list-unstyled"][1]/li/text()').get()
+        course_department = response.meta['department_name']
+        course_points = "NA"
+        course_level = "NA"
+        #Fetch coursre meta data.
+        dl_element = response.xpath('//dl[@class="dl-horizontal"]')
+    
+
+        dt_elements = dl_element.xpath('./dt')
+        dd_elements = dl_element.xpath('./dd')
+
+        for dt, dd in zip(dt_elements, dd_elements):
+            dt_text = dt.xpath('normalize-space(.)').get() 
+            dd_text = dd.xpath('.//text()').getall()
+            
+            if dt_text.strip() in ["Credit", "Point"]:
+                course_points = dd_text[0]
+            elif dt_text.strip() in ["Level", "Niveau"]:
+                course_level = dd_text[0]
+        
+        raw_literature = ' '.join(response.xpath('normalize-space(//div[@id="course-materials"])').getall())
+        
+        #sanitized_lines = sanitize_course_literature(raw_literature)
+        course_literature = ""
+        course_literature = new_fixer(raw_literature)
+        
+        
+        courseDTO = CourseDTO(
+            name = course_title,
+            code = course_code,
+            literature = course_literature,
+            department = course_department,
+            level      = course_level,
+            points     = course_points
+        )
+
+        yield courseDTO
+
+        
+
+
+
+    # Fetch course literature

@@ -76,6 +76,7 @@ class GroningenCrawler(ScrapyAbstractCrawler):
         course_code  = data.get("code")
         course_title = data.get("titleEn")
         course_level = data.get("levels")
+        course_points = data.get("credits")
         course_literature = []
 
         # Locate the books object:
@@ -97,7 +98,8 @@ class GroningenCrawler(ScrapyAbstractCrawler):
             code = course_code,
             literature = course_literature,
             department = faculty_name,
-            level      = course_level
+            level      = course_level,
+            points     = course_points
         )
 
         yield course_dto
