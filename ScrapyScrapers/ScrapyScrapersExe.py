@@ -4,6 +4,9 @@ from ScrapyScrapers.GroningenCrawler.GroningenCrawler import GroningenCrawler
 from ScrapyScrapers.DTUCrawler.DTUCrawler import DTUCrawler
 from ScrapyScrapers.PolyUCrawler.PolyUCrawler import PolyUCrawler
 from time import time
+from enum import Enum
+from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import LLMType
+
 
 # TODO: Add Multithreading
 def scrapy_scraper_executor():
@@ -47,7 +50,7 @@ def scrapy_scraper_executor():
     })
 
     """ KU Crawler """
-    process.crawl(KUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/")
+    process.crawl(KUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
     process.start()
 
     """ Groningen Crawler """

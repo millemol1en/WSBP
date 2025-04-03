@@ -30,7 +30,7 @@ class DataPipeline:
                 _name       = item['name'],
                 _code       = item['code'],
                 _points     = item['points'],
-                _literature = item.get('literature', []),
+                _literature = item['literature'],
                 _level      = item.get('level', [])
             )
 

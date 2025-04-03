@@ -1,11 +1,12 @@
 import scrapy
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+import os
+from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler, LLMType
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
-from Infrastructure.lit_cleaner import sanitize_course_literature, extract_books, new_fixer
+
 
 class KUCrawler(ScrapyAbstractCrawler):
-    def __init__(self, _name="", _url="", **kwargs):
-        super().__init__(_name=_name, _url=_url, **kwargs)
+    def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI, **kwargs):
+        super().__init__(_name=_name, _url=_url, _llm_type=_llm_type, **kwargs)
 
     def parse(self, response):
         yield from self.scrape_departments(response)
@@ -82,9 +83,8 @@ class KUCrawler(ScrapyAbstractCrawler):
         raw_literature = ' '.join(response.xpath('normalize-space(//div[@id="course-materials"])').getall())
         
         #sanitized_lines = sanitize_course_literature(raw_literature)
-        course_literature = ""
-        course_literature = new_fixer(raw_literature)
         
+        course_literature = self.clean_literature(raw_literature)
         
         courseDTO = CourseDTO(
             name = course_title,
@@ -97,7 +97,7 @@ class KUCrawler(ScrapyAbstractCrawler):
 
         yield courseDTO
 
-        
+    
 
 
 
