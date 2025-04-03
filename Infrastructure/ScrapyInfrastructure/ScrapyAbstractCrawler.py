@@ -67,7 +67,6 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
     def clean_literature(self, raw_literature):
         match self.api_type:
             case LLMType.CHAT_GPT:
-                print("CHAT GPT API")
                 messages = [
                     {
                         "role": "system",
@@ -95,8 +94,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
                 # Extract and return the keywords
                 data_dict = response.choices[0].message.parsed.model_dump() #.content.strip()
                 books_list = data_dict['books']
-                json_str = json.dumps(books_list, ensure_ascii=False)
-                return json_str
+                return books_list
             
 
                 #yield
