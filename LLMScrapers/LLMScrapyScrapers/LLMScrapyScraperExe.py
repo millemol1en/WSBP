@@ -47,9 +47,9 @@ def llm_scrapy_scraper_executor():
     })
 
     """ Self Repairing """
-    # process.crawl(LLMSelfRepairingScraper)
-    # process.start()
+    process.crawl(LLMSelfRepairingScraper)
+    process.start()
 
     """ Data Accuracy - KU """
-    process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
-    process.start()
+    # process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
+    # process.start()
