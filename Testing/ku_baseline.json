@@ -22,14 +22,11 @@
     {"name": "Bachelorprojekt", "code": "JJUB57000E", "literature": [{"title": "Skriftlig Jura – Den juridiske fremstilling", "year": "2020", "author": "Thomas Riis, Jan Trzaskowski (red.)", "edition": "2", "isbn": "", "pubFirm": "Ex Tuto Publishing"}], "department": "Law", "level": "Bachelor", "points": "15 ECTS"},
     {"name": "European Court of Human Rights", "code": "JJUB55128U", "literature": [], "department": "Law", "level": "Bachelor", "points": "15 ECTS"},
     {"name": "EU-ret", "code": "JJUB57008U", "literature": [ { "title": "EU Ret – Fri bevægelighed", "year": "", "author": "Ulla Neergaard,  Ruth Nielsen", "edition": "", "isbn": "", "pubFirm": "KarnovGroup"}], "department": "Law", "level": "Bachelor", "points": "10 ECTS"},
-    
     {"name": "", "code": "JJUB55187U", "literature": [], "department": "Law", "level": "Bachelor", "points": "15 ECTS"},
     {"name": "Academic internship - BA", "code": "JJUB55120U", "literature": [], "department": "Law", "level": "Bachelor", "points": "15 ECTS"},
     {"name": "Sundhedsret (BA-valgfag)", "code": "JJUB55147U", "literature": [ { "title": "Sundhed og Jura – Sundhedsretlige perspektiver på sundhedsvæsen, sundhedspersoner og patientrettigheder", "year": "2022", "author": "Mette Hartlev, Catharina Ó Cathaoir, Peter Jakobsen", "edition": "3", "isbn": "", "pubFirm": "" } ], "department": "Law", "level": "Bachelor", "points": "15 ECTS"},
-    
     {"name": "", "code": "JJUB55192U", "literature": [], "department": "Law", "level": "Bachelor", "points": "7,5 ECTS"},
     {"name": "Erstatning i forsikringsretlig belysning", "code": "JJUB55127U", "literature": [ { "title": "Materialesamling til faget Erstatning i Forsikringsretlig Belysning", "year": "2017", "author": "", "edition": "", "isbn": "", "pubFirm": "DJØF" } ], "department": "Law", "level": "Bachelor", "points": "7,5 ECTS"},
-    
     {"name": "", "code": "JJUB55189U", "literature": [], "department": "Law", "level": "Bachelor", "points": "7,5 ECTS"},
     {"name": "Global Challenges in International Law", "code": "JJUB55175U", "literature": [], "department": "Law", "level": "Bachelor", "points": "7,5 ECTS"},
     {"name": "Academic internship - BA", "code": "JJUB55121U", "literature": [], "department": "Law", "level": "Bachelor", "points": "30 ECTS"},
