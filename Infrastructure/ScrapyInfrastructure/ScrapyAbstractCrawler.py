@@ -59,6 +59,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
     def clean_literature(self, raw_literature):
         match self.api_type:
             case LLMType.CHAT_GPT:
+                print("Chat GPT API")
                 messages = [
                     {
                         "role": "system",

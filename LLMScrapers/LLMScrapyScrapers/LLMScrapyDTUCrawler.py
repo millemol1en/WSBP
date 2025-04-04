@@ -1,14 +1,14 @@
 import re
 import scrapy
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler, LLMType
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
 class LLMDTUCrawler(ScrapyAbstractCrawler):
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
-    def __init__(self, _name="", _url="", **kwargs):
-        super().__init__(_name=_name, _url=_url, **kwargs)
+    def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI,**kwargs):
+        super().__init__(_name=_name, _url=_url, _llm_type=_llm_type, **kwargs)
 
     def parse(self, response):
         # [] Header with 'User-Agent' and 'Referer' was required to simulate an authenticate "human" request
@@ -39,11 +39,12 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
                 # TODO: Remove the "CourseType=DTU_BSC&" - ONLY FOR TESTING
                 department_url = (f"https://kurser.dtu.dk/search?Department={option_value}")
 
-                yield scrapy.Request(
-                    url=department_url,
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': option_text}
-                )
+                if option_value == "38":
+                    yield scrapy.Request(
+                        url=department_url,
+                        callback=self.scrape_department_courses,
+                        meta={'department_name': option_text}
+                    )
 
     """ Step 4 """
     def scrape_department_courses(self, response):
@@ -60,7 +61,7 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
                 course_link                 = row.xpath('./td[2]/a')
                 course_title                = course_link.xpath('normalize-space(text())').get()
                 course_url                  = course_link.xpath('@href').get()
-                course_level                = row.xpath('./td[3]/text()').get()
+                course_level                = row.xpath('./td[3]/text()').get() #TODO: Not used?
     
                 if course_title and course_url and course_level:
                     full_course_url = (f"https://kurser.dtu.dk{course_url}")
@@ -70,6 +71,8 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
 
                         # []                        
                         # (course_code, course_name)  = self.extract_course_code_and_name(course_title)
+                        course_code = "NA"
+                        course_level = 0
                         
                         yield scrapy.Request(
                             url=full_course_url,
@@ -90,9 +93,11 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
         course_code     = response.meta['course_code']
 
         # [] Retrieve the raw literature text block:
-        course_literature = response.xpath(
+        raw_literature = response.xpath(
             "//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()[1]"
         ).get()
+
+        course_literature = self.clean_literature(raw_literature)
 
         if course_name != None or course_code != None: 
             course_dto = CourseDTO(
@@ -100,13 +105,15 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
                 code       = course_code,
                 literature = [course_literature],
                 department = department_name,
-                level      = course_level.split(',')
+                level      = course_level,
+                points     = "NA",
             )
 
             yield course_dto
 
     """ LOCAL METHODS """
     # []
+    #TODO: Ask Æmill if we can delete this, as we shall follow structure of KUScraper to harmonize code.
     def extract_course_code_and_name(self, course_string) -> (str | str):
         match = re.match(r'(\b[A-Z]{2,3}(\d+)|(\d+))\s*-\s*(.+)', course_string)
         if match:
