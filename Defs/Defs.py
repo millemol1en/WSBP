@@ -1,7 +1,3 @@
-# LLM Keys:
-OPEN_AI_KEY = ""
-GEMINI_KEY  = ""
-
 # Keywords to remove from Courses:
 EXCLUDE_KEY_WORDS   = { "project", "thesis", "internship", "academic", "bachelor", "research", "ceramony" }
 NON_BOOK_MARKERS    = { "papers", "list of", "various", "videos", "speeches", "artikler:", "domme:", "supplerende litteratur:", "supplementary literature:", "tidsskrifter:", "exercises:", "øvelser:", "extra reading:", "yderligere litteratur:", "cases:", "syllabus" }

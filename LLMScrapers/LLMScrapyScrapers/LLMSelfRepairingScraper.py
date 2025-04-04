@@ -1,6 +1,3 @@
-# Local imports:
-from Defs.Defs import OPEN_AI_KEY, GEMINI_KEY
-
 # Scraping APIs:
 import scrapy
 from bs4 import BeautifulSoup
