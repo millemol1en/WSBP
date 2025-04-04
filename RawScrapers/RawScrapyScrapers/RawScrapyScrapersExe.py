@@ -1,12 +1,12 @@
 from scrapy.crawler import CrawlerProcess
-from ScrapyScrapers.KUCrawler.KUCrawler import KUCrawler
-from ScrapyScrapers.GroningenCrawler.GroningenCrawler import GroningenCrawler
-from ScrapyScrapers.DTUCrawler.DTUCrawler import DTUCrawler
-from ScrapyScrapers.PolyUCrawler.PolyUCrawler import PolyUCrawler
+from RawScrapers.RawScrapyScrapers.KUCrawler.KUCrawler import KUCrawler
+from RawScrapers.RawScrapyScrapers.GroningenCrawler.GroningenCrawler import GroningenCrawler
+from RawScrapers.RawScrapyScrapers.DTUCrawler.DTUCrawler import DTUCrawler
+from RawScrapers.RawScrapyScrapers.PolyUCrawler.PolyUCrawler import PolyUCrawler
 from time import time
 
 # TODO: Add Multithreading
-def scrapy_scraper_executor():
+def raw_scrapy_scraper_executor():
     process = CrawlerProcess({
         # [] Logging:
         'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG

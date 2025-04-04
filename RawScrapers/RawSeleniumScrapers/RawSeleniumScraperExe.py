@@ -1,11 +1,11 @@
 from selenium import webdriver
-from SeleniumScrapers.KUSpider.KUSpider import KUSpider
-from SeleniumScrapers.DTUSpider.DTUSpider import DTUSpider
-from SeleniumScrapers.PolyUSpider.PolyUSpider import PolyUSpider
-from SeleniumScrapers.GroningenSpider.GroningenSpider import GroningenSpider
+from RawScrapers.RawSeleniumScrapers.KUSpider.KUSpider import KUSpider
+from RawScrapers.RawSeleniumScrapers.DTUSpider.DTUSpider import DTUSpider
+from RawScrapers.RawSeleniumScrapers.PolyUSpider.PolyUSpider import PolyUSpider
+from RawScrapers.RawSeleniumScrapers.GroningenSpider.GroningenSpider import GroningenSpider
 
 # []
-def scraper_core(service):
+def raw_selenium_scraper_executor(service):
     print("!===============================================================================================================================!")
 
     # [] 
