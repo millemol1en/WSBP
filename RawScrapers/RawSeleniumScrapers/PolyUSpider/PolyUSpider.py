@@ -22,7 +22,7 @@ class SubjectListFormatType(Enum):
     E = "buildup"
     F = "none"
 
-class PolyUSpider(UniSpider):
+class RawPolyUSpider(UniSpider):
     def run_spider(self, driver):
         # TODO: Remove!
         print(f"    !---------------------------------------------{self.name}---------------------------------------------!")

@@ -5,7 +5,7 @@ from DataObjects.Department import Department
 from Infrastructure.SeleniumInfrastructure.SeleniumAbstractCrawler import UniSpider
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class KUSpider(UniSpider):
+class RawKUSpider(UniSpider):
     def run_spider(self, driver):
         print(f"    !---------------------------------------------{self.name}---------------------------------------------!")
 

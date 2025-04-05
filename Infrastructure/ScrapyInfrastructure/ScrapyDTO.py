@@ -1,5 +1,6 @@
 import scrapy
 
+# [] 
 class CourseDTO(scrapy.Item):
     name        = scrapy.Field()
     code        = scrapy.Field()

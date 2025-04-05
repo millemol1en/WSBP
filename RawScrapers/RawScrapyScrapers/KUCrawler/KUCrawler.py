@@ -3,7 +3,7 @@ from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbst
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 from Infrastructure.lit_cleaner import sanitize_course_literature, extract_books, new_fixer
 
-class KUCrawler(ScrapyAbstractCrawler):
+class RawKUCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 

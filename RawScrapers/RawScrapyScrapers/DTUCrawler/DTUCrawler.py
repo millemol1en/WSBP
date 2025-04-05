@@ -5,7 +5,7 @@ from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class DTUCrawler(ScrapyAbstractCrawler):
+class RawDTUCrawler(ScrapyAbstractCrawler):
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)

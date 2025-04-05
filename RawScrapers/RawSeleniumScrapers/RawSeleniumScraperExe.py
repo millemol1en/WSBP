@@ -1,8 +1,8 @@
 from selenium import webdriver
-from RawScrapers.RawSeleniumScrapers.KUSpider.KUSpider import KUSpider
-from RawScrapers.RawSeleniumScrapers.DTUSpider.DTUSpider import DTUSpider
-from RawScrapers.RawSeleniumScrapers.PolyUSpider.PolyUSpider import PolyUSpider
-from RawScrapers.RawSeleniumScrapers.GroningenSpider.GroningenSpider import GroningenSpider
+from RawScrapers.RawSeleniumScrapers.KUSpider.KUSpider import RawKUSpider
+from RawScrapers.RawSeleniumScrapers.DTUSpider.DTUSpider import RawDTUSpider
+from RawScrapers.RawSeleniumScrapers.PolyUSpider.PolyUSpider import RawPolyUSpider
+from RawScrapers.RawSeleniumScrapers.GroningenSpider.GroningenSpider import RawGroningenSpider
 
 # []
 def raw_selenium_scraper_executor(service):
@@ -22,16 +22,16 @@ def raw_selenium_scraper_executor(service):
     driver.execute_cdp_cmd("Network.enable", {})
 
     # []
-    # ku_spider = KUSpider("København Universitet", "https://kurser.ku.dk/")
+    # ku_spider = RawKUSpider("København Universitet", "https://kurser.ku.dk/")
     # ku_spider.run_spider(driver)
 
-    # dtu_spider = DTUSpider("DTU", "https://kurser.dtu.dk/")
+    # dtu_spider = RawDTUSpider("DTU", "https://kurser.dtu.dk/")
     # dtu_spider.run_spider(driver)
 
-    # polyu_spider = PolyUSpider("PolyU", "https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
+    # polyu_spider = RawPolyUSpider("PolyU", "https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
     # polyu_spider.run_spider(driver)
 
-    groningen_spider = GroningenSpider("Groningen University", "https://ocasys.rug.nl/current/catalog")
+    groningen_spider = RawGroningenSpider("Groningen University", "https://ocasys.rug.nl/current/catalog")
     groningen_spider.run_spider(driver)
 
     driver.quit()

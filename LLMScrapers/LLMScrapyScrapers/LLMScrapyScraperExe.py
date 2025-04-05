@@ -2,19 +2,19 @@
 from scrapy.crawler import CrawlerProcess
 
 # Local Imports:
-from LLMScrapers.LLMScrapyScrapers.LLMScrapyKUCrawler import LLMKUCrawler
+from LLMScrapers.LLMScrapyScrapers.KUCrawler.LLMKUCrawler import LLMKUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairingScraper import LLMSelfRepairingScraper
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import LLMType
 
 def llm_scrapy_scraper_executor():
     process = CrawlerProcess({
         # [] Logging:
-        'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG
+        'LOG_LEVEL': 'DEBUG', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
-        'FEEDS': {
-             'university.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
-        },
+        # 'FEEDS': {
+        #      'university.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+        # },
 
         # Pipeline Configuration:
         'ITEM_PIPELINES': {
@@ -53,3 +53,9 @@ def llm_scrapy_scraper_executor():
     """ Data Accuracy - KU """
     # process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
     # process.start()
+
+    """ Groningen """
+
+
+    """ Crawling proficiency - PolyU """
+

@@ -1,11 +1,14 @@
+# PyPi Packages:
 import scrapy 
 import pymupdf
+
+# Native Python Packages:
 import re 
-import requests
 from urllib.parse import urlparse, unquote, urljoin
 from enum import Enum
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
+# Local Structs:
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
 
 # TODO: Move to "Defs.py"
@@ -19,7 +22,7 @@ class SubjectListFormatType(Enum):
     E = "buildup"
     F = "none"
 
-class PolyUCrawler(ScrapyAbstractCrawler):
+class RawPolyUCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 
@@ -52,6 +55,7 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                 if format_type != SubjectListFormatType.E: continue
                 
                 # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
+                # Department 'abct' for example...
                 if len(subject_list_urls) < 1: continue
 
                 # []
@@ -202,7 +206,7 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                         match row[0]:
                             case 'Subject Code':
                                 subject_code = row[1].strip()
-                                print(f"      -> Subject Code: {subject_code}")
+                                #print(f"      -> Subject Code: {subject_code}")
                             case 'Subject Title':
                                 subject_title = row[1].strip()
                                 #print(f"      -> Subject Title: {subject_title}")
@@ -211,13 +215,18 @@ class PolyUCrawler(ScrapyAbstractCrawler):
                                 #print(f"      -> Reading List: {literature}")
                             case _: continue                
 
-            # TODO: Clean the literature...
-            yield {
-                'course_name': subject_title,
-                'course_code': subject_code,
-                'literature': literature,
-                'dep_name': department_name
-            }
+            # Create a CourseDTO to be sent to the pipeline for further processing 
+            # TODO: Clean literature
+            courseDTO = CourseDTO(
+                name = subject_title,
+                code = subject_code,
+                literature = literature,
+                department = department_name,
+                level      = None,
+                points     = None
+            )
+
+            yield courseDTO
 
         except Exception:
             return

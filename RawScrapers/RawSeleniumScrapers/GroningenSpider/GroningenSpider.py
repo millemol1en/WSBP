@@ -13,7 +13,7 @@ from DataObjects.Book import Book
 from DataObjects.Course import Course
 from DataObjects.Department import Department
 
-class GroningenSpider(UniSpider):
+class RawGroningenSpider(UniSpider):
     """ STEP 1 """
     # [] 
     def run_spider(self, driver):

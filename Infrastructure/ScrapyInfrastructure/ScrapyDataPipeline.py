@@ -6,11 +6,13 @@ from scrapy.utils.project import get_project_settings
 from DataObjects.Department import Department, Course
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
+# TODO: RENAME! AND DESCRIPTION!
 class DataPipeline:
     # [0] Initalize our static Department dictionary:
     def __init__(self):
         self.departments : dict[str, Department] = {}
         self.delta_time  : float                 = time.time()
+        self.memory      : int                   = 0
 
     # [1] Once an item has been located it will be automatically processed by the following function:
     def process_item(self, item, spider):
@@ -30,8 +32,8 @@ class DataPipeline:
                 _name       = item['name'],
                 _code       = item['code'],
                 _points     = item['points'],
-                _literature = item.get('literature', []),
-                _level      = item.get('level', [])
+                _literature = item['literature'],
+                _level      = item['level']
             )
 
             # [1.3] 
@@ -39,6 +41,7 @@ class DataPipeline:
 
             if not any(course.code == new_course.code for course in department.courses):
                 department.courses.append(new_course)
+
 
         return item
     

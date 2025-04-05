@@ -5,7 +5,7 @@ from Infrastructure.SeleniumInfrastructure.SeleniumAbstractCrawler import UniSpi
 from DataObjects.Department import Department
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class DTUSpider(UniSpider):
+class RawDTUSpider(UniSpider):
     # [Step .0]
     def run_spider(self, driver):
         # TODO: Remove!
