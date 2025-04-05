@@ -43,7 +43,7 @@ class LLMKUCrawler(ScrapyAbstractCrawler):
 
         for course in course_links:
             
-            course_name = course.css("::text").get().strip()
+            course_name = course.css("::text").get().strip() #TODO: Dead?
             course_url = course.css("::attr(href)").get()
 
             if course_url:

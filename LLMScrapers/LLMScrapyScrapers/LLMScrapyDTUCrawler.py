@@ -59,26 +59,33 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
             # []             
             for row in rows:
                 course_link                 = row.xpath('./td[2]/a')
-                course_title                = course_link.xpath('normalize-space(text())').get()
+                course_data                 = course_link.xpath('normalize-space(text())').get()
                 course_url                  = course_link.xpath('@href').get()
                 course_level                = row.xpath('./td[3]/text()').get() #TODO: Not used?
-    
-                if course_title and course_url and course_level:
+
+                
+                if course_data and course_url and course_level:
                     full_course_url = (f"https://kurser.dtu.dk{course_url}")
                     
                     # []
-                    if course_title and any(keyword in course_url for keyword in ["course"]) and course_title != "Study Planner": # TODO: Clean this up!
+                    if course_data and any(keyword in course_url for keyword in ["course"]) and course_data != "Study Planner": # TODO: Clean this up!
 
+                        course_title = str(course_data).split(" - ", 1)[1] 
+                        course_code  = str(course_data).split(" - ", 1)[0]
+                        course_level = 0
+                        course_level = str(row.xpath('./td[3]/text()').get()).strip()
+
+
+                        print(f"**== Course: {course_code} * {course_title} * {course_level}")
                         # []                        
                         # (course_code, course_name)  = self.extract_course_code_and_name(course_title)
-                        course_code = "NA"
-                        course_level = 0
+                        
                         
                         yield scrapy.Request(
                             url=full_course_url,
                             callback=self.scrape_single_course,
                             # TODO: Fix the "course_name" and "course_code" variables - so repair the 'extract_course_code_and_name()' function
-                            meta={ 'department_name': department_name, 'course_name': course_title, 'course_code': "", 'course_level': course_level }
+                            meta={ 'department_name': department_name, 'course_name': course_title, 'course_code': course_code, 'course_level': course_level }
                         )
 
                     else: continue
@@ -88,16 +95,19 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
     def scrape_single_course(self, response):
         # [] Retrieve the meta data:
         department_name = response.meta['department_name']
-        course_name     = response.meta['course_name']
-        course_level    = response.meta['course_level']
-        course_code     = response.meta['course_code']
+        course_name     = response.meta['course_name'] #TODO: Ensure that not code, but only name is added.
+        course_level    = response.meta['course_level'] #TODO: Not fetched, why?
+        course_code     = response.meta['course_code'] #TODO: Not fetched, why?
 
         # [] Retrieve the raw literature text block:
         raw_literature = response.xpath(
             "//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()[1]"
         ).get()
 
-        course_literature = self.clean_literature(raw_literature)
+        course_literature = raw_literature.strip() if raw_literature else "NA"
+        print(f" =** LIT: {course_literature}") 
+
+        #self.clean_literature(raw_literature)
 
         if course_name != None or course_code != None: 
             course_dto = CourseDTO(
