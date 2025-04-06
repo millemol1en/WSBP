@@ -33,7 +33,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
     def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI, **kwargs):
         self.name = _name
         self.start_urls = [_url] 
-        self.api_type = _llm_type
+        self.llm_type = _llm_type
         super().__init__(**kwargs)
 
     """ Step 1 - Required Method in for Scrapy to execute """
@@ -57,7 +57,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
         pass
 
     def clean_literature(self, raw_literature):
-        match self.api_type:
+        match self.llm_type:
             case LLMType.CHAT_GPT:
                 messages = [
                     {
@@ -91,8 +91,8 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
 
                 #yield
             case LLMType.GEMINI:
-                client = genai.Client(api_key="AIzaSyBkv-Iqab_WvzDrCCSIiloL5J140_BqFq8")
-                response = client.models.generate_content(
+                # [] Feed the static message to clean the literature:
+                response = gemini_client.models.generate_content(
                     model="gemini-2.0-flash",
                     contents=f"""
                     You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.).
@@ -109,8 +109,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
                     }
                 )
                 return response.text
-                #yield
+                
             case LLMType.DEEPSEEKER:
                 pass
-            case LLMType.NULL_AI:
-                pass
+            case _: pass

@@ -39,8 +39,6 @@ gemini_client   = genai.Client(api_key=gemini_key)
 
 # The focus of this class is to determine whether the LLM is able to adjust its pathing
 class LLMSelfRepairingScraper(scrapy.Spider):
-
-
     """ SR on 'old' and 'new' front page """
     name = "LLMSR_PolyU"
     start_urls = ["https://web.archive.org/web/20201001192436/https://www.polyu.edu.hk/en/education/faculties-schools-departments/", 

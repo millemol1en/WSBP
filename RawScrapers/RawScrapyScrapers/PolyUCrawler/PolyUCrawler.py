@@ -12,8 +12,10 @@ from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
 
 # TODO: Move to "Defs.py"
+# TODO: Remove all but "comp", "beee" and .... another...
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
 
+# TODO: Move to "Defs.py"
 class SubjectListFormatType(Enum):
     A = "<main>+<a>"
     B = "<main>+<tr>"
@@ -40,8 +42,9 @@ class RawPolyUCrawler(ScrapyAbstractCrawler):
             # [] Department Components:
             dep_containers = fac_container.css("ul.border-link-list li a")
 
+            # TODO: Remove - only for testing purposes
             #if fac_name != "School of Fashion and Textiles": continue
-
+            
             for dep_container in dep_containers:
                 # []
                 dep_url  = dep_container.css("::attr(href)").get()
@@ -49,9 +52,12 @@ class RawPolyUCrawler(ScrapyAbstractCrawler):
                 dep_url  = self.sanitize_department_url(dep_url)
                 dep_abbr = self.get_department_abbreviation(dep_url)
 
+                if dep_abbr in EXCLUDE_DEPARTMENTS: continue
+
                 # []
                 (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(dep_url, dep_abbr)
 
+                # TODO: Finish the search query build-up departments:
                 if format_type != SubjectListFormatType.E: continue
                 
                 # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION

@@ -38,11 +38,9 @@ class LLMKUCrawler(ScrapyAbstractCrawler):
         department_name = response.meta['department_name']
 
         course_urls = []
-
         course_links = response.css('a')
 
         for course in course_links:
-            
             course_name = course.css("::text").get().strip()
             course_url = course.css("::attr(href)").get()
 
@@ -58,16 +56,15 @@ class LLMKUCrawler(ScrapyAbstractCrawler):
     
     """ Step 4 """
     def scrape_single_course(self, response):
+        # [] Course components:
         course_code = response.xpath('//h1/text()').get().strip().split()[0]
         course_title = ' '.join(response.xpath('//h1/text()').get().strip().split()[1:])
-        #course_department = response.xpath('(//h5[@class="panel-title"])[3]/following-sibling::ul[@class="list-unstyled"][1]/li/text()').get()
         course_department = response.meta['department_name']
         course_points = "NA"
         course_level = "NA"
-        #Fetch coursre meta data.
-        dl_element = response.xpath('//dl[@class="dl-horizontal"]')
-    
 
+        # [] Scrape the top-right course components:
+        dl_element = response.xpath('//dl[@class="dl-horizontal"]')
         dt_elements = dl_element.xpath('./dt')
         dd_elements = dl_element.xpath('./dd')
 
@@ -80,12 +77,11 @@ class LLMKUCrawler(ScrapyAbstractCrawler):
             elif dt_text.strip() in ["Level", "Niveau"]:
                 course_level = dd_text[0]
         
-        raw_literature = ' '.join(response.xpath('normalize-space(//div[@id="course-materials"])').getall())
-        
-        #sanitized_lines = sanitize_course_literature(raw_literature)
-        
+        # [] Scrape the raw literature - sanitizing it using LLMs:
+        raw_literature = ' '.join(response.xpath('normalize-space(//div[@id="course-materials"])').getall())        
         course_literature = self.clean_literature(raw_literature)
         
+        # [] Return everything as a CourseDTO ready for the Data Processing Pipeline:
         courseDTO = CourseDTO(
             name = course_title,
             code = course_code,
