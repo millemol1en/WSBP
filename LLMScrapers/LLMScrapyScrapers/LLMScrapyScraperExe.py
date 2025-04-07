@@ -2,15 +2,16 @@
 from scrapy.crawler import CrawlerProcess
 
 # Local Imports:
-from LLMScrapers.LLMScrapyScrapers.KUCrawler.LLMKUCrawler import LLMKUCrawler
+from LLMScrapers.LLMScrapyScrapers.LLMKUCrawler.LLMKUCrawler import LLMKUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairingScraper import LLMSelfRepairingScraper
 from LLMScrapers.LLMScrapyScrapers.LLMPolyUCrawler.LLMPolyUCrawler import LLMPolyUCrawler
+from LLMScrapers.LLMScrapyScrapers.LLMGroningenCrawler.LLMGroningenCrawler import LLMGroningenCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import LLMType
 
 def llm_scrapy_scraper_executor():
     process = CrawlerProcess({
         # [] Logging:
-        'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG
+        'LOG_LEVEL': 'CRITICAL', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
         # 'FEEDS': {
@@ -48,16 +49,17 @@ def llm_scrapy_scraper_executor():
     })
 
     """ Self Repairing """
-    # process.crawl(LLMSelfRepairingScraper)
-    # process.start()
+    process.crawl(LLMSelfRepairingScraper, _name="Self Repairing Scraper", _llm_type=LLMType.CHAT_GPT)
+    process.start()
 
     """ Data Accuracy - KU """
     # process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
     # process.start()
 
     """ Groningen """
-
+    # process.crawl(LLMGroningenCrawler, _name="Groningen", _url="https://ocasys.rug.nl/api/faculty/catalog/2024-2025", _llm_type=LLMType.GEMINI)
+    # process.start()
 
     """ Crawling proficiency - PolyU """
-    process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.GEMINI)
-    process.start()
+    # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.GEMINI)
+    # process.start()

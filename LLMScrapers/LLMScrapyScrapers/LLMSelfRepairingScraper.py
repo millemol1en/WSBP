@@ -29,6 +29,10 @@ from google import genai
 # Additionals:
 from dotenv import load_dotenv
 import os
+import time
+
+# Local:
+from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import LLMType
 
 # Load in the LLM environment variables using LLM API keys:
 load_dotenv()
@@ -39,25 +43,38 @@ gemini_client   = genai.Client(api_key=gemini_key)
 
 # The focus of this class is to determine whether the LLM is able to adjust its pathing
 class LLMSelfRepairingScraper(scrapy.Spider):
-    """ SR on 'old' and 'new' front page """
-    name = "LLMSR_PolyU"
-    start_urls = ["https://web.archive.org/web/20201001192436/https://www.polyu.edu.hk/en/education/faculties-schools-departments/", 
-                  "https://web.archive.org/web/20241209031021/https://www.polyu.edu.hk/en/education/faculties-schools-departments/"]
+    def __init__(self, _name="", _llm_type=LLMType.NULL_AI, **kwargs):
+        self.name=_name
+        self.llm_type=_llm_type
+        super().__init__(**kwargs)
 
     def start_requests(self):
         # Scrape for the departments:
         # yield scrapy.Request(url=self.start_urls[0], callback=self.scrape_departments, meta={'url_type': 'old'})
         # yield scrapy.Request(url=self.start_urls[1], callback=self.scrape_departments, meta={'url_type': 'new'})
 
-        # Applied Physics (AP) URLs
-        ap_dept_urls = [
-            # AP department through the years
-            #{"dept": "AP", "year": 2004, "url": "https://web.archive.org/web/20040905000428/http://ap.polyu.edu.hk/"},
-            {"dept": "AP", "year": 2015, "url": "https://web.archive.org/web/20150701000000/https://www.polyu.edu.hk/ap/"},
-            #{"dept": "AP", "year": 2025, "url": "https://web.archive.org/web/20250122172728/https://www.polyu.edu.hk/ap/"},
+        # Departments:
+        dep_urls = [
+            "https://web.archive.org/web/20201001192436/https://www.polyu.edu.hk/en/education/faculties-schools-departments/", 
+            "https://web.archive.org/web/20241209031021/https://www.polyu.edu.hk/en/education/faculties-schools-departments/"
         ]
 
-        for entry in ap_dept_urls:
+        # Applied Physics (AP) URLs:
+        dept_urls = [
+            # AP department
+            # {"dept": "AP", "year": 2004, "url": "https://web.archive.org/web/20040905000428/http://ap.polyu.edu.hk/"},         # TARGET: ""
+            # {"dept": "AP", "year": 2015, "url": "https://web.archive.org/web/20150701000000/https://www.polyu.edu.hk/ap/"},     # TARGET: "all_ap.html"
+            # {"dept": "AP", "year": 2025, "url": "https://web.archive.org/web/20250122172728/https://www.polyu.edu.hk/ap/"},    # TARGET: ""
+
+            # AMA departments
+            {"dept": "AMA", "year": 2001, "url": "https://web.archive.org/web/20010503071107/https://www.polyu.edu.hk/ama/"},     # TARGET: ""
+            {"dept": "AMA", "year": 2008, "url": "https://web.archive.org/web/20080510141326/https://www.polyu.edu.hk/ama/"},     # TARGET: ""
+            {"dept": "AMA", "year": 2015, "url": "https://web.archive.org/web/20150731063353/https://www.polyu.edu.hk/ama/"},     # TARGET: 
+            {"dept": "AMA", "year": 2025, "url": "https://web.archive.org/web/20250212043112/https://www.polyu.edu.hk/ama/"},     # TARGET: ""
+        ]
+
+        for entry in dept_urls:
+            time.sleep(1.5)
             yield scrapy.Request(
                 url=entry["url"],
                 callback=self.locate_subject_list,
@@ -75,26 +92,18 @@ class LLMSelfRepairingScraper(scrapy.Spider):
         # "Return only a JSON array of objects. Each object must have two keys: 'name' and 'href'.\n"
         # "Do not include markdown, code blocks, or any explanation — just valid JSON."
         
-        # [] Locate departments prompt:
-        scrape_departments_messages = [
-            {
-                "role": "system",
-                "content": (
-                    "You are a helpful assistant skilled in HTML parsing.\n"
-                    "You will be given raw HTML from a university webpage.\n"
-                    "Your task is to extract the name and associated 'href' attribute of each academic department.\n"
-                    "Return only a Python list of dictionaries, where each dictionary has two keys: 'name' and 'href'.\n"
-                    "No extra explanation, no formatting, no commentary — just the list."
-                )
-            },
-            {
-                "role": "user",
-                "content": f"HTML:\n{clean_html}\n\nReturn the department data as a Python list of dictionaries."
-            }
-        ]
+        core_message = f"""
+        "You are a helpful assistant skilled in HTML parsing.\n"
+        "You will be given raw HTML from a university webpage.\n"
+        "Your task is to extract the name and associated 'href' attribute of each academic department.\n"
+        "Return only a Python list of dictionaries, where each dictionary has two keys: 'name' and 'href'.\n"
+        "No extra explanation, no formatting, no commentary — just the URL."
+        "HTML:{clean_html}\n"
+        """        
 
-        departments = self.call_llm(scrape_departments_messages)
+        departments = self.call_llm(core_message)
 
+        # Clean URL:
         print(f"{departments}")
 
 
@@ -105,55 +114,71 @@ class LLMSelfRepairingScraper(scrapy.Spider):
         dept = response.meta["dept"]
         year = response.meta["year"]
 
-        print(f"\n Scanning {dept} ({year}) page for subject list...")
+        print(f"\nScanning {dept} ({year}) page for subject list...")
 
         # [] Use BS to parse raw HTML:
         raw_html    = response.text
         parsed_html = BeautifulSoup(raw_html, "html.parser")
         clean_html  = self.strip_html_sl(parsed_html)
 
-        messages = [
-            {
-                "role": "system",
-                "content": (
-                    "You are a helpful assistant skilled in HTML parsing.\n"
-                    "You will be given raw HTML from a university department page.\n"
-                    "Your task is to locate a hyperlink pointing to the department's subject list or syllabus.\n"
-                    "The link text might include terms like 'Subject List', 'Subject Syllabus', 'Subject Syllabi', etc.\n"
-                    "Additionally, the target link may be further embedded inside an <li> tag also be further embedded inside an additional tag like an <li>. If so, choose the'Bachelor Programme'.\n"
-                    "Finally, if unable to locate any subject list it would always be better to return a link re-directing to 'Programmes'.\n"
-                    "Return only the URL (href) to the best match.\n"
-                )
-            },
-            {
-                "role": "user",
-                "content": f"HTML:\n{clean_html}\n\nReturn only the href of the best matching subject list link, or 'None'."
-            }
-        ]
+        core_message = f"""
+        "You are a helpful assistant skilled in HTML parsing.\n"
+        "You will be given raw HTML from a university department page.\n"
+        "Your task is to locate a hyperlink pointing to the department's subject list or syllabus.\n"
+        "The link text might include terms like 'All Subjects', 'Subject List', 'Subject Syllabus', 'Subject Syllabi', etc.\n"
+        "Additionally, the target link may be further embedded inside an <li> tag also be further embedded inside an additional tag like an <li>. If so, choose the'Bachelor Programme'.\n"
+        "Finally, if unable to locate any subject list it would always be better to return a link re-directing to 'Programmes'.\n"
+        "Return only the URL (href) to the best match and nothing else.\n"
+        "HTML:\n{clean_html}"
+        """
 
         # [] Call LLM:
-        subject_link = self.call_llm(messages)
+        subject_link = self.call_llm(core_message)
         # f = open("subject_list.html", "w")
         # f.write(clean_html.prettify())
         # f.close()
 
-        print(f"  RESULTS =* {response.request.url}{subject_link}")
+        print(f"  RESULTS =* {response.request.url}/{subject_link}")
 
     # [] 
-    def call_llm(self, messages):        
-        response = gpt_client.chat.completions.create(
-            model="gpt-4o-2024-08-06",                      # Model variant
-            messages=messages,                              # Messages
-            temperature=0,                                  # Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. 
-        )
+    def call_llm(self, core_message):        
+        match self.llm_type:
+            case LLMType.CHAT_GPT:
+                response = gpt_client.chat.completions.create(
+                    model="gpt-4o-2024-08-06",                      
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": (
+                                core_message
+                            )
+                        }
+                    ],
+                    temperature=0,                                  # Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. 
+                )
 
-        content = response.choices[0].message.content.strip()
-    
-        return content
-    
+                content = response.choices[0].message.content.strip()
+            
+                return content
+            
+            case LLMType.GEMINI:
+                response = gemini_client.models.generate_content(
+                    model="gemini-2.0-flash",
+                    contents=core_message,
+                    config={
+                        'response_mime_type': 'application/json',
+                    }
+                )
 
+                return response.text
+            
+            case _: pass
+    
+    #################
+    # LOCAL METHODS #
+    #################
     """ HTML STRIPPING """
-    # [] Function to reduce the HTML tags when locating the subject lists:
+    # [LM #1] Function to reduce the HTML tags when locating the subject lists:
     def strip_html_sl(self, raw_html : BeautifulSoup):
         kept_tags = []
 

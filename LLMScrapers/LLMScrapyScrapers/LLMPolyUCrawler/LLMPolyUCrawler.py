@@ -11,7 +11,6 @@ from urllib.parse import urlparse, urljoin
 import os
 import re
 import time
-import json
 
 # .env Support:
 from dotenv import load_dotenv
@@ -30,8 +29,6 @@ gemini_client   = genai.Client(api_key=gemini_key)
 # TODO: Need an LLM orientated solution for these universities - not "comp" as it is a duplicate of "dsai"
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp", "dsai" }
 
-# Key differences:
-# On top of using LLMs, we also 
 class LLMPolyUCrawler(ScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI, **kwargs):
         super().__init__(_name=_name, _url=_url, _llm_type=_llm_type, **kwargs)
@@ -39,7 +36,6 @@ class LLMPolyUCrawler(ScrapyAbstractCrawler):
     def parse(self, response):
         yield from self.scrape_departments(response)
 
-    # [] Just use 
     def scrape_departments(self, response):
         faculty_containers = response.xpath("//*[contains(@class, 'ITS_Content_News_Highlight_Collection')]")
 
@@ -50,7 +46,7 @@ class LLMPolyUCrawler(ScrapyAbstractCrawler):
             
             # [] Department Components:
             dep_containers = fac_container.xpath(".//ul[contains(@class, 'border-link-list')]//li//a")
-            # if fac_name != "Faculty of Construction and Environment": continue
+
             # [] 
             for dep_container in dep_containers:
                 raw_url  = dep_container.xpath("./@href").get()
@@ -61,6 +57,7 @@ class LLMPolyUCrawler(ScrapyAbstractCrawler):
                 # dep_name != "School of Accounting and Finance" or 
                 if dep_abbr in EXCLUDE_DEPARTMENTS : continue
 
+                # [] Prior to each we will sleep in order to prevent a 429 Error - too many requests.
                 time.sleep(1.5)
                 yield scrapy.Request(
                     url=dep_url,
@@ -81,7 +78,6 @@ class LLMPolyUCrawler(ScrapyAbstractCrawler):
         # header_links_json = json.dumps(header_links_raw, ensure_ascii=False, indent=4)
         
         # [] 
-
         core_message : str = f"""
         "You are a helpful web scraping assistant skilled in HTML parsing.\n"
         "You will be given raw HTML from a university department page.\n"
@@ -150,11 +146,8 @@ class LLMPolyUCrawler(ScrapyAbstractCrawler):
                         second_li = li_tags[1] 
                         body.append(second_li)
 
-
+        # [] Method to harvest all the <a> tags located in the <header>
         # for tag in header_tag:
-        #     body.append(tag)
-
-            # [] - Old
             # for a in tag.find_all("a"):
             #     tag_href = a.get("href")
             #     tag_text = a.get_text(strip=True)
@@ -169,7 +162,7 @@ class LLMPolyUCrawler(ScrapyAbstractCrawler):
 
         return body
 
-    # [] 
+    # [] TODO: Place this into a generalized LLM specific file:
     def call_llm(self, core_message):        
         match self.llm_type:
             case LLMType.CHAT_GPT:

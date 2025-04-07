@@ -52,7 +52,10 @@ class RawPolyUCrawler(ScrapyAbstractCrawler):
                 dep_url  = self.sanitize_department_url(dep_url)
                 dep_abbr = self.get_department_abbreviation(dep_url)
 
-                if dep_abbr in EXCLUDE_DEPARTMENTS: continue
+                # TODO: REMOVE!
+                if dep_abbr not in EXCLUDE_DEPARTMENTS: continue
+
+
 
                 # []
                 (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(dep_url, dep_abbr)
@@ -268,10 +271,6 @@ class RawPolyUCrawler(ScrapyAbstractCrawler):
         return abbreviation
 
     # [LM #3] ...
-    def search_for_course_urls(self, response):
-        print("is being called yo!")
-
-    # [LM #4] ...
     def scrape_course_from_department_subject_list(self, dep_url, dep_abbr) -> (list[str] | SubjectListFormatType | bool):
         match dep_abbr:
             case "lgt":  return ([(f"{dep_url}/study/subject-syllabi/")],                                                                               SubjectListFormatType.C, False) # Department of Logistics and Maritime Studies              :: 
