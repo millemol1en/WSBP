@@ -13,7 +13,7 @@ def llm_scrapy_scraper_executor():
 
         # [] ...:
         'FEEDS': {
-             'ku_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+             'dtu_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
         },
 
         # Pipeline Configuration:
@@ -51,6 +51,6 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ Data Accuracy - KU """
-    process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.GEMINI)
-    #process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.GEMINI)
+    #process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
+    process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.GEMINI)
     process.start()

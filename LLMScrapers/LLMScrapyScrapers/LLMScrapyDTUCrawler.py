@@ -98,14 +98,15 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
         course_name     = response.meta['course_name'] #TODO: Ensure that not code, but only name is added.
         course_level    = response.meta['course_level'] #TODO: Not fetched, why?
         course_code     = response.meta['course_code'] #TODO: Not fetched, why?
-
+        points_raw = response.xpath("//label[contains(text(), 'Point( ECTS )')]/parent::td/following-sibling::td/text()").get()
+        points = f"{points_raw.strip()} ECTS"
         # [] Retrieve the raw literature text block:
         raw_literature = response.xpath(
             "//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()[1]"
         ).get()
 
-        course_literature = raw_literature.strip() if raw_literature else "NA"
-        print(f" =** LIT: {course_literature}") 
+        course_literature = self.clean_literature(raw_literature)
+         
 
         #self.clean_literature(raw_literature)
 
@@ -113,10 +114,10 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
             course_dto = CourseDTO(
                 name       = course_name,
                 code       = course_code,
-                literature = [course_literature],
+                literature = course_literature,
                 department = department_name,
                 level      = course_level,
-                points     = "NA",
+                points     = points,
             )
 
             yield course_dto
