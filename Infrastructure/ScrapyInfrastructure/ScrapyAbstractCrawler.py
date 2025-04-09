@@ -4,6 +4,7 @@ import scrapy
 from DataObjects.Department import Department
 from DataObjects.Book import Book
 import os 
+import json
 from enum import Enum
 from openai import OpenAI
 from google import genai
@@ -92,8 +93,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
 
                 #yield
             case LLMType.GEMINI:
-                client = genai.Client(api_key="AIzaSyBkv-Iqab_WvzDrCCSIiloL5J140_BqFq8")
-                response = client.models.generate_content(
+                response = gemini_client.models.generate_content(
                     model="gemini-2.0-flash",
                     contents=f"""
                     You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.).
@@ -109,7 +109,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
                         'response_schema': list[Book], 
                     }
                 )
-                return response.text
+                return json.loads(response.text)
                 #yield
             case LLMType.DEEPSEEKER:
                 pass
