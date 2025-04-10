@@ -1,11 +1,11 @@
 import re
 import scrapy
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class DTUCrawler(ScrapyAbstractCrawler):
+class DTUCrawler(RawScrapyAbstractCrawler):
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)

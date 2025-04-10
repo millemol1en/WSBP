@@ -1,16 +1,17 @@
 import scrapy
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
-from Infrastructure.lit_cleaner import sanitize_course_literature, extract_books, new_fixer
+from Infrastructure.LiteratureCleaner.LiteratureCleaner import sanitize_course_literature, extract_books, new_fixer
 
-class KUCrawler(ScrapyAbstractCrawler):
+class KUCrawler(RawScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 
+    """ Step 1 """
     def parse(self, response):
         yield from self.scrape_departments(response)
 
-    """ Step 2 - """
+    """ Step 2 """
     # TODO: Replace ".css" with XPath
     def scrape_departments(self, response):
         departments_select = response.css('select#departments')
@@ -32,7 +33,7 @@ class KUCrawler(ScrapyAbstractCrawler):
                         meta={'department_name': option_text}
                     )
 
-    """ Step 4 """
+    """ Step 3 """
     def scrape_department_courses(self, response):
         department_name = response.meta['department_name']
 
@@ -96,9 +97,3 @@ class KUCrawler(ScrapyAbstractCrawler):
         )
 
         yield courseDTO
-
-        
-
-
-
-    # Fetch course literature

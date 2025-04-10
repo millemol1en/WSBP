@@ -1,11 +1,15 @@
-import re
+# Scraping API:
 import scrapy
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler, LLMType
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
+# Local Imports:
+from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMScrapyAbstractCrawler, LLMType
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class LLMDTUCrawler(ScrapyAbstractCrawler):
+# Native Python Imports:
+import re
+
+class LLMDTUCrawler(LLMScrapyAbstractCrawler):
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
     def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI,**kwargs):
         super().__init__(_name=_name, _url=_url, _llm_type=_llm_type, **kwargs)
@@ -26,7 +30,7 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
             dont_filter=True
         )
 
-    """ Step 2 - """
+    """ Step 1 - """
     def scrape_departments(self, response):
         department_options = response.xpath('//select[@id="Department"]/option')
 
@@ -50,24 +54,18 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
     def scrape_department_courses(self, response):
         department_name = response.meta['department_name']
 
-        rows = response.xpath('//table//tr') # Get the table... 
+        rows = response.xpath('//table//tr')
 
-        #print(f"   *= {department_name}")
-
-        # [] ...
         if len(rows) > 1 and department_name != "88 Other courses":    
-            # []             
             for row in rows:
-                course_link                 = row.xpath('./td[2]/a')
-                course_data                 = course_link.xpath('normalize-space(text())').get()
-                course_url                  = course_link.xpath('@href').get()
-                course_level                = row.xpath('./td[3]/text()').get() #TODO: Not used?
+                course_link  = row.xpath('./td[2]/a')
+                course_data  = course_link.xpath('normalize-space(text())').get()
+                course_url   = course_link.xpath('@href').get()
+                course_level = row.xpath('./td[3]/text()').get()
 
-                
                 if course_data and course_url and course_level:
                     full_course_url = (f"https://kurser.dtu.dk{course_url}")
                     
-                    # []
                     if course_data and any(keyword in course_url for keyword in ["course"]) and course_data != "Study Planner": # TODO: Clean this up!
 
                         course_title = str(course_data).split(" - ", 1)[1] 
@@ -75,41 +73,33 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
                         course_level = 0
                         course_level = str(row.xpath('./td[3]/text()').get()).strip()
 
-
                         print(f"**== Course: {course_code} * {course_title} * {course_level}")
-                        # []                        
-                        # (course_code, course_name)  = self.extract_course_code_and_name(course_title)
-                        
                         
                         yield scrapy.Request(
                             url=full_course_url,
                             callback=self.scrape_single_course,
-                            # TODO: Fix the "course_name" and "course_code" variables - so repair the 'extract_course_code_and_name()' function
                             meta={ 'department_name': department_name, 'course_name': course_title, 'course_code': course_code, 'course_level': course_level }
                         )
 
                     else: continue
 
     
-    """ Step 4 """
+    """ Step 5 """
     def scrape_single_course(self, response):
         # [] Retrieve the meta data:
         department_name = response.meta['department_name']
-        course_name     = response.meta['course_name'] #TODO: Ensure that not code, but only name is added.
-        course_level    = response.meta['course_level'] #TODO: Not fetched, why?
-        course_code     = response.meta['course_code'] #TODO: Not fetched, why?
+        course_name     = response.meta['course_name'] 
+        course_level    = response.meta['course_level'] 
+        course_code     = response.meta['course_code'] 
         points_raw = response.xpath("//label[contains(text(), 'Point( ECTS )')]/parent::td/following-sibling::td/text()").get()
         points = f"{points_raw.strip()} ECTS"
-        # [] Retrieve the raw literature text block:
+
         raw_literature = response.xpath(
             "//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()[1]"
         ).get()
 
         course_literature = self.clean_literature(raw_literature)
-         
-
-        #self.clean_literature(raw_literature)
-
+        
         if course_name != None or course_code != None: 
             course_dto = CourseDTO(
                 name       = course_name,
@@ -132,3 +122,6 @@ class LLMDTUCrawler(ScrapyAbstractCrawler):
             course_name = match.group(2).strip()
             return course_code, course_name
         return None, None
+    
+    def call_llm(self):
+        return super().call_llm()

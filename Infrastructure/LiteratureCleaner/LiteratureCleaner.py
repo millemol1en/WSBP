@@ -327,3 +327,6 @@ def fetch_author(text: str) -> list[str]:
                 if token and re.fullmatch(r'[A-Z][a-zøæå]+', token):
                     nameList.append(("", "", token))
     return nameList
+
+
+    

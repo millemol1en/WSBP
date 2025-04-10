@@ -1,11 +1,11 @@
 import scrapy
 import json
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 from Defs.Defs import EXCLUDE_KEY_WORDS
 
-class GroningenCrawler(ScrapyAbstractCrawler):
+class GroningenCrawler(RawScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 
