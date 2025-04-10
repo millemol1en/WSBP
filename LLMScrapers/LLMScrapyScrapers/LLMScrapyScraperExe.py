@@ -1,8 +1,8 @@
 # API Imports:
 from scrapy.crawler import CrawlerProcess
-
 # Local Imports:
 from LLMScrapers.LLMScrapyScrapers.LLMScrapyKUCrawler import LLMKUCrawler
+from LLMScrapers.LLMScrapyScrapers.LLMScrapyDTUCrawler import LLMDTUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairingScraper import LLMSelfRepairingScraper
 from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import LLMType
 
@@ -13,7 +13,7 @@ def llm_scrapy_scraper_executor():
 
         # [] ...:
         'FEEDS': {
-             'university.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+             'dtu_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
         },
 
         # Pipeline Configuration:
@@ -51,5 +51,6 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ Data Accuracy - KU """
-    process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
+    #process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
+    process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.GEMINI)
     process.start()

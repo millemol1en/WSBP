@@ -3,7 +3,9 @@ from Infrastructure.lit_cleaner import sanitize_course_literature, extract_books
 import scrapy
 from DataObjects.Department import Department
 from DataObjects.Book import Book
+from DataObjects.Course import Course
 import os 
+import json
 from enum import Enum
 from openai import OpenAI
 from google import genai
@@ -18,8 +20,15 @@ gemini_key = os.getenv("GEMINI_API_KEY")
 gpt_client = OpenAI(api_key=gpt_key)
 gemini_client = genai.Client(api_key=gemini_key)
 
+
+
+#TODO: Delete? 
 class BooksResponse(BaseModel):
     books: list[Book]
+
+# TODO : TEST 
+
+
 
 class LLMType(Enum):
     CHAT_GPT = "chatgpt"
@@ -59,16 +68,22 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
     def clean_literature(self, raw_literature):
         match self.api_type:
             case LLMType.CHAT_GPT:
+                print("Chat GPT API")
                 messages = [
                     {
                         "role": "system",
-                        "content": "You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.). "
-                        "You must follow these rules:"
-                        "1) always ensure the only separator between names are commas."
-                        "2) always return an array of json objects (one object per book)"
-                        "2a) each object must consist of 'title', 'year', 'author', 'edition', 'isbn', 'pubFirm' (NOTE: pubFirm is publishing firm.)"
-                        "2b) if a field is not present, it should be an empty string"
-                        "3) NOTE: There should be no duplicates, so if a book is mentioned multiple times, it should only be returned once."   
+                        "content": """You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.). 
+                        You must follow these rules:
+                        1) always ensure the only separator between names are commas.
+                        2) always return a json object representing a course, where literature is an array of books.
+                        2a) each book object must consist of 'title', 'year', 'author', 'edition', 'isbn', 'pubFirm' (NOTE: pubFirm is publishing firm.)
+                        2b) if a field is not present, it should be an empty string
+                        3) NOTE: There should be no duplicates, so if a book is mentioned multiple times, it should only be returned once.   
+                        3a) NOTE: If there is more than one edition of the same book, choose the newest edition and don't add the older one.
+                        3b) NOTE: if there are no books or 'NA', return nothing, '', not even an empty array. 
+                        3c) NOTE: 'literature': [] holds a single array and a single array ONLY.
+                        Example: Below is an example of the structure you must follow:
+                        { "name": "38102 - Technology Entrepreneurship", "code": "", "literature": [ { "title": "Crossing the Chasm", "year": 2014, "author": "G. Moore", "edition": 0, "isbn": 0, "pubFirm": "" }], "department": "38 DTU Entrepreneurship", "level": 0, "points": "NA" }"""
                     },
                     {
                         "role": "user",
@@ -85,14 +100,13 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
                 temperature=0)
                 # Extract and return the keywords
                 data_dict = response.choices[0].message.parsed.model_dump() #.content.strip()
-                books_list = data_dict['books']
+                books_list : dict = data_dict['books']
                 return books_list
             
 
                 #yield
             case LLMType.GEMINI:
-                client = genai.Client(api_key="AIzaSyBkv-Iqab_WvzDrCCSIiloL5J140_BqFq8")
-                response = client.models.generate_content(
+                response = gemini_client.models.generate_content(
                     model="gemini-2.0-flash",
                     contents=f"""
                     You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.).
@@ -108,7 +122,7 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
                         'response_schema': list[Book], 
                     }
                 )
-                return response.text
+                return json.loads(response.text)
                 #yield
             case LLMType.DEEPSEEKER:
                 pass

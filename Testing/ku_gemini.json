@@ -5,10 +5,10 @@
   "literature": [
    {
     "title": "Børsstrafferet",
-    "year": "2017",
+    "year": 2017,
     "author": "Hans Fogtdal",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Jurist- og Økonomforbundets Forlag"
    }
   ],
@@ -30,19 +30,19 @@
   "literature": [
    {
     "title": "Politi 1682-2007",
-    "year": "2010",
+    "year": 2010,
     "author": "Henrik Stevnsborg",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Samfundslitteratur"
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Samfundslitteratur, Forlag"
    },
    {
     "title": "Politiret",
-    "year": "2022",
+    "year": 2022,
     "author": "Ib Henricson",
-    "edition": "7",
-    "isbn": "",
-    "pubFirm": "Djøf"
+    "edition": 7,
+    "isbn": 0,
+    "pubFirm": "Djøf, Forlag"
    }
   ],
   "department": "Law",
@@ -55,10 +55,10 @@
   "literature": [
    {
     "title": "Lærebog i informationsret",
-    "year": "2020",
+    "year": 2020,
     "author": "Henrik Udsen, Vibeke Borberg, Thomas Riis, Morten Rosenmeier, Jens Schovsbo, Sebastian Schwemer",
-    "edition": "2",
-    "isbn": "",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": "Jurist- og Økonomiforbundets Forlag"
    }
   ],
@@ -72,18 +72,18 @@
   "literature": [
    {
     "title": "Introduktion til selskabsretten og kapitalmarkedsretten",
-    "year": "",
+    "year": 0,
     "author": "Jesper Lau Hansen",
-    "edition": "3",
-    "isbn": "",
+    "edition": 3,
+    "isbn": 0,
     "pubFirm": "DJØF Forlag"
    },
    {
     "title": "Årsrapport og virksomhedsanalyse",
-    "year": "2020",
+    "year": 2020,
     "author": "J. Ravn Elkjær",
-    "edition": "9",
-    "isbn": "",
+    "edition": 9,
+    "isbn": 0,
     "pubFirm": "Karnov Group"
    }
   ],
@@ -113,10 +113,10 @@
   "literature": [
    {
     "title": "Grundlæggende arbejdsret",
-    "year": "2023",
+    "year": 2023,
     "author": "Jens Kristiansen",
-    "edition": "6",
-    "isbn": "",
+    "edition": 6,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -130,10 +130,10 @@
   "literature": [
    {
     "title": "Materialesamling til faget Erstatning i Forsikringsretlig Belysning",
-    "year": "2017",
+    "year": 2017,
     "author": "",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "DJØF"
    }
   ],
@@ -144,7 +144,16 @@
  {
   "name": "European Court of Human Rights",
   "code": "JJUB55128U",
-  "literature": [],
+  "literature": [
+   {
+    "title": "Selected judgments and other materials",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
   "department": "Law",
   "level": "Bachelor",
   "points": "15 ECTS"
@@ -155,10 +164,10 @@
   "literature": [
    {
     "title": "Fast ejendom – regulering og køb",
-    "year": "2022",
+    "year": 2022,
     "author": "Peter Pagh, Thomas Haugsted",
-    "edition": "4",
-    "isbn": "",
+    "edition": 4,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -188,115 +197,115 @@
   "literature": [
    {
     "title": "Talens magt. Indføring i mundtlig retorik",
-    "year": "2010",
+    "year": 2010,
     "author": "Jonas Gabrielsen, Tanja Juul Christiansen",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Hans Reitzels Forlag"
    },
    {
     "title": "Praktisk Argumentation",
-    "year": "2023",
-    "author": "Charlotte Jørgensen,  Merete Onsberg",
-    "edition": "4",
-    "isbn": "",
+    "year": 2023,
+    "author": "Charlotte Jørgensen, Merete Onsberg",
+    "edition": 4,
+    "isbn": 0,
     "pubFirm": "Akademisk Forlag"
    },
    {
     "title": "Retorik i Retten: Bedre forelæggelse, afhøring og procedure",
-    "year": "2013",
+    "year": 2013,
     "author": "Janus Beyer",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Hans Reitzel"
    },
    {
     "title": "Gør teksten klar",
-    "year": "2013",
+    "year": 2013,
     "author": "Christina Pontoppidan",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Samfundslitteratur"
    },
    {
     "title": "Juridisk Gennemslagskraft",
-    "year": "2012",
+    "year": 2012,
     "author": "Jonas Gabrielsen, Inger Høedt-Rasmussen",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Jurist- og Økonomforbundets Forlag"
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Jurist- Økonomforbundets Forlag"
    },
    {
     "title": "Retorikkens aktualitet – Grundbog i retorisk kritik",
-    "year": "",
-    "author": "Lund, Roer (red.)",
-    "edition": "3",
-    "isbn": "",
-    "pubFirm": "Hans Reitzels Forlag"
+    "year": 0,
+    "author": "Jonas Gabrielsen, Lund og Roer (red.)",
+    "edition": 3,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzels forlag"
    },
    {
     "title": "Juridisk overtalelseskunst",
-    "year": "2008",
+    "year": 2008,
     "author": "Hans Petter Graver",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Fagbokforlaget"
    },
    {
     "title": "Law’s Stories. Narrative and Rhetoric in the Law",
-    "year": "1996",
-    "author": "Peter Brooks, Paul Gewirtz (red.)",
-    "edition": "",
-    "isbn": "",
+    "year": 1996,
+    "author": "J.M. Balkin, Peter Brooks, Poul Gewirtz (red.)",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Yale University Press"
    },
    {
     "title": "Studier i retspolitisk argumentation",
-    "year": "1974",
+    "year": 1974,
     "author": "Preben Stuer Lauridsen",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Juristforbundets forlag"
    },
    {
     "title": "Retorikkens rige. Retorik og argumentation",
-    "year": "2005",
+    "year": 2005,
     "author": "Chaim Perelman",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Hans Reitzel"
    },
    {
     "title": "Justice and justification. Reflective equilibrium in theory and practice",
-    "year": "1996",
+    "year": 1996,
     "author": "Norman Daniels",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Cambridge University Press"
    },
    {
     "title": "Topics and Law",
-    "year": "1993",
+    "year": 1993,
     "author": "Theodor Viehweg",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Peter Lang Verlag"
    },
    {
     "title": "Om ret og retfærdighed",
-    "year": "2013",
+    "year": 2013,
     "author": "Alf Ross",
-    "edition": "2",
-    "isbn": "",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": "Hans Reitzel"
    },
    {
     "title": "The Tools of Argument – How the best lawyers think, argue, and win",
-    "year": "2013",
+    "year": 2013,
     "author": "Joel Trachtman",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "CreateSpace Independent Publishing Platform"
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "CreateSpace Independent publishing Platform"
    }
   ],
   "department": "Law",
@@ -309,10 +318,10 @@
   "literature": [
    {
     "title": "Sundhed og Jura – Sundhedsretlige perspektiver på sundhedsvæsen, sundhedspersoner og patientrettigheder",
-    "year": "2022",
+    "year": 2022,
     "author": "Mette Hartlev, Catharina Ó Cathaoir, Peter Jakobsen",
-    "edition": "3",
-    "isbn": "",
+    "edition": 3,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -334,10 +343,10 @@
   "literature": [
    {
     "title": "Strafferet og menneskeret",
-    "year": "2014",
+    "year": 2014,
     "author": "Trine Baumbach",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -351,10 +360,10 @@
   "literature": [
    {
     "title": "Lærebog i Konkurrence- og Markedsføringsret",
-    "year": "2022",
+    "year": 2022,
     "author": "Caroline Heide-Jørgensen",
-    "edition": "5",
-    "isbn": "",
+    "edition": 5,
+    "isbn": 0,
     "pubFirm": "DJØF"
    }
   ],
@@ -368,66 +377,66 @@
   "literature": [
    {
     "title": "Criminology",
-    "year": "2017",
-    "author": "Tim Newburn",
-    "edition": "3",
-    "isbn": "",
+    "year": 2017,
+    "author": "T. Newburn",
+    "edition": 3,
+    "isbn": 0,
     "pubFirm": "Routledge"
    },
    {
     "title": "Key Readings in Criminology",
-    "year": "2017",
-    "author": "Tim Newburn",
-    "edition": "",
-    "isbn": "",
+    "year": 2017,
+    "author": "T. Newburn",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Routledge"
    },
    {
     "title": "The Sage Dictionary of Criminology",
-    "year": "2013",
-    "author": "Eugene McLaughlin, John Muncie",
-    "edition": "",
-    "isbn": "",
+    "year": 2013,
+    "author": "E. McLaughlin, J. Muncie",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Sage"
    },
    {
     "title": "The Oxford Handbook of Criminology",
-    "year": "2017",
-    "author": "Alison Liebling, Shadd Maruna, Lesley McAra",
-    "edition": "",
-    "isbn": "",
+    "year": 2017,
+    "author": "A. Liebling, S. Maruna, L. McAra",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Oxford University Press"
    },
    {
     "title": "A Very Short, Fairly Interesting and Reasonably Cheap Book about Studying Criminology",
-    "year": "2009",
+    "year": 2009,
     "author": "R. Lippens",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Sage"
    },
    {
     "title": "Criminology",
-    "year": "2017",
-    "author": "Steve Case et al.",
-    "edition": "",
-    "isbn": "",
+    "year": 2017,
+    "author": "S. Case et al",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Oxford University Press"
    },
    {
     "title": "Criminology: A Sociological Introduction",
-    "year": "2009",
-    "author": "Eamonn Carrabine et al.",
-    "edition": "",
-    "isbn": "",
+    "year": 2009,
+    "author": "E. Carrabine et al",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Routledge"
    },
    {
     "title": "Introduction to Criminology",
-    "year": "",
-    "author": "Peter Davies, Michael Rowe (eds.)",
-    "edition": "",
-    "isbn": "",
+    "year": 0,
+    "author": "P. Davies, M. Rowe",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Sage"
    }
   ],
@@ -465,10 +474,10 @@
   "literature": [
    {
     "title": "Konflikter og konflikthåndtering – en grundbog",
-    "year": "2023",
+    "year": 2023,
     "author": "Lin Adrian",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Samfundslitteratur"
    }
   ],
@@ -482,10 +491,10 @@
   "literature": [
    {
     "title": "Compliance i den Offentlige Sektor",
-    "year": "2023",
-    "author": "Hanne Marie Motzfeldt (red.), Carina Risvig Hamer (red.)",
-    "edition": "",
-    "isbn": "",
+    "year": 2023,
+    "author": "Hanne Marie Motzfeldt, Carina Risvig Hamer",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Djøf forlag"
    }
   ],
@@ -524,42 +533,42 @@
   "literature": [
    {
     "title": "The Language Question under Napoleon",
-    "year": "2018",
+    "year": 2018,
     "author": "Stewart McCain",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Palgrave MacMillan"
    },
    {
     "title": "Principles of French Law",
-    "year": "2012",
-    "author": "John Bell et al.",
-    "edition": "",
-    "isbn": "",
+    "year": 2012,
+    "author": "John Bell",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Oxford University Press"
    },
    {
     "title": "French Law – a Comparative Approach",
-    "year": "2021",
+    "year": 2021,
     "author": "Eva Steiner",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Oxford University Press"
    },
    {
     "title": "Comparative Legal Linguistics",
-    "year": "",
+    "year": 0,
     "author": "Heikki Mattila",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Affaires étrangères - Niveaux B1/B2 - Version numérique élève - Livre de l'élève",
-    "year": "",
+    "year": 0,
     "author": "",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "CLE International"
    }
   ],
@@ -587,7 +596,16 @@
  {
   "name": "International privatret",
   "code": "JJUB55193U",
-  "literature": [],
+  "literature": [
+   {
+    "title": "",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Djøf Forlag"
+   }
+  ],
   "department": "Law",
   "level": "Bachelor",
   "points": "7,5 ECTS"
@@ -598,10 +616,10 @@
   "literature": [
    {
     "title": "Skriftlig Jura – Den juridiske fremstilling",
-    "year": "2020",
-    "author": "Thomas Riis, Jan Trzaskowski (red.)",
-    "edition": "2",
-    "isbn": "",
+    "year": 2020,
+    "author": "Thomas Riis, Jan Trzaskowski",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": "Ex Tuto Publishing"
    }
   ],
@@ -615,34 +633,34 @@
   "literature": [
    {
     "title": "Familieretten",
-    "year": "",
+    "year": 0,
     "author": "Linda Nielsen, Ingrid Lund-Andersen",
-    "edition": "10",
-    "isbn": "",
+    "edition": 10,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Arveretten",
-    "year": "",
+    "year": 0,
     "author": "Rasmus Kristian Feldthusen, Ingrid Lund-Andersen, Linda Nielsen",
-    "edition": "7",
-    "isbn": "",
+    "edition": 7,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Lovsamling 2024, JURA, 1. år",
-    "year": "2024",
+    "year": 2024,
     "author": "",
-    "edition": "",
-    "isbn": "",
+    "edition": 1,
+    "isbn": 0,
     "pubFirm": "Jurist- og Økonomforbundets Forlag"
    },
    {
     "title": "Lovsamling 2024, JURA, 1. år",
-    "year": "2024",
+    "year": 2024,
     "author": "",
-    "edition": "",
-    "isbn": "",
+    "edition": 1,
+    "isbn": 0,
     "pubFirm": "Law Academy"
    }
   ],
@@ -656,74 +674,66 @@
   "literature": [
    {
     "title": "Lærebog til Retssystemet og juridisk metode",
-    "year": "2024",
+    "year": 2024,
     "author": "Henrik Palmer Olsen",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "DJØFs Forlag"
    },
    {
-    "title": "Kompendium til Retssystemet og juridisk metode",
-    "year": "",
-    "author": "",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "HUM Reprocenter Søndre Campus"
-   },
-   {
-    "title": "Skriftlig Jura – Den juridiske fremstilling",
-    "year": "2020",
-    "author": "Thomas Riis (red.), Jan Trzaskowski (red.)",
-    "edition": "2",
-    "isbn": "",
+    "title": "Skriftlig Jura",
+    "year": 2020,
+    "author": "Karsten Naundrup,Troels Michael Lilja",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Grundlæggende erstatningsret I",
-    "year": "2019",
+    "year": 2019,
     "author": "Andreas Bloch Ehlers",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Retsfilosofi – Centrale tekster og temaer",
-    "year": "2019",
-    "author": "Hammerslev (red.), Palmer Olsen (red.)",
-    "edition": "2",
-    "isbn": "",
+    "year": 2019,
+    "author": "Lon Fuller, Hammerslev,Palmer Olsen",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": "Hans Reitzel"
    },
    {
     "title": "Retorik i retten – Bedre forelæggelse, afhøring og procedure",
-    "year": "2013",
+    "year": 2013,
     "author": "Janus Beyer",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Hans Reitzel"
    },
    {
     "title": "Retten i sproget",
-    "year": "",
-    "author": "Anne Lise Kjær (red.), m.fl. (red.)",
-    "edition": "",
-    "isbn": "",
+    "year": 0,
+    "author": "Anne Lise Kjær",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Djøf"
    },
    {
     "title": "Juridiske Metoder: 10 Bud",
-    "year": "",
-    "author": "",
-    "edition": "",
-    "isbn": "",
+    "year": 0,
+    "author": "Janne Rothmar Herrmann,Christian Bergqvist",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Grundlæggende aftaleret til studiebrug",
-    "year": "",
+    "year": 0,
     "author": "Mads Bryde Andersen",
-    "edition": "1",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -737,26 +747,26 @@
   "literature": [
    {
     "title": "Strafferettens Almindelige del. Det strafferetlige ansvar",
-    "year": "2022",
-    "author": "Baumbach,  Elholm",
-    "edition": "2",
-    "isbn": "",
+    "year": 2022,
+    "author": "Baumbach & Elholm",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Straffeprocessens katekismus",
-    "year": "2024",
-    "author": "Baumbach, Elholm",
-    "edition": "2",
-    "isbn": "",
+    "year": 2024,
+    "author": "Baumbach & Elholm",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Udvalgte delikter i straffeloven – En introduktion",
-    "year": "2024",
-    "author": "Baumbach, Elholm",
-    "edition": "3",
-    "isbn": "",
+    "year": 2024,
+    "author": "Baumach & Elholm",
+    "edition": 3,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -770,26 +780,26 @@
   "literature": [
    {
     "title": "Grundlæggende erstatningsret",
-    "year": "2025",
+    "year": 2025,
     "author": "Andreas Bloch Ehlers",
-    "edition": "2",
-    "isbn": "9788761940742",
+    "edition": 2,
+    "isbn": 9788761940742,
     "pubFirm": ""
    },
    {
     "title": "Lærebog i køberet",
-    "year": "2024",
+    "year": 2024,
     "author": "Andreas Bloch Ehlers",
-    "edition": "1",
-    "isbn": "9788761945273",
+    "edition": 1,
+    "isbn": 9788761945273,
     "pubFirm": ""
    },
    {
     "title": "Grundlæggende aftaleret til studiebrug",
-    "year": "2023",
+    "year": 2023,
     "author": "Mads Bryde Andersen",
-    "edition": "1",
-    "isbn": "9788712075622",
+    "edition": 1,
+    "isbn": 9788712075622,
     "pubFirm": ""
    }
   ],
@@ -803,10 +813,10 @@
   "literature": [
    {
     "title": "Individets grundlæggende rettigheder",
-    "year": "2024",
+    "year": 2024,
     "author": "Jens Elo Rytter",
-    "edition": "5",
-    "isbn": "",
+    "edition": 5,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -819,51 +829,43 @@
   "code": "JJUB57006U",
   "literature": [
    {
-    "title": "Forfatningsret – metode, magt og institutioner (studieudgave)",
-    "year": "2025",
+    "title": "Forfatningsret – metode, magt og institutioner",
+    "year": 2025,
     "author": "Helle Krunke, Sune Klinge",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Uddrag af EU-retten",
-    "year": "2025",
-    "author": "Karsten Engsig Sørensen m.fl.",
-    "edition": "9",
-    "isbn": "",
+    "year": 2025,
+    "author": "Karsten Engsig Sørensen",
+    "edition": 9,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "The Evolution of EU Law",
-    "year": "",
-    "author": "Paul Craig, Gráinne de Búrca (eds.)",
-    "edition": "",
-    "isbn": "",
+    "year": 0,
+    "author": "Paul Craig, Gráinne de Búrca",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Oxford University Press"
    },
    {
     "title": "Dansk Statsret",
-    "year": "2025",
-    "author": "Jens Peter Christensen m.fl.",
-    "edition": "4",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "Zahle – studieudgave",
-    "year": "",
-    "author": "Zahle",
-    "edition": "",
-    "isbn": "",
+    "year": 2025,
+    "author": "Jens Peter Christensen",
+    "edition": 4,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Dansk forfatningsret. Bind 1 : Institutioner og regulering",
-    "year": "2001",
+    "year": 2001,
     "author": "Zahle",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -877,10 +879,10 @@
   "literature": [
    {
     "title": "International Law",
-    "year": "2023",
+    "year": 2023,
     "author": "Anders Henriksen",
-    "edition": "4",
-    "isbn": "",
+    "edition": 4,
+    "isbn": 0,
     "pubFirm": "Oxford University Press"
    }
   ],
@@ -894,10 +896,10 @@
   "literature": [
    {
     "title": "EU Ret – Fri bevægelighed",
-    "year": "",
-    "author": "Ulla Neergaard,  Ruth Nielsen",
-    "edition": "",
-    "isbn": "",
+    "year": 0,
+    "author": "Ulla Neergaard, Ruth Nielsen",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "KarnovGroup"
    }
   ],
@@ -911,26 +913,26 @@
   "literature": [
    {
     "title": "Obligationsret 1. Del",
-    "year": "2019",
+    "year": 2019,
     "author": "Torsten Iversen",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Obligationsret 2. Del",
-    "year": "2019",
+    "year": 2019,
     "author": "Torsten Iversen",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Lærebog i Obligationsret II",
-    "year": "2022",
+    "year": 2022,
     "author": "Bo von Eyben, Peter Mortensen",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -944,26 +946,26 @@
   "literature": [
    {
     "title": "Forvaltningsret – almindelige emner",
-    "year": "2022",
+    "year": 2022,
     "author": "Søren Højgaard Mørup m.fl.",
-    "edition": "7",
-    "isbn": "",
+    "edition": 7,
+    "isbn": 0,
     "pubFirm": "Djøf Forlag"
    },
    {
     "title": "Forvaltningsret – sagsbehandling",
-    "year": "2019",
+    "year": 2019,
     "author": "Karsten Revsbech m.fl.",
-    "edition": "8",
-    "isbn": "",
+    "edition": 8,
+    "isbn": 0,
     "pubFirm": "Djøf Forlag"
    },
    {
     "title": "EU-rettens påvirkning af dansk forvaltningsret",
-    "year": "2021",
+    "year": 2021,
     "author": "Niels Fenger",
-    "edition": "4",
-    "isbn": "",
+    "edition": 4,
+    "isbn": 0,
     "pubFirm": "Djøf Forlag"
    }
   ],
@@ -977,42 +979,42 @@
   "literature": [
    {
     "title": "Digital tinglysning for studerende",
-    "year": "2019",
+    "year": 2019,
     "author": "Peter Mortensen",
-    "edition": "2",
-    "isbn": "",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Sikkerhed i fast ejendom",
-    "year": "2014",
+    "year": 2014,
     "author": "Peter Mortensen",
-    "edition": "2",
-    "isbn": "",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Tingene – Grundlæggende tingsret – Sikkerhed i løsøre og fordringer",
-    "year": "2025",
+    "year": 2025,
     "author": "Peter Mortensen",
-    "edition": "1",
-    "isbn": "",
+    "edition": 1,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
-    "title": "Tingsret – grundlæggende regler og erhvervslivets finansiering med løsøre og fordringer (studieudgave 2024)",
-    "year": "2024",
+    "title": "Tingsret – grundlæggende regler og erhvervslivets finansiering med løsøre og fordringer",
+    "year": 2024,
     "author": "Peter Mortensen",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    },
    {
     "title": "Kreditorerne",
-    "year": "2023",
+    "year": 2023,
     "author": "Ulrik Rammeskow Bang-Pedersen",
-    "edition": "4",
-    "isbn": "",
+    "edition": 4,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -1026,10 +1028,10 @@
   "literature": [
    {
     "title": "En dansk retshistorie",
-    "year": "2024",
+    "year": 2023,
     "author": "Morten Kjær, Helle Vogt",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Gad"
    },
    {
@@ -1050,11 +1052,19 @@
   "code": "JJUB57108U",
   "literature": [
    {
-    "title": "EU Law - Text, Cases and Materials",
-    "year": "2020",
+    "title": "EU Law - Text, cases and Materials",
+    "year": 2020,
     "author": "Paul Craig, Gráinne de Búrca",
-    "edition": "8",
-    "isbn": "",
+    "edition": 7,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "EU Law - Text, cases and Materials",
+    "year": 2020,
+    "author": "Paul Craig, Gráinne de Búrca",
+    "edition": 8,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -1068,26 +1078,34 @@
   "literature": [
    {
     "title": "Retsfilosofi - Centrale tekster og temaer",
-    "year": "2019",
-    "author": "Hammerslev, Olsen (red.)",
-    "edition": "2",
-    "isbn": "",
+    "year": 2019,
+    "author": "Hammerslev & Olsen",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": "Hans Reitzels Forlag"
    },
    {
     "title": "Retssociologi - Klassiske og moderne perspektiver",
-    "year": "2022",
-    "author": "Hammerslev, Madsen (red.)",
-    "edition": "2",
-    "isbn": "",
+    "year": 2013,
+    "author": "Hammerslev & Madsen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzels Forlag"
+   },
+   {
+    "title": "Retssociologi - Klassiske og moderne perspektiver",
+    "year": 2022,
+    "author": "Hammerslev & Madsen",
+    "edition": 2,
+    "isbn": 0,
     "pubFirm": "Hans Reitzels Forlag"
    },
    {
     "title": "Restorative Justice - Ideas, Values, Debates",
-    "year": "2001",
+    "year": 2001,
     "author": "Johnstone",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Routledge"
    }
   ],
