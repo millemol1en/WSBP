@@ -11,6 +11,7 @@ BOOK_START_MARKERS  = {"Lærebog:", "Litteratur", "Course books", "Course litera
 EDITION_MARKERS     = {"studieudgave", "Studieudgave", "udg.", "Udg.", "udgave" , "Udgave", "ed.", "Ed.", "edition", "Edition", "Vol.", "vol.", "volume", "Volume" ,"kapitel", "Kapitel", "kap.", "Kap." "kapitler", "Kapitler", "chapter", "Chapter", "chapters", "Chapters"}
 
 PUBLISHING_MARKERS  = {
+    # Exclusively Danish Publishing Firms
     "Gyldendal",
     "Politikens Forlag",
     "Lindhardt og Ringhof",
@@ -23,14 +24,17 @@ PUBLISHING_MARKERS  = {
     "KarnovGroup",
     "Hans Reitzels Forlag",
     "Hans Reitzel"
-    # International publishing firms
+
+    # International Publishing Firms
     "Oxford University Press",
     "Cambridge University Press",
     "Penguin Random House",
     "HarperCollins", "Simon & Schuster",
     "Macmillan Publishers",
     "Hachette Book Group",
-    "Wiley"}
+    "Wiley"
+
+}
 
 
 

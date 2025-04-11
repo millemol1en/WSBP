@@ -6,7 +6,7 @@ from urllib.parse import urlparse, unquote, urljoin
 from enum import Enum
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
 
 # TODO: Move to "Defs.py"
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
@@ -19,7 +19,7 @@ class SubjectListFormatType(Enum):
     E = "buildup"
     F = "none"
 
-class PolyUCrawler(ScrapyAbstractCrawler):
+class PolyUCrawler(RawScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 
@@ -92,10 +92,8 @@ class PolyUCrawler(ScrapyAbstractCrawler):
         match format_type:
             # [Case #1] <main> & <a>
             case SubjectListFormatType.A:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
 
                 main_tag = response.css("main")
-
                 a_tags = main_tag.css("a")
 
                 for a_tag in a_tags:
@@ -329,7 +327,7 @@ class PolyUCrawler(ScrapyAbstractCrawler):
         
         return True
     
-    # []
+    # [LM #6]  
     def handle_format_type_c(self, response):
         department_name = response.meta['department_name']
         department_abbr = response.meta['department_abbr']

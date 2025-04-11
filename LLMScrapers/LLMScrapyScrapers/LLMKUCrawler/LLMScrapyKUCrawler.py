@@ -1,10 +1,10 @@
 import scrapy
 import os
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import ScrapyAbstractCrawler, LLMType
+from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMScrapyAbstractCrawler, LLMType
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
 
-class LLMKUCrawler(ScrapyAbstractCrawler):
+class LLMKUCrawler(LLMScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI, **kwargs):
         super().__init__(_name=_name, _url=_url, _llm_type=_llm_type, **kwargs)
 
@@ -12,7 +12,6 @@ class LLMKUCrawler(ScrapyAbstractCrawler):
         yield from self.scrape_departments(response)
 
     """ Step 2 - """
-    # TODO: Replace ".css" with XPath
     def scrape_departments(self, response):
         departments_select = response.css('select#departments')
         departments_option = departments_select.css('option')
@@ -96,3 +95,6 @@ class LLMKUCrawler(ScrapyAbstractCrawler):
         )
 
         yield courseDTO
+
+    def call_llm(self):
+        return super().call_llm()

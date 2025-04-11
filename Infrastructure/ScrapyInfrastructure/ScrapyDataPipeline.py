@@ -1,10 +1,13 @@
-import time
-
+# Scraping API:
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
+# Local Imports:
 from DataObjects.Department import Department, Course
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
+
+# Native Python Imports:
+import time
 
 class DataPipeline:
     # [0] Initalize our static Department dictionary:

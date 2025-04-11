@@ -1,34 +1,34 @@
-from abc import ABC, abstractmethod
-from Infrastructure.lit_cleaner import sanitize_course_literature, extract_books, new_fixer
+# Scraping APIs:
 import scrapy
+
+# Loca Imports:
 from DataObjects.Department import Department
 from DataObjects.Book import Book
 from DataObjects.Course import Course
-import os 
-import json
-from enum import Enum
+from Infrastructure.LiteratureCleaner.LiteratureCleaner import sanitize_course_literature, extract_books, new_fixer
+
+# LLM APIs:
 from openai import OpenAI
 from google import genai
 from pydantic import BaseModel
+
+# Native Python Imports:
+import os 
+import json
+from enum import Enum
 from dotenv import load_dotenv
+from abc import ABC, abstractmethod
 
+# Load in the LLM environment variables using LLM API keys:
 load_dotenv()
-
 gpt_key = os.getenv("OPENAI_API_KEY")
 gemini_key = os.getenv("GEMINI_API_KEY")
-
 gpt_client = OpenAI(api_key=gpt_key)
 gemini_client = genai.Client(api_key=gemini_key)
-
-
 
 #TODO: Delete? 
 class BooksResponse(BaseModel):
     books: list[Book]
-
-# TODO : TEST 
-
-
 
 class LLMType(Enum):
     CHAT_GPT = "chatgpt"
@@ -36,13 +36,13 @@ class LLMType(Enum):
     DEEPSEEKER = "deepseeker"
     NULL_AI = "null_ai"
 
-class ScrapyAbstractCrawler(scrapy.Spider, ABC):
+class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
     departments : list[Department] = []
 
     def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI, **kwargs):
         self.name = _name
         self.start_urls = [_url] 
-        self.api_type = _llm_type
+        self.llm_type = _llm_type
         super().__init__(**kwargs)
 
     """ Step 1 - Required Method in for Scrapy to execute """
@@ -65,8 +65,12 @@ class ScrapyAbstractCrawler(scrapy.Spider, ABC):
     def scrape_single_course(self, response):
         pass
 
+    @abstractmethod
+    def call_llm(self):
+        pass
+
     def clean_literature(self, raw_literature):
-        match self.api_type:
+        match self.llm_type:
             case LLMType.CHAT_GPT:
                 print("Chat GPT API")
                 messages = [

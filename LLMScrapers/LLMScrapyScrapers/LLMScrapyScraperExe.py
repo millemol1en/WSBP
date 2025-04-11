@@ -1,20 +1,22 @@
 # API Imports:
 from scrapy.crawler import CrawlerProcess
+
 # Local Imports:
-from LLMScrapers.LLMScrapyScrapers.LLMScrapyKUCrawler import LLMKUCrawler
-from LLMScrapers.LLMScrapyScrapers.LLMScrapyDTUCrawler import LLMDTUCrawler
-from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairingScraper import LLMSelfRepairingScraper
-from Infrastructure.ScrapyInfrastructure.ScrapyAbstractCrawler import LLMType
+from LLMScrapers.LLMScrapyScrapers.LLMKUCrawler.LLMScrapyKUCrawler import LLMKUCrawler
+from LLMScrapers.LLMScrapyScrapers.LLMGronigenCrawler.LLMScrapyGroningen import LLMGroningenCrawler
+from LLMScrapers.LLMScrapyScrapers.LLMDTUCrawler.LLMScrapyDTUCrawler import LLMDTUCrawler
+from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairing.LLMSelfRepairingScraper import LLMSelfRepairingScraper
+from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
 
 def llm_scrapy_scraper_executor():
     process = CrawlerProcess({
         # [] Logging:
-        'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG
+        'LOG_LEVEL': 'DEBUG', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
-        'FEEDS': {
-             'dtu_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
-        },
+        # 'FEEDS': {
+        #      'dtu_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+        # },
 
         # Pipeline Configuration:
         'ITEM_PIPELINES': {
@@ -51,6 +53,13 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ Data Accuracy - KU """
-    #process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
-    process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.GEMINI)
+    # process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
+    # process.start()
+
+    """ Data Accuracy - DTU """
+    # process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.GEMINI)
+    # process.start()
+
+    """ Crawling Accuracy - Groningen """
+    process.crawl(LLMGroningenCrawler, _name="University of Groningen", _url="https://ocasys.rug.nl/current/catalog", _llm_type=LLMType.GEMINI)
     process.start()
