@@ -157,14 +157,12 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
                 job_id    = tuning_job.name
                 job_state = tuning_job.state
                 print(f"Started tuning job: {job_id}")
-                print(f"Started tuning job: {job_state}")
+                print(f"Job state name: {job_state.name}")
                     
-                time.sleep(10)
-                print(f"Started tuning job: {job_state}")
-                time.sleep(2)
-                print(f"Tuning job state: {job_state}")
-                time.sleep(2)
-                print(f"Tuning job state: {job_state}")
+                while job_state.name != "JOB_STATE_SUCCEEDED":
+                    print(f"Running! Current job state is: {job_state.name}")
+
+                print(f"Job state name: {job_state.name}")
 
                 try:
                     response = gemini_client.models.generate_content(
