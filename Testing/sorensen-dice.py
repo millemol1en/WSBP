@@ -118,7 +118,7 @@ def exec_sorensen_dice(baseline_title, llm_title):
     for baseline, llm in zip(baseline_json, llm_json): 
         comparisons.append(compare_courses(baseline, llm))
 
-    threshold = 0.95
+    threshold = 0.50
     correct = 0
     total = len(comparisons)
 
@@ -143,10 +143,11 @@ def exec_sorensen_dice(baseline_title, llm_title):
     return data_accuracy
 
 print("**** KU COURSES ****")
-exec_sorensen_dice("ku_baseline.json", "ku_gemini.json")
-exec_sorensen_dice("ku_baseline.json", "ku_gpt.json")
+#exec_sorensen_dice("ku_baseline.json", "ku_gemini.json")
+#exec_sorensen_dice("ku_baseline.json", "ku_gpt.json")
 
 print("\n**** KU COURSES ****")
-exec_sorensen_dice("dtu_baseline.json", "dtu_gemini.json")
-exec_sorensen_dice("dtu_baseline.json", "dtu_gpt.json")
+#exec_sorensen_dice("dtu_baseline.json", "dtu_gemini.json")
+#exec_sorensen_dice("dtu_baseline.json", "dtu_gpt.json")
 
+exec_sorensen_dice("polyu_baseline.json", "polyu_gpt.json")

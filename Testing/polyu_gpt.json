@@ -1,0 +1,712 @@
+[
+ {
+  "course_name": "Freshman Seminar",
+  "course_code": "ITC1002G",
+  "literature": [
+   {
+    "title": "Fashion Media: Past and Present",
+    "year": 2013,
+    "author": "Bartlett, D., Cole, S., Rocamora, A.D.B.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Bloomsbury Academic"
+   },
+   {
+    "title": "Techno Textiles 2: Revolutionary Fabrics for Fashion and Design",
+    "year": 2005,
+    "author": "Braddock, S. and O'Mahony, M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Thames & Hudson"
+   },
+   {
+    "title": "Fashion: From Concept to Consumer",
+    "year": 2008,
+    "author": "Frings, G. S.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Pearson/Prentice Hall"
+   },
+   {
+    "title": "Fashion: the industry and its careers",
+    "year": 2012,
+    "author": "Granger, M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Fairchild Books"
+   },
+   {
+    "title": "Textile innovation: interactive, contemporary and traditional materials",
+    "year": 2004,
+    "author": "Hibbert, R.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Line"
+   },
+   {
+    "title": "Sustainable Fashion: Past, Present and Future",
+    "year": 2014,
+    "author": "Hill, C. and Farley Gordon, J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Bloomsbury Publishing Plc"
+   },
+   {
+    "title": "Inside the Fashion Business",
+    "year": 2003,
+    "author": "Jarnow, J. and Dickerson, K.G.",
+    "edition": 7,
+    "isbn": 0,
+    "pubFirm": "Prentice-Hall"
+   },
+   {
+    "title": "Product Innovation in the Global Fashion Industry",
+    "year": 2018,
+    "author": "Jin, B. and Cedrola, E.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Palgrave Pivot"
+   },
+   {
+    "title": "Fashioning the Future: tomorrow’s wardrobe",
+    "year": 2005,
+    "author": "Lee, S. and Jones, N.T.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Thames & Hudson"
+   },
+   {
+    "title": "Textiles and Fashion",
+    "year": 2008,
+    "author": "Udale, J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "AVA Academia"
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Fashion and Culture",
+  "course_code": "ITC1C02",
+  "literature": [
+   {
+    "title": "Fashion, Culture and Identity",
+    "year": 1992,
+    "author": "F. Davis",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "University of Chicago Press"
+   },
+   {
+    "title": "In the Culture Society: Art, Fashion, Popular Music",
+    "year": 1999,
+    "author": "A. McRobbie",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Routledge"
+   },
+   {
+    "title": "Fashion as Communication",
+    "year": 2002,
+    "author": "M. Barnard",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Routledge"
+   },
+   {
+    "title": "The Meanings of Dress",
+    "year": 2005,
+    "author": "M. L. Damhorst",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Fairchild Publications"
+   },
+   {
+    "title": "Garb: A Fashion and Culture Reader",
+    "year": 2008,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Pearson Prentice Hall"
+   },
+   {
+    "title": "Communication Between Cultures",
+    "year": 2010,
+    "author": "L. A. Samovar",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Wadsworth"
+   },
+   {
+    "title": "The Social Psychology of Clothing: Symbolic Appearances in Context",
+    "year": 1998,
+    "author": "S. B. Kaiser",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Fairchild Publications"
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Introduction to Fashion Presentation",
+  "course_code": "ITC1200D",
+  "literature": [
+   {
+    "title": "Adobe Muse CC: classroom in a book: the official training workbook from Adobe",
+    "year": 2017,
+    "author": "W. Brain",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Adobe Press, San Francisco"
+   },
+   {
+    "title": "Design with Adobe Creative Cloud: basic projects using Photoshop, InDesign, Muse, and more",
+    "year": 2014,
+    "author": "C. Conrad",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Adobe Press, San Francisco"
+   },
+   {
+    "title": "Creative web design with Adobe Muse",
+    "year": 2014,
+    "author": "A. David",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Focal Press, Burlington, MA"
+   },
+   {
+    "title": "Fashion and textiles design with Photoshop and Illustrator: professional creative practice",
+    "year": 2016,
+    "author": "R. Hume",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Fairchild Books, An imprint of Bloomsbury Publishing, Plc, New York"
+   },
+   {
+    "title": "Creative fashion design with Illustrator",
+    "year": 2013,
+    "author": "T. Kelvn",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Batsford, London"
+   },
+   {
+    "title": "Digital design essentials: 100 ways to design better desktop, web, and mobile interfaces",
+    "year": 2013,
+    "author": "R. Lai",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Rockport Publishers, Beverly, Massachusetts"
+   },
+   {
+    "title": "Adobe Dreamweaver CC: 2015 release",
+    "year": 2016,
+    "author": "J. J. Maivaid",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Adobe Press, San Jose, California"
+   },
+   {
+    "title": "Designing the user interface: strategies for effective human-computer-interaction",
+    "year": 2017,
+    "author": "B. Shneiderman",
+    "edition": 6,
+    "isbn": 0,
+    "pubFirm": "Pearson, Boston"
+   },
+   {
+    "title": "Figure poses for fashion illustrators",
+    "year": 2011,
+    "author": "S. Tahmasebi",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Hauppauge, Barron’s, N.Y."
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Introduction to Thinking Styles",
+  "course_code": "ITC1001D/ ITC1A01",
+  "literature": [
+   {
+    "title": "Personality: a cognitive approach",
+    "year": 1998,
+    "author": "Brunas-Wagstaff, J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Routledge"
+   },
+   {
+    "title": "Strategic for Creative Problem Solving",
+    "year": 2014,
+    "author": "Fogler, H.S., LeBlanc, S.E. & Rizzo, B.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Pearson"
+   },
+   {
+    "title": "Strategic thinking: leadership, and the management of change",
+    "year": 1993,
+    "author": "Hendry, J., Johnson, G., & Newton, J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "J. Wiley"
+   },
+   {
+    "title": "The whole brain business book",
+    "year": 1996,
+    "author": "Herrmann, N.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "McGraw-Hill"
+   },
+   {
+    "title": "Problem solving and decision making: hard, soft and creative approaches",
+    "year": 2004,
+    "author": "Hicks, M. J.",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Thomson"
+   },
+   {
+    "title": "99 More Unuseless Japanese Inventions: The Art of Chindogu",
+    "year": 1997,
+    "author": "Kawakami, K.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "W.W. Norton & Co."
+   },
+   {
+    "title": "Bumper Book of Unuseless Japanese Inventions: The Art of Chindogu",
+    "year": 2004,
+    "author": "Kawakami, K., Fearnley-Whittingstall, H.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harper Collins Entertainment"
+   },
+   {
+    "title": "The Big Bento Box of Unuseless Japanese Inventions: The Art of Chindogu",
+    "year": 2005,
+    "author": "Kawakami, K., Papia, D., & Fearnley-Whittingstall, H.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "W.W. Norton"
+   },
+   {
+    "title": "Future bright: a transforming vision of human intelligence",
+    "year": 2013,
+    "author": "Martinez, M. E.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Everyday creativity and new views of human nature",
+    "year": 2007,
+    "author": "Richards, R.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "American Psychological Association"
+   },
+   {
+    "title": "Encyclopedia of creativity",
+    "year": 2011,
+    "author": "Runco, M., Pritzker, S.",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Academic Press"
+   },
+   {
+    "title": "Successful intelligence: how practical and creative intelligence determine success in life",
+    "year": 1996,
+    "author": "Sternberg, R. J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Simon & Schuster"
+   },
+   {
+    "title": "Thinking styles",
+    "year": 1997,
+    "author": "Sternberg, R. J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Cambridge University Press"
+   },
+   {
+    "title": "Mind in context: interactionist perspectives on human intelligence",
+    "year": 1994,
+    "author": "Sternberg, R. J., & Wagner, R. K.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Cambridge University Press"
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Smart Wearables and Smart Living",
+  "course_code": "ITC1D04",
+  "literature": [
+   {
+    "title": "Handbook of smart textiles",
+    "year": 2015,
+    "author": "Xiaoming Tao",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Springer"
+   },
+   {
+    "title": "Seamless Health Monitoring",
+    "year": 2018,
+    "author": "Toshiyo Tamura, Wenxi Chen",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Springer"
+   },
+   {
+    "title": "Crafting wearables: blending technology with fashion",
+    "year": 2016,
+    "author": "Daren Guler, Madeline Gannon and Kate Sicchio",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Springer"
+   },
+   {
+    "title": "Fashion design for living",
+    "year": 2015,
+    "author": "A. Gwilt (Ed.)",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Routledge, New York"
+   },
+   {
+    "title": "Fashion and Technology: a guide to materials and applications",
+    "year": 2018,
+    "author": "A. Genova",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "NY Fairchild books, Bloomsbury Publishing, New York"
+   },
+   {
+    "title": "Hi-tech Fashion",
+    "year": 2014,
+    "author": "R. Spilsbury",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Capstone Global Library, Oxford"
+   },
+   {
+    "title": "The Engineering Handbook of Smart Technology for Aging, Disability, and Independence",
+    "year": 2008,
+    "author": "Abdelsalam (Sumi) Helal, Mounir Mokhtari, Bessam Abdulrazak",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "John Wiley & Sons, Inc."
+   },
+   {
+    "title": "Electronic textiles: smart fabrics and wearable technology",
+    "year": 2015,
+    "author": "D Tilak",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Woodhead"
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Textile Studies I",
+  "course_code": "ITC2002T",
+  "literature": [
+   {
+    "title": "Introduction to Physical Polymer Science",
+    "year": 2006,
+    "author": "",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "Wiley"
+   },
+   {
+    "title": "An Introduction to Polymer Physics",
+    "year": 2002,
+    "author": "D.I. Bower",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Cambridge University Press"
+   },
+   {
+    "title": "Understanding Textiles, Volume 1: Fibre Technology",
+    "year": 1993,
+    "author": "K. Chan, K.P. Cheng, M.P. Lau",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "The Hong Kong Polytechnic University"
+   },
+   {
+    "title": "Understanding Textiles",
+    "year": 2001,
+    "author": "B.J. Collier, P.G. Tortora",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Prentice Hall"
+   },
+   {
+    "title": "Joseph’s Introductory Textile Science",
+    "year": 1993,
+    "author": "P.B. Hudson, A.C. Clapp, D. Kness",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harcourt Brace Jovanovich College Publishers"
+   },
+   {
+    "title": "Fancy Yarns: Their Manufacture and Application",
+    "year": 2002,
+    "author": "R.H. Gong",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "CRC Press/Woodhead Pub"
+   },
+   {
+    "title": "New Spinning System",
+    "year": 1993,
+    "author": "W. Klein",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Textile Institute"
+   },
+   {
+    "title": "Fundamentals of Spun Yarn Technology",
+    "year": 2003,
+    "author": "C.A. Laurence",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "CRC Press"
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Design Studies",
+  "course_code": "ITC2001D",
+  "literature": [
+   {
+    "title": "Design Process Improvement: A Review of Current Practice",
+    "year": 2005,
+    "author": "Clarkson, J. & Eckert, C. (Eds.)",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Springer, London"
+   },
+   {
+    "title": "Understanding Aesthetics for the Merchandising and Design Professional",
+    "year": 2010,
+    "author": "Fiore, A. M.",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Fairchild, New York"
+   },
+   {
+    "title": "Design Methods",
+    "year": 1992,
+    "author": "Jones, J. C.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "John Wiley & Sons, New York"
+   },
+   {
+    "title": "How Designers Think: The Design Process Demystified",
+    "year": 2006,
+    "author": "Lawson, B.",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "Architectural Press, Oxford; Boston"
+   },
+   {
+    "title": "What is a Designer: Things, Places, Messages",
+    "year": 2002,
+    "author": "Potter, N.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Hyphen, London"
+   },
+   {
+    "title": "Materials and Design: The Art and Science of Material Selection in Product Design",
+    "year": 2010,
+    "author": "Ashby, M. F.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Butterworth-Heinemann, Oxford"
+   },
+   {
+    "title": "Color Studies",
+    "year": 2006,
+    "author": "Feisner A.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Fairchild, New York"
+   },
+   {
+    "title": "Product Concept Design: A Review of the Conceptual Design of Products in Industry",
+    "year": 2006,
+    "author": "Keinonen, T. & Takala, R. (Eds.)",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Springer, London"
+   },
+   {
+    "title": "Techno Fashion",
+    "year": 2002,
+    "author": "Quinn B.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Berg, New York"
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Fashion and Culture",
+  "course_code": "ITC1CN02",
+  "literature": [
+   {
+    "title": "Basic Theory of Fashion and Culture",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Communicating Fashion",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "The Fashioned Body: Fashion, Dress and Social Theory",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "The Superhero Costume",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Reading Fashion in Art",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Subcultures: Cultural Histories and Social Practice",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Sustainability and Social Change in Fashion",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "A Cultural History of Western Fashion: From Haute Couture to Virtual Couture",
+    "year": 0,
+    "author": "",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Fashion Design I",
+  "course_code": "ITC2003D",
+  "literature": [
+   {
+    "title": "Basic Figure Drawing Techniques",
+    "year": 1994,
+    "author": "G. Albert",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "North Light Books"
+   },
+   {
+    "title": "Fashion Terminology",
+    "year": 1992,
+    "author": "J.E. Blair",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Prentice Hall"
+   },
+   {
+    "title": "20th Century Icons. Fashion",
+    "year": 1999,
+    "author": "J. Rocha",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Absolute Press"
+   },
+   {
+    "title": "Fashion Illustration: Basic Techniques",
+    "year": 1996,
+    "author": "J. Seaman",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Batsford"
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ },
+ {
+  "course_name": "Fashion and Beauty",
+  "course_code": "ITC1A03",
+  "literature": [
+   {
+    "title": "The Clothed Body",
+    "year": 2004,
+    "author": "P. Calefato",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Berg"
+   },
+   {
+    "title": "The Body in Society: An Introduction",
+    "year": 2013,
+    "author": "A. Howson",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Polity Press"
+   },
+   {
+    "title": "Social Psychology of Dress",
+    "year": 2017,
+    "author": "S. Lennon, K. K. P. Johnson, N. Rudd",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "dep_name": "School of Fashion and Textiles"
+ }
+]

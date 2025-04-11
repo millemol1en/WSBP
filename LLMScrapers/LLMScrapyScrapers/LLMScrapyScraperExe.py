@@ -5,18 +5,19 @@ from scrapy.crawler import CrawlerProcess
 from LLMScrapers.LLMScrapyScrapers.LLMKUCrawler.LLMScrapyKUCrawler import LLMKUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMGronigenCrawler.LLMScrapyGroningen import LLMGroningenCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMDTUCrawler.LLMScrapyDTUCrawler import LLMDTUCrawler
+from LLMScrapers.LLMScrapyScrapers.LLMPolyUCrawler.LLMScrapyPolyUCrawler import LLMPolyUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairing.LLMSelfRepairingScraper import LLMSelfRepairingScraper
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
 
 def llm_scrapy_scraper_executor():
     process = CrawlerProcess({
         # [] Logging:
-        'LOG_LEVEL': 'DEBUG', # INFO, ERROR, CRITICAL, DEBUG
+        'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
-        # 'FEEDS': {
-        #      'dtu_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
-        # },
+        'FEEDS': {
+              'poly_u.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+        },
 
         # Pipeline Configuration:
         'ITEM_PIPELINES': {
@@ -61,5 +62,6 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ Crawling Accuracy - Groningen """
-    process.crawl(LLMGroningenCrawler, _name="University of Groningen", _url="https://ocasys.rug.nl/current/catalog", _llm_type=LLMType.GEMINI)
+    #process.crawl(LLMGroningenCrawler, _name="University of Groningen", _url="https://ocasys.rug.nl/current/catalog", _llm_type=LLMType.GEMINI)
+    process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
     process.start()
