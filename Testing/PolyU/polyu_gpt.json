@@ -1,7 +1,7 @@
 [
  {
-  "course_name": "Freshman Seminar",
-  "course_code": "ITC1002G",
+  "name": "Freshman Seminar",
+  "code": "ITC1002G",
   "literature": [
    {
     "title": "Fashion Media: Past and Present",
@@ -84,11 +84,11 @@
     "pubFirm": "AVA Academia"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion and Culture",
-  "course_code": "ITC1C02",
+  "name": "Fashion and Culture",
+  "code": "ITC1C02",
   "literature": [
    {
     "title": "Fashion, Culture and Identity",
@@ -147,11 +147,11 @@
     "pubFirm": "Fairchild Publications"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Introduction to Fashion Presentation",
-  "course_code": "ITC1200D",
+  "name": "Introduction to Fashion Presentation",
+  "code": "ITC1200D",
   "literature": [
    {
     "title": "Adobe Muse CC: classroom in a book: the official training workbook from Adobe",
@@ -226,11 +226,11 @@
     "pubFirm": "Hauppauge, Barron’s, N.Y."
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Introduction to Thinking Styles",
-  "course_code": "ITC1001D/ ITC1A01",
+  "name": "Introduction to Thinking Styles",
+  "code": "ITC1001D/ ITC1A01",
   "literature": [
    {
     "title": "Personality: a cognitive approach",
@@ -345,11 +345,11 @@
     "pubFirm": "Cambridge University Press"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Smart Wearables and Smart Living",
-  "course_code": "ITC1D04",
+  "name": "Smart Wearables and Smart Living",
+  "code": "ITC1D04",
   "literature": [
    {
     "title": "Handbook of smart textiles",
@@ -416,11 +416,11 @@
     "pubFirm": "Woodhead"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Textile Studies I",
-  "course_code": "ITC2002T",
+  "name": "Textile Studies I",
+  "code": "ITC2002T",
   "literature": [
    {
     "title": "Introduction to Physical Polymer Science",
@@ -487,11 +487,11 @@
     "pubFirm": "CRC Press"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Design Studies",
-  "course_code": "ITC2001D",
+  "name": "Design Studies",
+  "code": "ITC2001D",
   "literature": [
    {
     "title": "Design Process Improvement: A Review of Current Practice",
@@ -566,11 +566,11 @@
     "pubFirm": "Berg, New York"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion and Culture",
-  "course_code": "ITC1CN02",
+  "name": "Fashion and Culture",
+  "code": "ITC1CN02",
   "literature": [
    {
     "title": "Basic Theory of Fashion and Culture",
@@ -637,11 +637,11 @@
     "pubFirm": ""
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion Design I",
-  "course_code": "ITC2003D",
+  "name": "Fashion Design I",
+  "code": "ITC2003D",
   "literature": [
    {
     "title": "Basic Figure Drawing Techniques",
@@ -676,11 +676,11 @@
     "pubFirm": "Batsford"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion and Beauty",
-  "course_code": "ITC1A03",
+  "name": "Fashion and Beauty",
+  "code": "ITC1A03",
   "literature": [
    {
     "title": "The Clothed Body",
@@ -707,6 +707,6 @@
     "pubFirm": ""
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  }
 ]

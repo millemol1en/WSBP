@@ -1,173 +1,7 @@
 [
  {
-  "course_name": "Freshman Seminar",
-  "course_code": "ITC1002G",
-  "literature": [
-   {
-    "title": "Fashion Media: Past and Present",
-    "year": 2013,
-    "author": "Bartlett, D., Cole, S., Rocamora, A.D.B.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Bloomsbury Academic"
-   },
-   {
-    "title": "Techno Textiles 2: Revolutionary Fabrics for Fashion and Design",
-    "year": 2005,
-    "author": "Braddock, S. and O'Mahony, M.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Thames & Hudson"
-   },
-   {
-    "title": "Fashion: From Concept to Consumer",
-    "year": 2008,
-    "author": "Frings, G. S.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Pearson/Prentice Hall"
-   },
-   {
-    "title": "Fashion: the industry and its careers",
-    "year": 2012,
-    "author": "Granger, M.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Fairchild Books"
-   },
-   {
-    "title": "Textile innovation: interactive, contemporary and traditional materials",
-    "year": 2004,
-    "author": "Hibbert, R.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Line"
-   },
-   {
-    "title": "Sustainable Fashion: Past, Present and Future",
-    "year": 2014,
-    "author": "Hill, C. and Farley Gordon, J.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Bloomsbury Publishing Plc"
-   },
-   {
-    "title": "Inside the Fashion Business",
-    "year": 2003,
-    "author": "Jarnow, J. and Dickerson, K.G.",
-    "edition": "7",
-    "isbn": "",
-    "pubFirm": "Prentice-Hall"
-   },
-   {
-    "title": "Product Innovation in the Global Fashion Industry",
-    "year": 2018,
-    "author": "Jin, B. and Cedrola, E.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Palgrave Pivot"
-   },
-   {
-    "title": "Fashioning the Future: tomorrow’s wardrobe",
-    "year": 2005,
-    "author": "Lee, S. and Jones, N.T.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Thames & Hudson"
-   },
-   {
-    "title": "Textiles and Fashion",
-    "year": 2008,
-    "author": "Udale, J.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "AVA Academia"
-   }
-  ],
-  "dep_name": "School of Fashion and Textiles"
- },
- {
-  "course_name": "Introduction to Fashion Presentation",
-  "course_code": "ITC1200D",
-  "literature": [
-   {
-    "title": "Adobe Muse CC: classroom in a book: the official training workbook from Adobe",
-    "year": 2017,
-    "author": "Brain, W.",
-    "edition": "2",
-    "isbn": "",
-    "pubFirm": "Adobe Press, San Francisco"
-   },
-   {
-    "title": "Design with Adobe Creative Cloud: basic projects using Photoshop, InDesign, Muse, and more",
-    "year": 2014,
-    "author": "Conrad, C.",
-    "edition": "0",
-    "isbn": "",
-    "pubFirm": "Adobe Press, San Francisco"
-   },
-   {
-    "title": "Creative web design with Adobe Muse",
-    "year": 2014,
-    "author": "David, A.",
-    "edition": "0",
-    "isbn": "",
-    "pubFirm": "Focal Press, Burlington, MA"
-   },
-   {
-    "title": "Fashion and textiles design with Photoshop and Illustrator: professional creative practice",
-    "year": 2016,
-    "author": "Hume, R.",
-    "edition": "0",
-    "isbn": "",
-    "pubFirm": "FairchildBooks, Bloomsbury Publishing, New York"
-   },
-   {
-    "title": "Creative fashion design with Illustrator",
-    "year": 2013,
-    "author": "Kelvn, T.",
-    "edition": "0",
-    "isbn": "",
-    "pubFirm": "Batsford, London"
-   },
-   {
-    "title": "Digital design essentials: 100 ways to design better desktop, web, and mobile interfaces",
-    "year": 2013,
-    "author": "Lai, R.",
-    "edition": "0",
-    "isbn": "",
-    "pubFirm": "Rockport Publishers, Beverly, Massachusetts"
-   },
-   {
-    "title": "Adobe Dreamweaver CC: 2015 release",
-    "year": 2016,
-    "author": "Maivaid, J. J.",
-    "edition": "0",
-    "isbn": "",
-    "pubFirm": "Adobe Press, San Jose, California"
-   },
-   {
-    "title": "Designing the user interface: strategies for effective human-computer-interaction",
-    "year": 2017,
-    "author": "Shneiderman, B.",
-    "edition": "6",
-    "isbn": "",
-    "pubFirm": "Pearson, Boston"
-   },
-   {
-    "title": "Figure poses for fashion illustrators",
-    "year": 2011,
-    "author": "Tahmasebi, S.",
-    "edition": "0",
-    "isbn": "",
-    "pubFirm": "Barron’s, Hauppauge, NY"
-   }
-  ],
-  "dep_name": "School of Fashion and Textiles"
- },
- {
-  "course_name": "Introduction to Thinking Styles",
-  "course_code": "ITC1001D/ ITC1A01",
+  "name": "Introduction to Thinking Styles",
+  "code": "ITC1001D/ ITC1A01",
   "literature": [
    {
     "title": "Personality: a cognitive approach",
@@ -298,11 +132,177 @@
     "pubFirm": "Portfolio, New York"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion and Beauty",
-  "course_code": "ITC1A03",
+  "name": "Freshman Seminar",
+  "code": "ITC1002G",
+  "literature": [
+   {
+    "title": "Fashion Media: Past and Present",
+    "year": 2013,
+    "author": "Bartlett, D., Cole, S., Rocamora, A.D.B.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Bloomsbury Academic"
+   },
+   {
+    "title": "Techno Textiles 2: Revolutionary Fabrics for Fashion and Design",
+    "year": 2005,
+    "author": "Braddock, S. and O'Mahony, M.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Thames & Hudson"
+   },
+   {
+    "title": "Fashion: From Concept to Consumer",
+    "year": 2008,
+    "author": "Frings, G. S.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Pearson/Prentice Hall"
+   },
+   {
+    "title": "Fashion: the industry and its careers",
+    "year": 2012,
+    "author": "Granger, M.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Fairchild Books"
+   },
+   {
+    "title": "Textile innovation: interactive, contemporary and traditional materials",
+    "year": 2004,
+    "author": "Hibbert, R.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Line"
+   },
+   {
+    "title": "Sustainable Fashion: Past, Present and Future",
+    "year": 2014,
+    "author": "Hill, C. and Farley Gordon, J.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Bloomsbury Publishing Plc"
+   },
+   {
+    "title": "Inside the Fashion Business",
+    "year": 2003,
+    "author": "Jarnow, J. and Dickerson, K.G.",
+    "edition": "7",
+    "isbn": "",
+    "pubFirm": "Prentice-Hall"
+   },
+   {
+    "title": "Product Innovation in the Global Fashion Industry",
+    "year": 2018,
+    "author": "Jin, B. and Cedrola, E.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Palgrave Pivot"
+   },
+   {
+    "title": "Fashioning the Future: tomorrow’s wardrobe",
+    "year": 2005,
+    "author": "Lee, S. and Jones, N.T.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "Thames & Hudson"
+   },
+   {
+    "title": "Textiles and Fashion",
+    "year": 2008,
+    "author": "Udale, J.",
+    "edition": "",
+    "isbn": "",
+    "pubFirm": "AVA Academia"
+   }
+  ],
+  "department": "School of Fashion and Textiles"
+ },
+ {
+  "name": "Introduction to Fashion Presentation",
+  "code": "ITC1200D",
+  "literature": [
+   {
+    "title": "Adobe Muse CC: classroom in a book: the official training workbook from Adobe",
+    "year": 2017,
+    "author": "Brain, W.",
+    "edition": "2",
+    "isbn": "",
+    "pubFirm": "Adobe Press, San Francisco"
+   },
+   {
+    "title": "Design with Adobe Creative Cloud: basic projects using Photoshop, InDesign, Muse, and more",
+    "year": 2014,
+    "author": "Conrad, C.",
+    "edition": "0",
+    "isbn": "",
+    "pubFirm": "Adobe Press, San Francisco"
+   },
+   {
+    "title": "Creative web design with Adobe Muse",
+    "year": 2014,
+    "author": "David, A.",
+    "edition": "0",
+    "isbn": "",
+    "pubFirm": "Focal Press, Burlington, MA"
+   },
+   {
+    "title": "Fashion and textiles design with Photoshop and Illustrator: professional creative practice",
+    "year": 2016,
+    "author": "Hume, R.",
+    "edition": "0",
+    "isbn": "",
+    "pubFirm": "FairchildBooks, Bloomsbury Publishing, New York"
+   },
+   {
+    "title": "Creative fashion design with Illustrator",
+    "year": 2013,
+    "author": "Kelvn, T.",
+    "edition": "0",
+    "isbn": "",
+    "pubFirm": "Batsford, London"
+   },
+   {
+    "title": "Digital design essentials: 100 ways to design better desktop, web, and mobile interfaces",
+    "year": 2013,
+    "author": "Lai, R.",
+    "edition": "0",
+    "isbn": "",
+    "pubFirm": "Rockport Publishers, Beverly, Massachusetts"
+   },
+   {
+    "title": "Adobe Dreamweaver CC: 2015 release",
+    "year": 2016,
+    "author": "Maivaid, J. J.",
+    "edition": "0",
+    "isbn": "",
+    "pubFirm": "Adobe Press, San Jose, California"
+   },
+   {
+    "title": "Designing the user interface: strategies for effective human-computer-interaction",
+    "year": 2017,
+    "author": "Shneiderman, B.",
+    "edition": "6",
+    "isbn": "",
+    "pubFirm": "Pearson, Boston"
+   },
+   {
+    "title": "Figure poses for fashion illustrators",
+    "year": 2011,
+    "author": "Tahmasebi, S.",
+    "edition": "0",
+    "isbn": "",
+    "pubFirm": "Barron’s, Hauppauge, NY"
+   }
+  ],
+  "department": "School of Fashion and Textiles"
+ },
+ {
+  "name": "Fashion and Beauty",
+  "code": "ITC1A03",
   "literature": [
    {
     "title": "The clothed body",
@@ -449,11 +449,11 @@
     "pubFirm": "FairchildBooks, New York"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion and Culture",
-  "course_code": "ITC1C02",
+  "name": "Fashion and Culture",
+  "code": "ITC1C02",
   "literature": [
    {
     "title": "Fashion, Culture and Identity",
@@ -624,11 +624,11 @@
     "pubFirm": "Methuen"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion and Culture",
-  "course_code": "ITC1CN02",
+  "name": "Fashion and Culture",
+  "code": "ITC1CN02",
   "literature": [
    {
     "title": "Communicating Fashion",
@@ -767,11 +767,11 @@
     "pubFirm": "Bloomsbury Visual Arts"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Smart Wearables and Smart Living",
-  "course_code": "ITC1D04",
+  "name": "Smart Wearables and Smart Living",
+  "code": "ITC1D04",
   "literature": [
    {
     "title": "Handbook of Smart Textiles",
@@ -838,11 +838,11 @@
     "pubFirm": "Woodhead"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Design Studies",
-  "course_code": "ITC2001D",
+  "name": "Design Studies",
+  "code": "ITC2001D",
   "literature": [
    {
     "title": "Design process improvement: a review of current practice",
@@ -917,11 +917,11 @@
     "pubFirm": "Berg, New York"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Textile Studies I",
-  "course_code": "ITC2002T",
+  "name": "Textile Studies I",
+  "code": "ITC2002T",
   "literature": [
    {
     "title": "Introduction to Physical Polymer Science",
@@ -996,11 +996,11 @@
     "pubFirm": "CRC Press/Woodhead Pub."
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  },
  {
-  "course_name": "Fashion Design I",
-  "course_code": "ITC2003D",
+  "name": "Fashion Design I",
+  "code": "ITC2003D",
   "literature": [
    {
     "title": "Basic Figure Drawing Techniques",
@@ -1099,6 +1099,6 @@
     "pubFirm": "Pearson/Prentice Hall, Upper Saddle River, NJ"
    }
   ],
-  "dep_name": "School of Fashion and Textiles"
+  "department": "School of Fashion and Textiles"
  }
 ]

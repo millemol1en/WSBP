@@ -199,7 +199,8 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             
             # [] The variable we use to store the necessary content
             subject_code, subject_title, literature = None, None, []
-            
+
+            reading_list_bool = False
             for pg_idx in range(0, num_pages, 1):
                 # [] Get the current PDF page, locate the tables inside it and target the first (as there is only one table):
                 curr_page   = pdf_doc[pg_idx]
@@ -217,11 +218,15 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                                 subject_title = row[1].strip()
                                 #print(f"      -> Subject Title: {subject_title}")
                             case 'Reading List and\nReferences':
-                                literature = row[1]
+                                reading_list_bool = True
+                                literature = row[1:]
                                 #print(f"      -> Reading List: {literature}")
-                            case _: continue      
+                            case _: continue     
+                    elif reading_list_bool:
+                        literature.extend(row[1:])
 
             literature = self.clean_literature(literature)
+            print(f"      -> Literature: {literature}\n -||- \n")
             yield {
                 'course_name': subject_title,
                 'course_code': subject_code,
