@@ -228,10 +228,10 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             literature = self.clean_literature(literature)
             print(f"      -> Literature: {literature}\n -||- \n")
             yield {
-                'course_name': subject_title,
-                'course_code': subject_code,
+                'name': subject_title,
+                'code': subject_code,
                 'literature': literature,
-                'dep_name': department_name
+                'department': department_name
             }
 
         except Exception:

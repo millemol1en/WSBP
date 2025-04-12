@@ -132,9 +132,9 @@ def exec_sorensen_dice(baseline_title, llm_title):
     for k, (baseline, comp) in enumerate(zip(baseline_json, comparisons)):
         # Use the course name, or fall back to the code if the name is empty
         course_name = baseline.get("name") if baseline.get("name") else baseline.get("code")
-        print(f"Comparison for course {k} ({course_name}):")
-        print(json.dumps(comp, indent=2))
-        print("-" * 40)
+        #print(f"Comparison for course {k} ({course_name}):")
+        #print(json.dumps(comp, indent=2))
+        #print("-" * 40)
 
     #Calculating results
     for comp in comparisons:
@@ -158,5 +158,10 @@ print("\n**** KU COURSES ****")
 
 baseline = f"{UniversityType.POLYU.value}/polyu_baseline.json"
 llm = f"{UniversityType.POLYU.value}/polyu_gpt2.json"
+
+exec_sorensen_dice(baseline, llm)
+
+baseline = f"{UniversityType.POLYU.value}/polyu_baseline.json"
+llm = f"{UniversityType.POLYU.value}/polyu_gemini.json"
 
 exec_sorensen_dice(baseline, llm)
