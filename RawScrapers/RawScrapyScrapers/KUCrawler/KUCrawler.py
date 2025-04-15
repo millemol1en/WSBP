@@ -1,7 +1,13 @@
+# Scraper API:
 import scrapy
+
+# Local Imports
 from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
 from Infrastructure.LiteratureCleaner.LiteratureCleaner import sanitize_course_literature, extract_books, new_fixer
+
+# Native Python:
+import inspect
 
 class KUCrawler(RawScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
@@ -14,24 +20,35 @@ class KUCrawler(RawScrapyAbstractCrawler):
     """ Step 2 """
     # TODO: Replace ".css" with XPath
     def scrape_departments(self, response):
-        departments_select = response.css('select#departments')
-        departments_option = departments_select.css('option')
+        try:
+            departments_select = response.css('select#departments')
+            departments_option = departments_select.css('option')
 
-        for dep_option in departments_option:
-            option_text = dep_option.css("::text").get().strip()
-            option_value = dep_option.css("::attr(value)").get()
-            # print(f"Department: {option_text}, Value: {option_value}")
+            for dep_option in departments_option:
+                option_text = dep_option.css("::text").get().strip()
+                option_value = dep_option.css("::attr(value)").get()
+                # print(f"Department: {option_text}, Value: {option_value}")
 
-            if option_text and option_value:
-                department_url = (f"https://kurser.ku.dk/search?programme=BA&departments={option_value}") # TODO: Consider Masters Courses???
-                
-                
-                if option_value == "DEPARTMENT_0013":
-                    yield scrapy.Request(
-                        url=department_url,
-                        callback=self.scrape_department_courses,
-                        meta={'department_name': option_text}
-                    )
+                if option_text and option_value:
+                    department_url = (f"https://kurser.ku.dk/search?programme=BA&departments={option_value}") # TODO: Consider Masters Courses???
+                    
+                    
+                    if option_value == "DEPARTMENT_0013":
+                        yield scrapy.Request(
+                            url=department_url,
+                            callback=self.scrape_department_courses,
+                            meta={'department_name': option_text}
+                        )
+        except Exception as e:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
 
     """ Step 3 """
     def scrape_department_courses(self, response):

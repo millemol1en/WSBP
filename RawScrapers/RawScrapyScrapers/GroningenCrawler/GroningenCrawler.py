@@ -22,12 +22,11 @@ class GroningenCrawler(RawScrapyAbstractCrawler):
             faculty_programs = faculty.get("programs")
 
             # Testing purposes: Isolates "Law"
-            if faculty_name != "Law": continue
+            # if faculty_name != "Law": continue
             
             for program in faculty_programs:
                 program_level = program.get("levels")
-                program_name = program.get("titleEn")
-                program_code = program.get("code")
+                program_code  = program.get("code")
 
                 if program_code and any(level in {"BACHELOR", "MASTER"} for level in program_level):
                     program_url = (f"https://ocasys.rug.nl/api/2024-2025/scheme/program/{program_code}")

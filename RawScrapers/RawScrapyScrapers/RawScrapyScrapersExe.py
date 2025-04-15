@@ -61,12 +61,3 @@ def raw_scrapy_scraper_executor():
     """ PolyU Crawler """
     # process.crawl(PolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
     # process.start()
-
-
-"""
-    For spiders, the scraping cycle goes through something like this:
-        1. You give the spider a set of "start_urls" and specify a specific "call_back" function
-        2. The 
-        3. 
-
-"""

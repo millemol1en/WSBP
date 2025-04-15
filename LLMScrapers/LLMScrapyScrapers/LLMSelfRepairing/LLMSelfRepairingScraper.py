@@ -17,13 +17,14 @@ import scrapy
 from bs4 import BeautifulSoup
 
 # LLM APIs:
+from dotenv import load_dotenv
 from openai import OpenAI
 from google import genai
 
-# Additionals:
-from dotenv import load_dotenv
+# Native Python Packages:
 import os
 import time
+import re
 
 # Local:
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
@@ -109,52 +110,76 @@ class LLMSelfRepairingScraper(scrapy.Spider):
 
         print(f"\nScanning {dept} ({year}) page for subject list...")
 
-        # [] Use BS to parse raw HTML:
+        subject_element   = None
+        subject_link_href = None
 
-        xpath_path_code = "./LLMScrapers/LLMScrapyScrapers/LLMSelfRepairing/subject_path.txt"
+        # []
         try:
-            print("FILE LOCATED!")
-            with open(xpath_path_code, "r") as f:
-                stored_xpath = f.read().strip()
-        except FileNotFoundError as e:
-            stored_xpath = ""
-            print(f"FILE EXCEPTION: {e}")
+            xpath_path_query = open("./LLMScrapers/LLMScrapyScrapers/LLMSelfRepairing/subject_path.txt", "r").read().strip()
+            subject_element   = response.xpath(xpath_path_query).get()
+            subject_link_href = response.xpath(xpath_path_query).attrib.get("href") if subject_element else None
 
-        subject_link = None
-        if stored_xpath:
-            subject_link = response.xpath(stored_xpath).get()
+        except ValueError as e:
+            print(f"XPath failed with error: {e}")
+            subject_element   = None
+            subject_link_href = None
 
-        if not subject_link:
-            print("PATH FAILED! Calling LLM")
+        # []
+        if subject_link_href == None:
+
+            # [] Parse the HTML and truncate it:
             raw_html    = response.text
             parsed_html = BeautifulSoup(raw_html, "html.parser")
             clean_html  = self.strip_html_sl(parsed_html)
 
+            # []
             core_message = f"""
-            "You are a helpful assistant skilled in HTML parsing.\n"
-            "You will be given raw HTML from a university department page.\n"
-            "Your task is to first locate the hyperlink pointing to the department's subject list and thereafter generate an XPath query which successfully points to it.\n"
-            "The link text might include terms like 'All Subjects', 'Subject List', 'Subject Syllabus', 'Subject Syllabi', etc.\n"
-            "Additionally, the target link may be further embedded inside an <li> tag also be further embedded inside an additional tag like an <li>. If so, choose the'Bachelor Programme'.\n"
-            "Finally, if unable to locate any subject list it would always be better to return a link re-directing to 'Programmes'.\n"
-            "You must only return the XPath query and nothing else. Once again, the returned content should look as follows: "response.xpath(THIS PORTION)".\n"
-            "HTML:\n{clean_html}"
+            You are an expert assistant in HTML parsing and XPath query generation.
+
+            ### GOAL
+            Identify the best hyperlink (anchor tag) in the HTML that points to the department's subject list, and generate a valid XPath expression that selects it.
+
+            ### CONTEXT
+            - You are working with raw HTML from a university department page.
+            - Valid link texts might include:
+            - "All Subjects", "Subject List", "Subject Syllabus", "Subject Syllabi"
+            - If there are multiple valid links:
+            - Prefer links under "Bachelor Programme" or related sections.
+            - Prioritize English text if multiple versions exist.
+            - If no specific subject list is found:
+            - Fall back to a general "Programmes" link if available.
+
+            ### INSTRUCTIONS
+            1. Carefully scan the HTML to identify the most appropriate hyperlink.
+            2. Write an XPath expression that selects this `<a>` tag.
+            3. **Return ONLY the internal part of the XPath expression** — do not include `response.xpath(...)` or any other wrapping code.
+
+            ### OUTPUT FORMAT (STRICT)
+            - Return only a string like: `//a[contains(text(), "Subject List")]`
+            - Do not include quotes, markdown, explanations, or code.
+
+            ### INPUT HTML
+            {clean_html}
             """
 
-            # [] Call LLM:
-            suggested_xpath = self.call_llm(core_message).strip().strip('"')
+            # [] 
+            llm_response     = self.call_llm(core_message)
+            print(f"RAW LLM RES: {llm_response}")
+            subject_element   = response.xpath(llm_response).get()
+            subject_link_href = response.xpath(llm_response).attrib.get("href") if subject_element else None
 
-            print(f"SUGGESTED XPATH: {suggested_xpath}")
+            print(f"TARGET SUBJECT LINK: {subject_link_href}")
 
-            subject_link = suggested_xpath
+            # [] 
+            with open("./LLMScrapers/LLMScrapyScrapers/LLMSelfRepairing/subject_path.txt", "w") as f:
+                f.write(llm_response)
 
-            with open(xpath_path_code, "w") as f:
-                f.write(suggested_xpath)
-            # f = open("subject_list.html", "w")
-            # f.write(clean_html.prettify())
-            # f.close()
+            # []
 
-        print(f"RESULT =* {response.request.url}/{subject_link if subject_link else '[NO LINK FOUND]'}")
+
+            
+        print(f"RESULT =* {response.request.url}/{subject_link_href if subject_link_href else '[NO LINK FOUND]'}")
+
 
     # [] 
     def call_llm(self, core_message):        
