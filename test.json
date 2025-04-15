@@ -1,0 +1,823 @@
+[
+  {
+    "id": "32167e3b-bb9d-4afd-bef3-90d509601a50",
+    "code": "rechten",
+    "titleEn": "Law",
+    "titleNl": "Rechtsgeleerdheid",
+    "ouClass": null,
+    "parent": null,
+    "programs": [
+      {
+        "id": "754e5ade-7102-4c97-9329-415d0d5b0697",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM European Law in a Global Context",
+        "titleNl": "LLM European Law in a Global Context",
+        "code": "60688-nw",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "82938248-f8da-4ea2-879b-d94e114676f2",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-LLM International and European Law: track International Human Rights Law",
+        "titleNl": "Pre-LLM International and European Law: track International Human Rights Law",
+        "code": "56829-ihrl",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "52f3bf33-d988-414c-b902-477337e430d3",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Bachelor Law - specialisation IT Law",
+        "titleNl": "Ba  Rechtsgeleerdheid - afstudeerrichting IT-Recht",
+        "code": "50700-itr",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "004e2d3e-0c5d-4a3c-9983-8135bd80866a",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Ba Optional Courses legal",
+        "titleNl": "Ba Keuzevakken juridisch (selectie, zie toelichting)",
+        "code": "PROG-2538",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "a006fc91-3451-400d-ae0a-10a435470861",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Bachelor Law - specialisation Fiscal Law",
+        "titleNl": "Ba  Rechtsgeleerdheid - afstudeerrichting Fiscaal Recht",
+        "code": "50700-fis",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "d2bcb4d7-e6c0-44ed-befe-122c68586699",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Dutch Law - specialization Business Law",
+        "titleNl": "Ma Nederlands Recht - specialisatie Ondernemingsrecht",
+        "code": "66451",
+        "official": true,
+        "specializations": [
+          {
+            "id": "209dc55e-be47-4d4b-af09-cdcd35e285ac",
+            "titleEn": "Law in Practice - advised for company law",
+            "titleNl": "(jaar 1) Recht in Praktijk onderdelen - geadviseerd voor Ondernemingsrecht",
+            "showInCatalog": true
+          }
+        ]
+      },
+      {
+        "id": "e9a8bf2b-63f3-47a9-a11f-d0a3f00389bb",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-masterprogramme Tax Law ",
+        "titleNl": "Pre-master Rechtsgeleerdheid, richting Fiscaal recht",
+        "code": "SCHFISRB",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "6be07c9a-4652-4978-8247-57aaccfe0f16",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Dual Master - Practical master - Ma Notarial Law (in afbouw)",
+        "titleNl": "Duale Master - Praktijkmaster Notarieel Recht (in afbouw)",
+        "code": "PROG-4034",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "d2a7f1bf-4a24-4e5c-a304-8ce6c90c0861",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Law and Public Administration, specialisation Legal Public Administration",
+        "titleNl": "Ma Recht en Bestuur, afst.ri. Juridische Bestuurskunde",
+        "code": "PROG-367",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "7a8a0a9a-1dc5-4a11-8b12-4da2d0f47728",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-LLM International and European Law: track Public International Law",
+        "titleNl": "Pre-LLM International and European Law: track Public International Law",
+        "code": "56829-pil",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "26e16425-f2f5-4401-a2f6-0882ee873c11",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM Research master Legal Research",
+        "titleNl": "",
+        "code": "60606-LR",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "31aafe32-e9cc-4fa1-9c08-62c45bf51610",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM Global Criminal Law",
+        "titleNl": "LLM Global Criminal Law",
+        "code": "60669 ",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "79d92bf1-48a3-433e-b240-afeb966dde9f",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Tax Law",
+        "titleNl": "Ma Fiscaal Recht",
+        "code": "PROG-364",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "1473d052-eaf1-4a5a-a19e-f38606fb2f84",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-LLM International and European Law: track International Commercial Law",
+        "titleNl": "Pre-LLM International and European Law: track International Commercial Law",
+        "code": "56829-icl",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "f226805d-0302-4b0f-b679-6d4443dbb7ff",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "EXCHANGE"
+        ],
+        "titleEn": "Exchange programme Law",
+        "titleNl": "Exchange programme Law",
+        "code": "PROG-2555",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "c8df6f57-73ac-4aca-bf71-41d70b01f5ac",
+        "language": [
+          "ENGLISH",
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR",
+          "MASTER"
+        ],
+        "titleEn": "Global & Intercultural Engagement Distinction (GIED)",
+        "titleNl": "Global & Intercultural Engagement Distinction (GIED)",
+        "code": "GIED",
+        "official": false,
+        "specializations": []
+      },
+      {
+        "id": "6d84a888-8e1f-4c51-a812-d0c429cace38",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Legal Research (in Dutch)",
+        "titleNl": "Ma Rechtswetenschappelijk Onderzoek",
+        "code": "60606-",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "8b826155-498f-425d-8d30-0258d75f505c",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Duale Master - Praktijkmaster Fiscaal Recht (in afbouw)",
+        "titleNl": "Duale Master - Praktijkmaster Fiscaal Recht (in afbouw)",
+        "code": "PROG-4831",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "12138bcf-1de8-4c1e-ae10-14f21fc4816d",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-LLM International and European Law: track European Law in a Global Context",
+        "titleNl": "Pre-LLM International and European Law: track European Law in a Global Context",
+        "code": "56829-ELGC",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "4f42d5b5-a347-4e48-a0d7-3583faba38ea",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Law in Practice (extra-curriculair in Bachelor)",
+        "titleNl": "Recht in Praktijk (extra-curriculair tijdens de Bachelor)",
+        "code": "PRAKT-BA",
+        "official": false,
+        "specializations": []
+      },
+      {
+        "id": "c29ad8db-916b-4ad7-9b13-2a87886c54e7",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Bachelor Law",
+        "titleNl": "Ba  Rechtsgeleerdheid - afstudeerrichting Nederlands Recht",
+        "code": "50700-nr",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "1e8b6cee-3a60-46e1-aa9f-697a8c2abb49",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Law in Practice (LLM)",
+        "titleNl": "Law in Practice (LLM)",
+        "code": "LIP",
+        "official": false,
+        "specializations": []
+      },
+      {
+        "id": "cbf5d641-ef6b-42d6-9f69-82800283dab3",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Bachelor Law - specialisation Legal Public Administration",
+        "titleNl": "Ba  Rechtsgeleerdheid - afstudeerrichting Jur. Bestuurskunde",
+        "code": "50700-jur",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "d9e9952b-f855-4423-a324-d64cd9bf238b",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Dutch law- specialisation Criminal Law (crim. variant) EXTRA-CURRICULAIR",
+        "titleNl": "Ma Nederlands recht - specialisatie Strafrecht (crim. variant) EXTRA-CURRICULAIR",
+        "code": "66451-EX",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "de962e30-2037-4c4e-a974-f94a71520e4e",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-master Law, track Dutch Law",
+        "titleNl": "Pre-master Rechtsgeleerdheid, richting Nederlands Recht",
+        "code": "S-PM NR14",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "0754e3db-bfe6-4694-9e63-e8f4ceed2cef",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM Health and Technology Law",
+        "titleNl": "LLM Health and Technology Law",
+        "code": "60856-HTL",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "de7c310f-c0fa-44ea-a208-ac0eff2b580a",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Law in Practice  (master)",
+        "titleNl": "Recht in Praktijk  (master)",
+        "code": "RIP",
+        "official": false,
+        "specializations": []
+      },
+      {
+        "id": "d5523a4f-c9db-41a2-b1d4-3a167e01145e",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma IT-Law  ",
+        "titleNl": "Ma IT-Recht  ",
+        "code": "CROHO",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "1d5e736c-e827-4623-ab34-0415f1cccddc",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Shortened bachelor 'Rechtsgeleerdheid', track 'Int. en Eur. Recht' (for LLB IEL)",
+        "titleNl": "Verkorte ba Rechtsgeleerdheid, afstudeerrichting Int. & Eur. Recht(voor LLB IEL)",
+        "code": "50700-VP-LLB-IEL",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "4d0f86e0-35d9-4db3-b5b8-f0e13b69e639",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-LLM International and European Law: track Health and Technology Law",
+        "titleNl": "Pre-LLM International and European Law: track Health and Technology Law",
+        "code": "56829-HTL",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "bc0e1e2c-8198-414b-8906-963ebc2fdde6",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-LLM International and European Law: track Energy and Climate Law",
+        "titleNl": "Pre-LLM International and European Law: track Energy and Climate Law",
+        "code": "56829-ecl",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "464cad8d-1ac1-4a6e-b364-d98ade2bf0a3",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM Energy and Climate Law",
+        "titleNl": "LLM Energy and Climate Law",
+        "code": "66829 ",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "8d8a9130-87d5-4a9a-bd10-deec38c20ecc",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM Law and Public Adm.: Governance and Law in Digital Society (Leeuwarden) ",
+        "titleNl": "LLM Law and Public Adm.: Governance and Law in Digital Society (Leeuwarden)",
+        "code": "66461.2",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "8aab8426-b408-4618-baef-aff145e8e87d",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Dutch Law- specialization Private Law",
+        "titleNl": "Ma Nederlands Recht - specialisatie Privaatrecht",
+        "code": "PROG-4052",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "38e2b379-e443-4e6a-9a4e-b7cd59a4e915",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Ba Optional Courses non legal",
+        "titleNl": "Ba Keuzevakken niet juridisch (selectie, zie toelichting)",
+        "code": "PROG-2539",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "45bf434d-040d-44a8-85d9-52ca63eea3a2",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM International Human Rights Law",
+        "titleNl": "LLM International Human Rights Law",
+        "code": "60856-ihrl",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "081f46ef-aa11-4319-a073-805c41867451",
+        "language": [
+          "ENGLISH",
+          "DUTCH"
+        ],
+        "levels": [
+          "UNIVERSITY_LEVEL_MINOR"
+        ],
+        "titleEn": "Minor Law",
+        "titleNl": "Minor Recht",
+        "code": "MIRGRECHT",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "5f5d11cd-a07d-40b4-ae5c-cb239c9c9229",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "LLB International and European Law  ",
+        "titleNl": "LLB International and European Law  ",
+        "code": "56829",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "feefbe15-9274-429d-a22f-538e8366cde4",
+        "language": [
+          "ENGLISH",
+          "DUTCH"
+        ],
+        "levels": [],
+        "titleEn": "Open Lectures",
+        "titleNl": "Open Colleges",
+        "code": "PROG-469",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "b886c8f3-ec0e-4b36-969f-d0e696b52696",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Duale Master - Praktijkmaster Nederlands Recht, Ondernemingsrechtelijke variant",
+        "titleNl": "Duale Master - Praktijkmaster Nederlands Recht, Ondernemingsrechtelijke variant",
+        "code": "66451-2",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "2a9efcf4-04c3-4eed-8779-685a8f280a5d",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM International Commercial Law",
+        "titleNl": "LLM International Commercial Law",
+        "code": "60603 ",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "7348082e-2234-42cb-81e1-8535921e65c9",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Dutch Law- specialisation Constitutional and Administrative Law",
+        "titleNl": "Ma Nederlands Recht - specialisatie Staats- en Bestuursrecht",
+        "code": "PROG-4060",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "97ccbc6e-8fad-457a-991d-7d6dac192df8",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "LLB International and European Law, Technology Law track",
+        "titleNl": "LLB International and European Law, Technology Law track",
+        "code": "56829-Tech",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "d4168678-9112-48df-8e5c-c73dfe2f9ee9",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Optional courses legal",
+        "titleNl": "Ma Keuzevakken juridisch (selectie, zie toelichting)",
+        "code": "PROG-1882",
+        "official": false,
+        "specializations": []
+      },
+      {
+        "id": "5ee14c06-acca-4059-b7ea-b35a2c521c88",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Notarial Law",
+        "titleNl": "Ma Notarieel Recht",
+        "code": "PROG-363",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "d27aa9a1-392f-4a5c-82e3-90b2897364a5",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-master programme Master Law and Public Administration",
+        "titleNl": "Pre-master Rechtsgeleerdheid, richting Recht en Bestuur",
+        "code": "PROG-378",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "19d8ad7e-fda3-4e1c-bfc7-61e18eeb8e87",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Dual Master - Robe master - Ma Dutch Law",
+        "titleNl": "Duale Master - Praktijkmaster (Togamaster) Nederlands Recht ",
+        "code": " ",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "561adfb6-199a-49b5-85b9-2b1e9e4cfc7e",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Master Dutch Law - specialization Labour Law",
+        "titleNl": "Ma Nederlands Recht - specialisatie Arbeidsrecht",
+        "code": "PROG-5737",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "263dd121-c384-4b00-8adf-18c43c17ac04",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Bachelor Law - specialisation International and European Law  ",
+        "titleNl": "Ba  Rechtsgeleerdheid - afstudeerrichting Int & Europees Recht  ",
+        "code": "50700-int",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "82ca50fc-f623-493e-9766-6daa6692cedd",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM Technology Law and Innovation",
+        "titleNl": "LLM Technology Law and Innovation",
+        "code": "60688-TLI",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "fba37c82-d5c5-486a-a609-322d57fd1e07",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Dutch Law - specialization Criminal Law  ",
+        "titleNl": "Ma Nederlands Recht - specialisatie Strafrecht  ",
+        "code": "PROG-4061",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "5c0f4bc8-f832-45be-a366-6efbd48b24e8",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [],
+        "titleEn": "External courses",
+        "titleNl": "Vakken extern ",
+        "code": "PROG-2540",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "163bc3ac-dd51-4394-94d3-35f655ce3b07",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Bachelor Law - specialisation Notarial Law",
+        "titleNl": "Ba  Rechtsgeleerdheid - afstudeerrichting Notarieel Recht",
+        "code": "50700-not",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "85d83427-fd40-475e-b9ce-00dd3e36547f",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Pre-LLM International and European Law: track Global Criminal Law",
+        "titleNl": "Pre-LLM International and European Law: track Global Criminal Law",
+        "code": "56829-gcl",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "4c064bd6-cf3d-4274-b9d3-8422302bd87f",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "Ma Seminars Dutch Law",
+        "titleNl": "Ma Seminaars Nederlands Recht",
+        "code": "PROG-5966",
+        "official": false,
+        "specializations": []
+      },
+      {
+        "id": "ee324538-20b5-4da4-a5c9-0723fcbdd2eb",
+        "language": [
+          "DUTCH"
+        ],
+        "levels": [
+          "BACHELOR"
+        ],
+        "titleEn": "Shortened bachelor 'Rechtsgeleerdheid', track 'Int. en Eur. Recht' (Tech. Law)",
+        "titleNl": "Verkorte ba Rechtsgeleerdheid, afstudeerrichting Int. en Eur. Recht (Tech. Law)",
+        "code": "50700-VP-LLB-TECH",
+        "official": true,
+        "specializations": []
+      },
+      {
+        "id": "2836edfe-901d-44c6-a7cc-749984aaa059",
+        "language": [
+          "ENGLISH"
+        ],
+        "levels": [
+          "MASTER"
+        ],
+        "titleEn": "LLM Public International Law",
+        "titleNl": "LLM Public International Law",
+        "code": "60856",
+        "official": true,
+        "specializations": []
+      }
+    ],
+    "status": {
+      "year": "2024-2025",
+      "facultyId": "32167e3b-bb9d-4afd-bef3-90d509601a50",
+      "visible": true,
+      "export": true
+    }
+  }
+]

@@ -61,10 +61,10 @@ class LLMSelfRepairingScraper(scrapy.Spider):
             {"dept": "AP", "year": 2025, "url": "https://web.archive.org/web/20250122172728/https://www.polyu.edu.hk/ap/"},     # TARGET: ""
 
             # AMA departments
-            {"dept": "AMA", "year": 2001, "url": "https://web.archive.org/web/20010503071107/https://www.polyu.edu.hk/ama/"},   # TARGET: "/sub_frm.htm"
-            {"dept": "AMA", "year": 2008, "url": "https://web.archive.org/web/20080510141326/https://www.polyu.edu.hk/ama/"},   # TARGET: "/subject/subject_list.htm"
-            {"dept": "AMA", "year": 2015, "url": "https://web.archive.org/web/20150731063353/https://www.polyu.edu.hk/ama/"},   # TARGET: "listing_of_subjects"
-            {"dept": "AMA", "year": 2025, "url": "https://web.archive.org/web/20250212043112/https://www.polyu.edu.hk/ama/"},   # TARGET: "/Study/Subject-Library"
+            #{"dept": "AMA", "year": 2001, "url": "https://web.archive.org/web/20010503071107/https://www.polyu.edu.hk/ama/"},   # TARGET: "/sub_frm.htm"
+            #{"dept": "AMA", "year": 2008, "url": "https://web.archive.org/web/20080510141326/https://www.polyu.edu.hk/ama/"},   # TARGET: "/subject/subject_list.htm"
+            #{"dept": "AMA", "year": 2015, "url": "https://web.archive.org/web/20150731063353/https://www.polyu.edu.hk/ama/"},   # TARGET: "listing_of_subjects"
+            #{"dept": "AMA", "year": 2025, "url": "https://web.archive.org/web/20250212043112/https://www.polyu.edu.hk/ama/"},   # TARGET: "/Study/Subject-Library"
         ]
 
         for entry in dept_urls:
@@ -81,7 +81,6 @@ class LLMSelfRepairingScraper(scrapy.Spider):
         raw_html    = response.text
         parsed_html = BeautifulSoup(raw_html, "html.parser")
         clean_html  = self.strip_html_dep(parsed_html)
-
 
         # "Return only a JSON array of objects. Each object must have two keys: 'name' and 'href'.\n"
         # "Do not include markdown, code blocks, or any explanation — just valid JSON."
@@ -111,35 +110,58 @@ class LLMSelfRepairingScraper(scrapy.Spider):
         print(f"\nScanning {dept} ({year}) page for subject list...")
 
         # [] Use BS to parse raw HTML:
-        raw_html    = response.text
-        parsed_html = BeautifulSoup(raw_html, "html.parser")
-        clean_html  = self.strip_html_sl(parsed_html)
 
-        core_message = f"""
-        "You are a helpful assistant skilled in HTML parsing.\n"
-        "You will be given raw HTML from a university department page.\n"
-        "Your task is to locate a hyperlink pointing to the department's subject list or syllabus.\n"
-        "The link text might include terms like 'All Subjects', 'Subject List', 'Subject Syllabus', 'Subject Syllabi', etc.\n"
-        "Additionally, the target link may be further embedded inside an <li> tag also be further embedded inside an additional tag like an <li>. If so, choose the'Bachelor Programme'.\n"
-        "Finally, if unable to locate any subject list it would always be better to return a link re-directing to 'Programmes'.\n"
-        "Return only the URL (href) to the best match and nothing else.\n"
-        "HTML:\n{clean_html}"
-        """
+        xpath_path_code = "./LLMScrapers/LLMScrapyScrapers/LLMSelfRepairing/subject_path.txt"
+        try:
+            print("FILE LOCATED!")
+            with open(xpath_path_code, "r") as f:
+                stored_xpath = f.read().strip()
+        except FileNotFoundError as e:
+            stored_xpath = ""
+            print(f"FILE EXCEPTION: {e}")
 
-        # [] Call LLM:
-        subject_link = self.call_llm(core_message)
-        # f = open("subject_list.html", "w")
-        # f.write(clean_html.prettify())
-        # f.close()
+        subject_link = None
+        if stored_xpath:
+            subject_link = response.xpath(stored_xpath).get()
 
-        print(f"  RESULTS =* {response.request.url}/{subject_link}")
+        if not subject_link:
+            print("PATH FAILED! Calling LLM")
+            raw_html    = response.text
+            parsed_html = BeautifulSoup(raw_html, "html.parser")
+            clean_html  = self.strip_html_sl(parsed_html)
+
+            core_message = f"""
+            "You are a helpful assistant skilled in HTML parsing.\n"
+            "You will be given raw HTML from a university department page.\n"
+            "Your task is to first locate the hyperlink pointing to the department's subject list and thereafter generate an XPath query which successfully points to it.\n"
+            "The link text might include terms like 'All Subjects', 'Subject List', 'Subject Syllabus', 'Subject Syllabi', etc.\n"
+            "Additionally, the target link may be further embedded inside an <li> tag also be further embedded inside an additional tag like an <li>. If so, choose the'Bachelor Programme'.\n"
+            "Finally, if unable to locate any subject list it would always be better to return a link re-directing to 'Programmes'.\n"
+            "You must only return the XPath query and nothing else. Once again, the returned content should look as follows: "response.xpath(THIS PORTION)".\n"
+            "HTML:\n{clean_html}"
+            """
+
+            # [] Call LLM:
+            suggested_xpath = self.call_llm(core_message).strip().strip('"')
+
+            print(f"SUGGESTED XPATH: {suggested_xpath}")
+
+            subject_link = suggested_xpath
+
+            with open(xpath_path_code, "w") as f:
+                f.write(suggested_xpath)
+            # f = open("subject_list.html", "w")
+            # f.write(clean_html.prettify())
+            # f.close()
+
+        print(f"RESULT =* {response.request.url}/{subject_link if subject_link else '[NO LINK FOUND]'}")
 
     # [] 
     def call_llm(self, core_message):        
         match self.llm_type:
             case LLMType.CHAT_GPT:
                 response = gpt_client.chat.completions.create(
-                    model="gpt-4o-2024-08-06",                      
+                    model="gpt-4-turbo",                
                     messages=[
                         {
                             "role": "system",

@@ -47,12 +47,12 @@ def raw_scrapy_scraper_executor():
     })
 
     """ KU Crawler """
-    process.crawl(KUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/")
-    process.start()
+    # process.crawl(KUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/")
+    # process.start()
 
     """ Groningen Crawler """
-    # process.crawl(GroningenCrawler, _name="Groningen University", _url="https://ocasys.rug.nl/api/faculty/catalog/2024-2025")
-    # process.start()
+    process.crawl(GroningenCrawler, _name="Groningen University", _url="https://ocasys.rug.nl/api/faculty/catalog/2024-2025")
+    process.start()
 
     """ DTU Crawler """
    #process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")

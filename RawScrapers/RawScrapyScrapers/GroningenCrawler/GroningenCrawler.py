@@ -21,10 +21,8 @@ class GroningenCrawler(RawScrapyAbstractCrawler):
             faculty_name = faculty.get("titleEn", "Unknown")
             faculty_programs = faculty.get("programs")
 
-            faculty_program_urls = []
-
             # Testing purposes: Isolates "Law"
-            #if faculty_name != "Law": continue
+            if faculty_name != "Law": continue
             
             for program in faculty_programs:
                 program_level = program.get("levels")
@@ -33,7 +31,6 @@ class GroningenCrawler(RawScrapyAbstractCrawler):
 
                 if program_code and any(level in {"BACHELOR", "MASTER"} for level in program_level):
                     program_url = (f"https://ocasys.rug.nl/api/2024-2025/scheme/program/{program_code}")
-                    faculty_program_urls.append(program_url)
             
                 yield scrapy.Request(
                     url=program_url,
@@ -62,11 +59,14 @@ class GroningenCrawler(RawScrapyAbstractCrawler):
                 course_data_url = (f"https://ocasys.rug.nl/api/2024-2025/course/page/{course_code}")
                 course_urls.append(course_data_url)
                 
-                yield scrapy.Request(
-                    url=course_data_url,
-                    callback=self.scrape_single_course,
-                    meta={ 'faculty_name': faculty_name }
-                )
+                try:
+                    yield scrapy.Request(
+                        url=course_data_url,
+                        callback=self.scrape_single_course,
+                        meta={ 'faculty_name': faculty_name }
+                    )
+                except Exception as e:
+                    continue
     
     """ Step 4 """
     def scrape_single_course(self, response):
