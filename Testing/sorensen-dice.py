@@ -75,6 +75,7 @@ def compare_literature_similarities(lit1, lit2) -> float:
     if not lit1 or not lit2:
         return 0.0
     
+    #! REVIEW QUALITY OF AVERAGES
     #For each book in lit1, find best match in lit2
     scores_1 = []
     for book1 in lit1:
@@ -124,11 +125,11 @@ def exec_sorensen_dice(baseline_title, llm_title):
     for baseline, llm in zip(baseline_json, llm_json): 
         comparisons.append(compare_courses(baseline, llm))
 
-    threshold = 0.90
+    threshold = 0.95
     correct = 0
     total = len(comparisons)
 
-    #Just print outs
+    #? JUST PRINTS
     for k, (baseline, comp) in enumerate(zip(baseline_json, comparisons)):
         # Use the course name, or fall back to the code if the name is empty
         course_name = baseline.get("name") if baseline.get("name") else baseline.get("code")
@@ -140,11 +141,12 @@ def exec_sorensen_dice(baseline_title, llm_title):
     for comp in comparisons:
         if all(value >= threshold for value in comp.values()):
             correct += 1
+    coefficient = round((correct / total), 2)
     data_accuracy = round((correct / total) * 100, 2)
     
     print(f"========== TEST RESULTS FOR {str(baseline_title).upper()} AND {str(llm_title).upper()} ==========")
     print(f"*** {correct} out of {total} courses matched with a threshold of {threshold} ***")
-    print(f"*** {data_accuracy} % accuracy ***")
+    print(f"*** {coefficient} -> {data_accuracy} % accuracy ***")
 
     return data_accuracy
 
@@ -156,12 +158,13 @@ print("\n**** KU COURSES ****")
 #exec_sorensen_dice("dtu_baseline.json", "dtu_gemini.json")
 #exec_sorensen_dice("dtu_baseline.json", "dtu_gpt.json")
 
-baseline = f"{UniversityType.POLYU.value}/polyu_baseline.json"
-llm = f"{UniversityType.POLYU.value}/polyu_gpt2.json"
+type = UniversityType.POLYU
+baseline = f"{type.value}/polyu_baseline.json"
+llm = f"{type.value}/polyu_gpt.json"
 
 exec_sorensen_dice(baseline, llm)
 
-baseline = f"{UniversityType.POLYU.value}/polyu_baseline.json"
-llm = f"{UniversityType.POLYU.value}/polyu_gemini.json"
+baseline = f"{type.value}/polyu_baseline.json"
+llm = f"{type.value}/polyu_gemini.json"
 
 exec_sorensen_dice(baseline, llm)
