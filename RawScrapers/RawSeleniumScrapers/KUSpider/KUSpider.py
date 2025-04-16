@@ -25,7 +25,6 @@ class KUSpider(UniSpider):
 
         print("    !----------------------------------------------------------------------------------------------!")
 
-    # TODO: Update the names - more universal naming conventions and structure:
     # []
     def scrape_departments(self, driver):
         # [] Get the department - stored as a <section> tag in HTML
@@ -35,7 +34,7 @@ class KUSpider(UniSpider):
         # [] Retrieve URLs for all the departments:
         for option in dep_sec_obj.options:
             # [] The website sets the text for the <option> tags to be hidden, so we have to use JS to
-            #    harvest the information
+            #    harvest the information 
             option_text  = driver.execute_script("return arguments[0].textContent;", option).strip()
             option_value = option.get_attribute("value")
 
@@ -54,8 +53,6 @@ class KUSpider(UniSpider):
             print(f"           |==============================={department.name}===============================|")
          
             driver.get(department.url)
-
-            # TODO: Needs to be updated to List[Course] when ready...
             course_urls : List[str] = []
 
             # [] We gather all the <a> tags and thereaftr loop over them, retrieving the "href" to the course

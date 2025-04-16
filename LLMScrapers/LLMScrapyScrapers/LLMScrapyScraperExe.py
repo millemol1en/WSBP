@@ -15,9 +15,9 @@ def llm_scrapy_scraper_executor():
         'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
-        'FEEDS': {
-              'polyu_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
-        },
+        # 'FEEDS': {
+        #       'polyu_gemini.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+        # },
 
         # Pipeline Configuration:
         'ITEM_PIPELINES': {

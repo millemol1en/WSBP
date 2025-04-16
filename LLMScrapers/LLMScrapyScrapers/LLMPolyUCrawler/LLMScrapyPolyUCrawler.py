@@ -7,8 +7,6 @@ from enum import Enum
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMScrapyAbstractCrawler, LLMType
 
-
-# TODO: Move to "Defs.py"
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
 
 class SubjectListFormatType(Enum):
@@ -225,6 +223,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                     elif reading_list_bool:
                         literature.extend(row[1:])
 
+            #! LLM Trigger:
             literature = self.clean_literature(literature)
             print(f"      -> Literature: {literature}\n -||- \n")
             yield {

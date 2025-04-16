@@ -1,9 +1,14 @@
-import re
+# Scraper APIs:
 import scrapy
-from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
+# Local Imports:
+from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
 from Defs.Defs import EXCLUDE_KEY_WORDS
+
+# Native Python Imports:
+import re
+import inspect
 
 class DTUCrawler(RawScrapyAbstractCrawler):
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
@@ -28,22 +33,33 @@ class DTUCrawler(RawScrapyAbstractCrawler):
 
     """ Step 2 - """
     def scrape_departments(self, response):
-        department_options = response.xpath('//select[@id="Department"]/option')
+        try:
+            department_options = response.xpath('//select[@id="Department"]/option')
 
-        for dep_option in department_options:
-            option_text = dep_option.xpath('normalize-space(text())').get()
-            option_value = dep_option.xpath('@value').get()
-            # print(f"Department: {option_text}, Value: {option_value}")
+            for dep_option in department_options:
+                option_text = dep_option.xpath('normalize-space(text())').get()
+                option_value = dep_option.xpath('@value').get()
+                # print(f"Department: {option_text}, Value: {option_value}")
 
-            if option_text and option_value:
-                # TODO: Remove the "CourseType=DTU_BSC&" - ONLY FOR TESTING
-                department_url = (f"https://kurser.dtu.dk/search?Department={option_value}")
+                if option_text and option_value:
+                    # TODO: Remove the "CourseType=DTU_BSC&" - ONLY FOR TESTING
+                    department_url = (f"https://kurser.dtu.dk/search?Department={option_value}")
 
-                yield scrapy.Request(
-                    url=department_url,
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': option_text}
-                )
+                    yield scrapy.Request(
+                        url=department_url,
+                        callback=self.scrape_department_courses,
+                        meta={'department_name': option_text}
+                    )
+        except Exception as e:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
 
     """ Step 4 """
     def scrape_department_courses(self, response):
