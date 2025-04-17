@@ -133,9 +133,9 @@ def exec_sorensen_dice(baseline_title, llm_title):
     for k, (baseline, comp) in enumerate(zip(baseline_json, comparisons)):
         # Use the course name, or fall back to the code if the name is empty
         course_name = baseline.get("name") if baseline.get("name") else baseline.get("code")
-        #print(f"Comparison for course {k} ({course_name}):")
-        #print(json.dumps(comp, indent=2))
-        #print("-" * 40)
+        print(f"Comparison for course {k} ({course_name}):")
+        print(json.dumps(comp, indent=2))
+        print("-" * 40)
 
     #Calculating results
     for comp in comparisons:
@@ -144,9 +144,9 @@ def exec_sorensen_dice(baseline_title, llm_title):
     coefficient = round((correct / total), 2)
     data_accuracy = round((correct / total) * 100, 2)
     
-    print(f"========== TEST RESULTS FOR {str(baseline_title).upper()} AND {str(llm_title).upper()} ==========")
-    print(f"*** {correct} out of {total} courses matched with a threshold of {threshold} ***")
-    print(f"*** {coefficient} -> {data_accuracy} % accuracy ***")
+    #print(f"========== TEST RESULTS FOR {str(baseline_title).upper()} AND {str(llm_title).upper()} ==========")
+    #print(f"*** {correct} out of {total} courses matched with a threshold of {threshold} ***")
+    #print(f"*** {coefficient} -> {data_accuracy} % accuracy ***")
 
     return data_accuracy
 
@@ -158,13 +158,13 @@ print("\n**** KU COURSES ****")
 #exec_sorensen_dice("dtu_baseline.json", "dtu_gemini.json")
 #exec_sorensen_dice("dtu_baseline.json", "dtu_gpt.json")
 
-type = UniversityType.POLYU
-baseline = f"{type.value}/polyu_baseline.json"
-llm = f"{type.value}/polyu_gpt.json"
+type = UniversityType.DTU
+baseline = f"{type.value}/{type.value}_baseline.json"
+llm = f"{type.value}/{type.value}_gpt.json"
 
 exec_sorensen_dice(baseline, llm)
 
-baseline = f"{type.value}/polyu_baseline.json"
-llm = f"{type.value}/polyu_gemini.json"
+baseline = f"{type.value}/{type.value}_baseline.json"
+llm = f"{type.value}/{type.value}_gemini.json"
 
 exec_sorensen_dice(baseline, llm)
