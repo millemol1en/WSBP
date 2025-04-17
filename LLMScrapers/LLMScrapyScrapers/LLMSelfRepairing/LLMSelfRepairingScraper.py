@@ -17,14 +17,13 @@ import scrapy
 from bs4 import BeautifulSoup
 
 # LLM APIs:
-from dotenv import load_dotenv
 from openai import OpenAI
 from google import genai
 
-# Native Python Packages:
+# Additionals:
+from dotenv import load_dotenv
 import os
 import time
-import re
 
 # Local:
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
@@ -62,10 +61,10 @@ class LLMSelfRepairingScraper(scrapy.Spider):
             {"dept": "AP", "year": 2025, "url": "https://web.archive.org/web/20250122172728/https://www.polyu.edu.hk/ap/"},     # TARGET: ""
 
             # AMA departments
-            #{"dept": "AMA", "year": 2001, "url": "https://web.archive.org/web/20010503071107/https://www.polyu.edu.hk/ama/"},   # TARGET: "/sub_frm.htm"
-            #{"dept": "AMA", "year": 2008, "url": "https://web.archive.org/web/20080510141326/https://www.polyu.edu.hk/ama/"},   # TARGET: "/subject/subject_list.htm"
-            #{"dept": "AMA", "year": 2015, "url": "https://web.archive.org/web/20150731063353/https://www.polyu.edu.hk/ama/"},   # TARGET: "listing_of_subjects"
-            #{"dept": "AMA", "year": 2025, "url": "https://web.archive.org/web/20250212043112/https://www.polyu.edu.hk/ama/"},   # TARGET: "/Study/Subject-Library"
+            {"dept": "AMA", "year": 2001, "url": "https://web.archive.org/web/20010503071107/https://www.polyu.edu.hk/ama/"},   # TARGET: "/sub_frm.htm"
+            {"dept": "AMA", "year": 2008, "url": "https://web.archive.org/web/20080510141326/https://www.polyu.edu.hk/ama/"},   # TARGET: "/subject/subject_list.htm"
+            {"dept": "AMA", "year": 2015, "url": "https://web.archive.org/web/20150731063353/https://www.polyu.edu.hk/ama/"},   # TARGET: "listing_of_subjects"
+            {"dept": "AMA", "year": 2025, "url": "https://web.archive.org/web/20250212043112/https://www.polyu.edu.hk/ama/"},   # TARGET: "/Study/Subject-Library"
         ]
 
         for entry in dept_urls:
@@ -82,6 +81,7 @@ class LLMSelfRepairingScraper(scrapy.Spider):
         raw_html    = response.text
         parsed_html = BeautifulSoup(raw_html, "html.parser")
         clean_html  = self.strip_html_dep(parsed_html)
+
 
         # "Return only a JSON array of objects. Each object must have two keys: 'name' and 'href'.\n"
         # "Do not include markdown, code blocks, or any explanation — just valid JSON."
@@ -110,81 +110,36 @@ class LLMSelfRepairingScraper(scrapy.Spider):
 
         print(f"\nScanning {dept} ({year}) page for subject list...")
 
-        subject_element   = None
-        subject_link_href = None
+        # [] Use BS to parse raw HTML:
+        raw_html    = response.text
+        parsed_html = BeautifulSoup(raw_html, "html.parser")
+        clean_html  = self.strip_html_sl(parsed_html)
 
-        # []
-        try:
-            xpath_path_query = open("./LLMScrapers/LLMScrapyScrapers/LLMSelfRepairing/subject_path.txt", "r").read().strip()
-            subject_element   = response.xpath(xpath_path_query).get()
-            subject_link_href = response.xpath(xpath_path_query).attrib.get("href") if subject_element else None
+        core_message = f"""
+        "You are a helpful assistant skilled in HTML parsing.\n"
+        "You will be given raw HTML from a university department page.\n"
+        "Your task is to locate a hyperlink pointing to the department's subject list or syllabus.\n"
+        "The link text might include terms like 'All Subjects', 'Subject List', 'Subject Syllabus', 'Subject Syllabi', etc.\n"
+        "Additionally, the target link may be further embedded inside an <li> tag also be further embedded inside an additional tag like an <li>. If so, choose the'Bachelor Programme'.\n"
+        "Finally, if unable to locate any subject list it would always be better to return a link re-directing to 'Programmes'.\n"
+        "Return only the URL (href) to the best match and nothing else.\n"
+        "HTML:\n{clean_html}"
+        """
 
-        except ValueError as e:
-            print(f"XPath failed with error: {e}")
-            subject_element   = None
-            subject_link_href = None
+        # [] Call LLM:
+        subject_link = self.call_llm(core_message)
+        # f = open("subject_list.html", "w")
+        # f.write(clean_html.prettify())
+        # f.close()
 
-        # []
-        if subject_link_href == None:
-
-            # [] Parse the HTML and truncate it:
-            raw_html    = response.text
-            parsed_html = BeautifulSoup(raw_html, "html.parser")
-            clean_html  = self.strip_html_sl(parsed_html)
-
-            # []
-            core_message = f"""
-            You are an expert assistant in HTML parsing and XPath query generation.
-
-            ### GOAL
-            Identify the best hyperlink (anchor tag) in the HTML that points to the department's subject list, and generate a valid XPath expression that selects it.
-
-            ### CONTEXT
-            - You are working with raw HTML from a university department page.
-            - Valid link texts might include:
-                - "All Subjects", "Subject List", "Subject Syllabus", "Subject Syllabi"
-            - If there are multiple valid links:
-            - Prefer links under "Bachelor Programme" or related sections.
-            - Prioritize English text if multiple versions exist.
-            - If no specific subject list is found:
-                - Fall back to a general "Programmes" link if available.
-
-            ### INSTRUCTIONS
-            1. Carefully scan the HTML to identify the most appropriate hyperlink.
-            2. Write an XPath expression that selects this `<a>` tag.
-            3. **Return ONLY the internal part of the XPath expression** — do not include `response.xpath(...)` or any other wrapping code.
-
-            ### OUTPUT FORMAT (STRICT)
-            - Return only a string like: `//a[contains(text(), "Subject List")]`
-            - Do not include quotes, markdown, explanations, or code.
-
-            ### INPUT HTML
-            {clean_html}
-            """
-
-            # [] 
-            llm_response     = self.call_llm(core_message)
-            print(f"RAW LLM RES: {llm_response}")
-            subject_element   = response.xpath(llm_response).get()
-            subject_link_href = response.xpath(llm_response).attrib.get("href") if subject_element else None
-
-            print(f"TARGET SUBJECT LINK: {subject_link_href}")
-
-            # [] 
-            with open("./LLMScrapers/LLMScrapyScrapers/LLMSelfRepairing/subject_path.txt", "w") as f:
-                f.write(llm_response)
-
-            # []
-            
-        print(f"RESULT =* {response.request.url}/{subject_link_href if subject_link_href else '[NO LINK FOUND]'}")
-
+        print(f"  RESULTS =* {response.request.url}/{subject_link}")
 
     # [] 
     def call_llm(self, core_message):        
         match self.llm_type:
             case LLMType.CHAT_GPT:
                 response = gpt_client.chat.completions.create(
-                    model="gpt-4-turbo",                
+                    model="gpt-4o-2024-08-06",                      
                     messages=[
                         {
                             "role": "system",

@@ -50,6 +50,7 @@ class DTUCrawler(RawScrapyAbstractCrawler):
                         callback=self.scrape_department_courses,
                         meta={'department_name': option_text}
                     )
+                    
         except Exception as e:
             frame = inspect.currentframe().f_back
 
@@ -66,8 +67,6 @@ class DTUCrawler(RawScrapyAbstractCrawler):
         department_name = response.meta['department_name']
 
         rows = response.xpath('//table//tr') # Get the table... 
-
-        #print(f"   *= {department_name}")
 
         # [] ...
         if len(rows) > 1 and department_name != "88 Other courses":    
