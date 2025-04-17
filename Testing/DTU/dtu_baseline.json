@@ -269,10 +269,10 @@
   "literature": [
    {
     "title": "Build, Run, and Sell Your Apple Consulting Practice",
-    "year": 2018,
+    "year": "2018",
     "author": "Edge C.",
-    "edition": 0,
-    "isbn": 0,
+    "edition": "",
+    "isbn": "",
     "pubFirm": "Apress, Berkeley, CA"
    }
   ],
