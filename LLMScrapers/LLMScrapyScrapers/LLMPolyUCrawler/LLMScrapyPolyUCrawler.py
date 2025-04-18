@@ -10,6 +10,7 @@ import json
 import time
 import threading
 import inspect
+from enum import Enum
 from urllib.parse import urlparse, unquote, urljoin
 
 # Local Imports:
@@ -31,7 +32,7 @@ gemini_key      = os.getenv("GEMINI_API_KEY")
 gpt_client      = OpenAI(api_key=gpt_key)
 gemini_client   = genai.Client(api_key=gemini_key)
 
-EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
+EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp", "clc", "elc" }
 
 class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI, **kwargs):
@@ -68,6 +69,18 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                     meta={'department_name': dep_name, 'department_abbr': dep_abbr}
                 )
 
+            if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
+                fac_url  = fac_header.xpath(".//a/@href").get()
+                fac_url  = self.sanitize_department_url(fac_url)
+                fac_abbr = self.get_department_abbreviation(fac_url)
+
+                time.sleep(1.5)
+                yield scrapy.Request(
+                    url=fac_url,
+                    callback=self.scrape_department_courses,
+                    meta={'department_name': dep_name, 'department_abbr': fac_abbr}
+                )
+
     def scrape_department_courses(self, response):
         department_name   = response.meta['department_name']
         department_abbr   = response.meta['department_abbr']
@@ -98,11 +111,10 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             # [] Parse the raw HTML and strip it down to the fundamental parts:
             raw_html          = response.text
             parsed_html       = BeautifulSoup(raw_html, "html.parser")
-            header_links_raw  = self.strip_html_slu(parsed_html, department_abbr)
+            header_links_raw  = self.truncate_html_sublist_url(parsed_html, department_abbr)
             file_lock = threading.Lock()
             
             # [] 
-            # 
             core_message = f"""
             You are a helpful web scraping assistant skilled in HTML parsing and Scrapy XPath.
 
@@ -146,7 +158,11 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         if subject_link_href != None:
 
-            department_url = f"https://www.polyu.edu.hk/{subject_link_href}"
+            department_url = (f"https://www.polyu.edu.hk/{subject_link_href}")
+
+            # TODO: Clean this up...
+            if department_abbr == 'me':  (f"{department_url}subject-list/")
+            if department_abbr == 'bre': (f"{department_url}2023-2024/")
 
             yield scrapy.Request(
                 url=department_url,
@@ -155,7 +171,6 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             )
 
         else:
-
             frame = inspect.currentframe().f_back
 
             yield ScrapyErrorDTO(
@@ -204,6 +219,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                         literature.extend(row[1:])
 
             #! LLM Trigger:
+            #TODO: Change this to use "call_llm" as opposed to the "clean_literature" which needs to be removed
             literature = self.clean_literature(literature)
             print(f"      -> Literature: {literature}\n -||- \n")
             yield {
@@ -213,8 +229,16 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 'department': department_name
             }
 
-        except Exception:
-            return
+        except Exception as e:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
 
     def call_llm(self, core_message):
         match self.llm_type:
@@ -276,16 +300,39 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         return course_url
     
-    # [LM #2] ...
+    # [LM #2] Harvest 
     def get_department_abbreviation(self, dep_url) -> str:
         abbreviation = dep_url.rstrip("/").split("/")[-1]
         if abbreviation == "lms": abbreviation = "lgt"
         return abbreviation
+    
+    # [LM #3] Used to confirm that the retrieved URL is a PDF file as that indicates it is a course
+    def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
+        parsed_url = urlparse(url)
 
+        decoded_path = unquote(parsed_url.path).split('?')[0] 
 
-    # [LM #3] Used in conjunction with finding the "Subject List URL"
+        if not re.search(r'\.pdf$', decoded_path, re.IGNORECASE):
+            return False
+        
+        if check_abbr:
+            try:
+                filename = decoded_path.split('/')[-1]
+                course_identifier = filename.rsplit('.', 1)[0]
+                match = re.match(r'([a-zA-Z]+)', course_identifier)
+                extracted_dept = match.group(1).lower()
+
+                return (extracted_dept == dep_abbr)
+
+            except Exception as e:
+                print(e)
+                return False
+        
+        return True
+    
+    # [LM #4] Used in conjunction with finding the "Subject List URL"
     #         We remove everything but the <header> tag and append it to a clean <body> tag
-    def strip_html_slu(self, raw_html : BeautifulSoup, dep_abbr : str) -> BeautifulSoup:
+    def truncate_html_sublist_url(self, raw_html : BeautifulSoup, dep_abbr : str) -> BeautifulSoup:
         # [] Parsed the raw HTML:
         parsed_html = BeautifulSoup("<html><body></body></html>", "html.parser")
         body = parsed_html.body 
@@ -322,26 +369,79 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         return body
     
-    # [LM #4] Used to confirm that the retrieved URL is a PDF file as that indicates it is a course
-    def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
-        parsed_url = urlparse(url)
+    # [LM #5] 
+    #         This method is necessary because unfortunately, AI can't fix the raw html and the many flaws 
+    def truncate_html_sublist_content(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> BeautifulSoup:
+        def get_dep_type(abbr : str) -> str:
+            match abbr:
+                # Faculty of Business:
+                case "lgt" : return "pt"     # Pagination Table      :: Aggregate Data
+                case "mm"  : return "tl"     # Table List            :: Retrieve Table
+                case "af"  : return "pt"     # Pagination Table      :: Aggregate Data
+                case "tls" : return "tls"    # Table List(s)         :: Retrieve all the Tables
 
-        decoded_path = unquote(parsed_url.path).split('?')[0] 
+                # Faculty of Computer and Mathematical Sciences:
+                case "ama" : return "tls"    # Table List(s)         :: Retrieve all the Tables
 
-        if not re.search(r'\.pdf$', decoded_path, re.IGNORECASE):
-            return False
-        
-        if check_abbr:
-            try:
-                filename = decoded_path.split('/')[-1]
-                course_identifier = filename.rsplit('.', 1)[0]
-                match = re.match(r'([a-zA-Z]+)', course_identifier)
-                extracted_dept = match.group(1).lower()
+                # Faculty of Construction and Environment:
+                case "bre" : return "tl"     # Table List            :: Retrieve Table
+                case "cee" : return "tls"    # Table List(s)         :: Retrieve all the Tables
+                case "lsgi": return "tls"    # Table List(s)         :: Retrieve all the Tables
 
-                return (extracted_dept == dep_abbr)
+                # Faculty of Engineering:
+                case "aae" : return "con"    # <a> tags              :: Retrieve <div class="container">
+                case "bme" : return "tls"    # Table List(s)         :: Retrieve all the Tables
+                case "eee" : return "con"    # <ul>/<li> tags        :: Retrieve <div class="container"> TODO: Might still be too much!
+                case "ise" : return "con"    # <ul>/<li> tags        :: Retrieve <div class="container">
+                case "me"  : return "tl"     # Table List            :: Retrieve Table 
 
-            except Exception as e:
-                print(e)
-                return False
-        
-        return True
+                # Faculty of Health and Social Sciences:
+                # NONE
+
+                # Faculty of Humanities:
+                case "chc" : return "tl"    # Table List            :: 
+                case "cbs" : return "tl"    # Table List            :: TODO: Fix is required! Needs to travel deeper in. Make sure that no HTML is lost during truncation
+                case "engl": return "con"   # <ul>/<li> tags        :: Retrieve <div class="container">
+            
+                # Faculty of Sciences:
+                case "abct": return "tl"    # Table List            :: Retrieve Table
+                case "ap"  : return "tl"    # Table List            :: Retrieve Table
+                case "fsn" : return "tl"    # Table List            :: Retrieve Table
+
+                # Fashion & Hotel:
+                case "sft" : return "tl"    # Table List            :: Retrieve Table
+                case "shtm": return "pt"    # Pagination Table      :: Aggregate Data
+
+        dep_type = get_dep_type(dep_abbr)
+
+        # [] Parsed the raw HTML:
+        parsed_html = BeautifulSoup("<html><body></body></html>", "html.parser")
+        body = parsed_html.body
+
+        # [] 
+        match dep_type:
+            case "pt" : 
+                def iter_over_pagination(url) -> BeautifulSoup:
+                    pass
+
+
+                url = (f"{dep_url}")
+
+                raw_html.xpath(".//li[contains(@class, 'pagination-list__itm') and contains(@class, 'pagination-list__itm--number')]//a/text()").getall()
+                
+                
+                
+                pass
+            
+            case "tl" : 
+
+                
+                return ""
+            
+            case "tls": 
+                
+                return ""
+            
+            case "con": 
+                
+                return ""
