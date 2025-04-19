@@ -41,6 +41,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
     def parse(self, response):
         yield from self.scrape_departments(response)
 
+    # [1] 
     def scrape_departments(self, response):
         faculty_containers = response.xpath("//*[contains(@class, 'ITS_Content_News_Highlight_Collection')]")
 
@@ -51,6 +52,9 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
             # [] Department Components:
             dep_containers = fac_container.xpath(".//ul[contains(@class, 'border-link-list')]//li//a")
+
+            # TODO: Remove this! Only for testing...
+            if fac_name != "School of Hotel and Tourism Management": continue
 
             for dep_container in dep_containers:
                 raw_url  = dep_container.xpath("./@href").get()
@@ -74,14 +78,17 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 fac_url  = self.sanitize_department_url(fac_url)
                 fac_abbr = self.get_department_abbreviation(fac_url)
 
+                print(f"Running for {fac_name}")
+
                 time.sleep(1.5)
                 yield scrapy.Request(
                     url=fac_url,
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': dep_name, 'department_abbr': fac_abbr}
+                    callback=self.scrape_department_subject_list,
+                    meta={'department_name': fac_name, 'department_abbr': fac_abbr}
                 )
 
-    def scrape_department_courses(self, response):
+    # [1.5] 
+    def scrape_department_subject_list(self, response):
         department_name   = response.meta['department_name']
         department_abbr   = response.meta['department_abbr']
 
@@ -138,15 +145,18 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             {header_links_raw}
             """
 
-            # [] 
+            # [] Call the LLM and retrieve the subject list 'href' attribute
             llm_response      = self.call_llm(core_message)
             subject_element   = response.xpath(llm_response).get()
             subject_link_href = response.xpath(llm_response).attrib.get("href") if subject_element else None
 
+            # TODO: Remove!
             print(f"{department_name} | {response.request.url}")
             print(f"   *= Raw LLM Res: {llm_response}")
             print(f"   *= Subject Link Href: {subject_link_href}")
 
+            # [] Using thread locks we ensure that when we write the XPath to the file we dont' have read/write
+            #    conflicts:
             with file_lock:
                 with open(json_path, "r") as f:
                     dep_subject_list_xpaths = json.load(f)
@@ -156,18 +166,22 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 with open(json_path, "w") as f:
                     json.dump(dep_subject_list_xpaths, f, indent=2)
 
+        # []
         if subject_link_href != None:
-
             department_url = (f"https://www.polyu.edu.hk/{subject_link_href}")
 
+            print(f"Located Target URL: {department_url}")
+
             # TODO: Clean this up...
+            # [] Thus far, the LLMs are incapable of diving deep down the URLs:
             if department_abbr == 'me':  (f"{department_url}subject-list/")
             if department_abbr == 'bre': (f"{department_url}2023-2024/")
 
+            # [] Scrape the department courses:
             yield scrapy.Request(
                 url=department_url,
                 callback=self.scrape_department_courses,
-                meta={'department_name': department_name, 'department_abbr': department_abbr}
+                meta={'department_name': department_name, 'department_abbr': department_abbr, 'department_url': department_url}
             )
 
         else:
@@ -181,7 +195,28 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 func=frame.f_code.co_name
             )
 
-    # []
+    # [2]  
+    def scrape_department_courses(self, response):
+        department_name   = response.meta['department_name']
+        department_abbr   = response.meta['department_abbr']
+        department_url    = response.meta['department_url' ]
+
+        # [] Parse the department's SubList HTML
+        raw_html    = response.text
+        parsed_html = BeautifulSoup(raw_html, "html.parser")
+        course_urls = self.get_subject_list_hrefs(parsed_html, department_abbr, response.request.url)
+
+        for course_url in course_urls:
+            print(f"Raw Course URL:       =* {course_url}")
+            print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
+            
+            # yield scrapy.Request(
+            #     url=course_url,
+            #     callback=self.scrape_single_course,
+            #     meta={'department_name': department_name}
+            # )
+
+    # [3] Scrape the Single Courses using LLMs to handle the literature:
     def scrape_single_course(self, response):
         department_name = response.meta['department_name']
 
@@ -221,7 +256,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             #! LLM Trigger:
             #TODO: Change this to use "call_llm" as opposed to the "clean_literature" which needs to be removed
             literature = self.clean_literature(literature)
-            print(f"      -> Literature: {literature}\n -||- \n")
+
             yield {
                 'name': subject_title,
                 'code': subject_code,
@@ -240,6 +275,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 func=frame.f_code.co_name
             )
 
+    # [4]
     def call_llm(self, core_message):
         match self.llm_type:
             case LLMType.CHAT_GPT:
@@ -300,7 +336,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         return course_url
     
-    # [LM #2] Harvest 
+    # [LM #2] Harvest the university abbreviation to be used for correct association between the course and department:
     def get_department_abbreviation(self, dep_url) -> str:
         abbreviation = dep_url.rstrip("/").split("/")[-1]
         if abbreviation == "lms": abbreviation = "lgt"
@@ -344,11 +380,13 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             if ul:
                 li_tags = ul.find_all("li", class_="mn__item--1 has-sub")
                 if len(li_tags) >= 2:
-                    # [] Department of Civil Environmental Engineering wanted to be really quirky and put it in the
-                    #    3rd <li> tag rather than the 2nd like everyone else. Nice.
+                    # [] Unfortunately, a huge draw back to all of this is still the need to truncate the data. 
                     if dep_abbr == "cee":
                         second_li = li_tags[2]  
                         body.append(second_li)
+                    elif dep_abbr == "sft":
+                        third_li = li_tags[3]
+                        body.append(third_li)
                     else:
                         second_li = li_tags[1] 
                         body.append(second_li)
@@ -371,7 +409,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
     
     # [LM #5] 
     #         This method is necessary because unfortunately, AI can't fix the raw html and the many flaws 
-    def truncate_html_sublist_content(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> BeautifulSoup:
+    def get_subject_list_hrefs(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> str:
         def get_dep_type(abbr : str) -> str:
             match abbr:
                 # Faculty of Business:
@@ -413,35 +451,48 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 case "shtm": return "pt"    # Pagination Table      :: Aggregate Data
 
         dep_type = get_dep_type(dep_abbr)
-
-        # [] Parsed the raw HTML:
-        parsed_html = BeautifulSoup("<html><body></body></html>", "html.parser")
-        body = parsed_html.body
+        course_urls = []
 
         # [] 
         match dep_type:
             case "pt" : 
-                def iter_over_pagination(url) -> BeautifulSoup:
-                    pass
-
-
-                url = (f"{dep_url}")
-
-                raw_html.xpath(".//li[contains(@class, 'pagination-list__itm') and contains(@class, 'pagination-list__itm--number')]//a/text()").getall()
+                # Originally this was Scrapy 
+                num_pages_element = raw_html.select("li.pagination-list__itm.pagination-list__itm--number a")
+                num_pages = int(num_pages_element[-1].get_text(strip=True))
                 
-                
-                
-                pass
+                # [] For each of the pagination pages we 
+                for page_num in range(1, num_pages + 1):
+                    page_url     = (f"{dep_url}?&page={page_num}")
+                    raw_html     = requests.get(page_url)
+                    parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
+                    page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
+
+                    # [] Extend the list with the scraped courses from this paginated iteration:
+                    course_urls.extend(tr["data-href"] for tr in page_courses)
             
             case "tl" : 
-
+                raw_html     = requests.get(dep_url)
+                parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
+                page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
                 
-                return ""
+                # [] Extend the list with the scraped courses from this paginated iteration:
+                course_urls.extend(tr["data-href"] for tr in page_courses)
             
             case "tls": 
+                raw_html     = requests.get(dep_url)
+                parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
+                page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
+
+                # [] Extend the list with the scraped courses from this paginated iteration:
+                course_urls.extend(tr["data-href"] for tr in page_courses)
+                
+            case "con": 
+                raw_html     = requests.get(dep_url)
+                parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
+                page_courses = parsed_html.find("container")
                 
                 return ""
             
-            case "con": 
-                
-                return ""
+            case _: return None
+            
+        return course_urls

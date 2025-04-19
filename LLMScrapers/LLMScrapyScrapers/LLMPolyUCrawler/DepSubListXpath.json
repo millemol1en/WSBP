@@ -26,6 +26,6 @@
   "abct": "//a[contains(text(), \"List of all Subjects\")]",
   "ap": "//a[contains(text(), \"Undergraduate Programmes\")]",
   "fsn": "//a[contains(text(), \"List of all Subjects\")]",
-  "sft": "",
-  "shtm": ""
+  "sft": "//a[contains(text(), \"Subject Synopsis\")]",
+  "shtm": "//a[contains(text(), \"Subject Syllabi\")]"
 }
