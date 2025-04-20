@@ -78,8 +78,6 @@ class DataPipeline:
         self.delta_time = time.time() - self.delta_time
         print(f"RUN-TIME DURATION: {self.delta_time} seconds")
 
-
-        if self.excep_flag:
-            for exception in self.exceptions:
-                exception.__print__()
+        for exception in self.exceptions:
+            exception.__print__()
 

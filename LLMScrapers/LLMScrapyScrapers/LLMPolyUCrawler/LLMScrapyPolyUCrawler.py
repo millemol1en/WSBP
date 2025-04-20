@@ -54,7 +54,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             dep_containers = fac_container.xpath(".//ul[contains(@class, 'border-link-list')]//li//a")
 
             # TODO: Remove this! Only for testing...
-            if fac_name != "School of Hotel and Tourism Management": continue
+            # if fac_name != "School of Hotel and Tourism Management": continue
 
             for dep_container in dep_containers:
                 raw_url  = dep_container.xpath("./@href").get()
@@ -66,26 +66,28 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 if dep_abbr in EXCLUDE_DEPARTMENTS : continue
 
                 # [] Prior to each we will sleep in order to prevent a 429 Error - too many requests.
+                if dep_abbr != 'engl': continue
+
                 time.sleep(1.5)
                 yield scrapy.Request(
                     url=dep_url,
-                    callback=self.scrape_department_courses,
+                    callback=self.scrape_department_subject_list,
                     meta={'department_name': dep_name, 'department_abbr': dep_abbr}
                 )
 
-            if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
-                fac_url  = fac_header.xpath(".//a/@href").get()
-                fac_url  = self.sanitize_department_url(fac_url)
-                fac_abbr = self.get_department_abbreviation(fac_url)
+            # if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
+            #     fac_url  = fac_header.xpath(".//a/@href").get()
+            #     fac_url  = self.sanitize_department_url(fac_url)
+            #     fac_abbr = self.get_department_abbreviation(fac_url)
 
-                print(f"Running for {fac_name}")
+            #     print(f"Running for {fac_name}")
 
-                time.sleep(1.5)
-                yield scrapy.Request(
-                    url=fac_url,
-                    callback=self.scrape_department_subject_list,
-                    meta={'department_name': fac_name, 'department_abbr': fac_abbr}
-                )
+            #     time.sleep(1.5)
+            #     yield scrapy.Request(
+            #         url=fac_url,
+            #         callback=self.scrape_department_subject_list,
+            #         meta={'department_name': fac_name, 'department_abbr': fac_abbr}
+            #     )
 
     # [1.5] 
     def scrape_department_subject_list(self, response):
@@ -170,8 +172,6 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
         if subject_link_href != None:
             department_url = (f"https://www.polyu.edu.hk/{subject_link_href}")
 
-            print(f"Located Target URL: {department_url}")
-
             # TODO: Clean this up...
             # [] Thus far, the LLMs are incapable of diving deep down the URLs:
             if department_abbr == 'me':  (f"{department_url}subject-list/")
@@ -181,7 +181,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             yield scrapy.Request(
                 url=department_url,
                 callback=self.scrape_department_courses,
-                meta={'department_name': department_name, 'department_abbr': department_abbr, 'department_url': department_url}
+                meta={'department_name': department_name, 'department_abbr': department_abbr}
             )
 
         else:
@@ -199,17 +199,19 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
     def scrape_department_courses(self, response):
         department_name   = response.meta['department_name']
         department_abbr   = response.meta['department_abbr']
-        department_url    = response.meta['department_url' ]
+        department_url    = response.request.url
 
         # [] Parse the department's SubList HTML
         raw_html    = response.text
         parsed_html = BeautifulSoup(raw_html, "html.parser")
-        course_urls = self.get_subject_list_hrefs(parsed_html, department_abbr, response.request.url)
+        course_urls = self.get_subject_list_hrefs(parsed_html, department_abbr, department_url)
 
+        print(f"NUM COURSE URLS: {len(course_urls)}")
         for course_url in course_urls:
             print(f"Raw Course URL:       =* {course_url}")
             print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
             
+            # TODO: Revert!
             # yield scrapy.Request(
             #     url=course_url,
             #     callback=self.scrape_single_course,
@@ -336,13 +338,13 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         return course_url
     
-    # [LM #2] Harvest the university abbreviation to be used for correct association between the course and department:
+    # [LM #3] Harvest the university abbreviation to be used for correct association between the course and department:
     def get_department_abbreviation(self, dep_url) -> str:
         abbreviation = dep_url.rstrip("/").split("/")[-1]
         if abbreviation == "lms": abbreviation = "lgt"
         return abbreviation
     
-    # [LM #3] Used to confirm that the retrieved URL is a PDF file as that indicates it is a course
+    # [LM #4] Used to confirm that the retrieved URL is a PDF file as that indicates it is a course
     def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
         parsed_url = urlparse(url)
 
@@ -366,7 +368,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
         
         return True
     
-    # [LM #4] Used in conjunction with finding the "Subject List URL"
+    # [LM #5] Used in conjunction with finding the "Subject List URL"
     #         We remove everything but the <header> tag and append it to a clean <body> tag
     def truncate_html_sublist_url(self, raw_html : BeautifulSoup, dep_abbr : str) -> BeautifulSoup:
         # [] Parsed the raw HTML:
@@ -407,7 +409,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         return body
     
-    # [LM #5] 
+    # [LM #6] 
     #         This method is necessary because unfortunately, AI can't fix the raw html and the many flaws 
     def get_subject_list_hrefs(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> str:
         def get_dep_type(abbr : str) -> str:
@@ -486,13 +488,13 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 # [] Extend the list with the scraped courses from this paginated iteration:
                 course_urls.extend(tr["data-href"] for tr in page_courses)
                 
+            # Try to get all <a> tags and sort it out through there
             case "con": 
+                print(f"DEPARTMENT URL: {dep_url}")
                 raw_html     = requests.get(dep_url)
                 parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
-                page_courses = parsed_html.find("container")
-                
-                return ""
-            
+                course_urls.extend(a["href"] for a in parsed_html.find_all("a", href=True) if self.is_url_valid(a["href"], dep_abbr, True))
+
             case _: return None
             
         return course_urls
