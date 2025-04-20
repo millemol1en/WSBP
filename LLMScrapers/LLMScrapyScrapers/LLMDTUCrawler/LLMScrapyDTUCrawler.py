@@ -94,9 +94,19 @@ class LLMDTUCrawler(LLMScrapyAbstractCrawler):
         points_raw = response.xpath("//label[contains(text(), 'Point( ECTS )')]/parent::td/following-sibling::td/text()").get()
         points = f"{points_raw.strip()} ECTS"
 
+        #TODO: Testing other xpath solution
+        #raw_literature = response.xpath(
+        #    "//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()[1]"
+        #).get()
+
         raw_literature = response.xpath(
-            "//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()[1]"
-        ).get()
+            "//div[@class='bar' and normalize-space(text())='Course literature']"
+            "/following-sibling::node()["
+            "    not(self::div[@class='bar'])"
+            "    and preceding-sibling::div[@class='bar'][1]"
+            "        [normalize-space(text())='Course literature']"
+            "]"
+        ).getall()
 
         course_literature = self.clean_literature(raw_literature)
         
