@@ -1,23 +1,38 @@
+# Scraper APIs:
+from bs4 import BeautifulSoup
 import scrapy 
-import pymupdf
+
+# Native Python Packages:
 import re 
 import requests
-from urllib.parse import urlparse, unquote, urljoin
+import os
+import json
+import time
+import threading
+import inspect
 from enum import Enum
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
+from urllib.parse import urlparse, unquote, urljoin
+
+# Local Imports:
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMScrapyAbstractCrawler, LLMType
 
+# Additional Imports:
+import pymupdf
 
-# TODO: Move to "Defs.py"
-EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
+# LLM Imports:
+from openai import OpenAI
+from google import genai
+from dotenv import load_dotenv
 
-class SubjectListFormatType(Enum):
-    A = "<main>+<a>"
-    B = "<main>+<tr>"
-    C = "<main>+<tr>+pagination"
-    D = "<a>"
-    E = "buildup"
-    F = "none"
+# Load in the LLM environment variables using LLM API keys:
+load_dotenv()
+gpt_key         = os.getenv("OPENAI_API_KEY") 
+gemini_key      = os.getenv("GEMINI_API_KEY")
+gpt_client      = OpenAI(api_key=gpt_key)
+gemini_client   = genai.Client(api_key=gemini_key)
+
+EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp", "clc", "elc" }
 
 class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", _llm_type=LLMType.NULL_AI, **kwargs):
@@ -26,169 +41,78 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
     def parse(self, response):
         yield from self.scrape_departments(response)
 
+    """ Step 1 """
     def scrape_departments(self, response):
-        
-        faculty_containers = response.css(".ITS_Content_News_Highlight_Collection")
+        faculty_containers = response.xpath("//*[contains(@class, 'ITS_Content_News_Highlight_Collection')]")
 
         for fac_container in faculty_containers:
             # [] Faculty Components:
-            fac_header     = fac_container.css("p.list-highlight__heading")
-            fac_name       = fac_header.css("a span.underline-link__line::text").get().strip() 
-            
-            # [] Department Components:
-            dep_containers = fac_container.css("ul.border-link-list li a")
+            fac_header = fac_container.xpath(".//p[contains(@class, 'list-highlight__heading')]")
+            fac_name   = fac_header.xpath(".//a//span[contains(@class, 'underline-link__line')]/text()").get().strip()
 
-            if fac_name != "School of Fashion and Textiles": continue
+            # [] Department Components:
+            dep_containers = fac_container.xpath(".//ul[contains(@class, 'border-link-list')]//li//a")
+
+            # TODO: Remove this! Only for testing...
+            # if fac_name != "School of Hotel and Tourism Management": continue
 
             for dep_container in dep_containers:
-                # []
-                dep_url  = dep_container.css("::attr(href)").get()
-                dep_name = dep_container.css("span.underline-link__line::text").get().strip()
-                dep_url  = self.sanitize_department_url(dep_url)
+                raw_url  = dep_container.xpath("./@href").get()
+                dep_url  = self.sanitize_department_url(raw_url)
+                dep_name = dep_container.xpath(".//span[contains(@class, 'underline-link__line')]/text()").get().strip()
                 dep_abbr = self.get_department_abbreviation(dep_url)
-
-                # []
-                (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(dep_url, dep_abbr)
-
-                #if format_type != SubjectListFormatType.E: continue
                 
-                # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
-                if len(subject_list_urls) < 1: continue
-                
-                # []
-                yield scrapy.Request(
-                    url=subject_list_urls[0], 
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': dep_name, 'department_abbr': dep_abbr, 'subject_list_urls': subject_list_urls, 'format_type': format_type, 'check': check}
-                )
-            
-            # TODO: UNDO THIS! + CODE DUPLICATION
-            #Specialty case required for Faculties which are also departments:
-            if fac_name == "School of Fashion and Textiles":
-                # []
-                fac_url  = fac_header.css("a::attr(href)").get()
-                fac_url  = self.sanitize_department_url(fac_url)
-                fac_abbr = self.get_department_abbreviation(fac_url)
-            
-                # []
-                (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(fac_url, fac_abbr)
+                # dep_name != "School of Accounting and Finance" or 
+                if dep_abbr in EXCLUDE_DEPARTMENTS : continue
 
-                # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
-                if len(subject_list_urls) < 1: continue
+                # [] Prior to each we will sleep in order to prevent a 429 Error - too many requests.
+                if dep_abbr != 'ama': continue
 
+                time.sleep(1.5)
                 yield scrapy.Request(
-                    url=subject_list_urls[0],  
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': fac_name, 'department_abbr': fac_abbr, 'format_type': format_type, 'check': check}
+                    url=dep_url,
+                    callback=self.scrape_department_subject_list,
+                    meta={'department_name': dep_name, 'department_abbr': dep_abbr}
                 )
 
+            # if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
+            #     fac_url  = fac_header.xpath(".//a/@href").get()
+            #     fac_url  = self.sanitize_department_url(fac_url)
+            #     fac_abbr = self.get_department_abbreviation(fac_url)
+
+            #     print(f"Running for {fac_name}")
+
+            #     time.sleep(1.5)
+            #     yield scrapy.Request(
+            #         url=fac_url,
+            #         callback=self.scrape_department_subject_list,
+            #         meta={'department_name': fac_name, 'department_abbr': fac_abbr}
+            #     )
+
+    """ Step 2 """
     def scrape_department_courses(self, response):
         department_name   = response.meta['department_name']
         department_abbr   = response.meta['department_abbr']
-        format_type       = response.meta['format_type']
-        check             = response.meta['check']
+        department_url    = response.request.url
 
-        scraped_courses = []
+        # [] Parse the department's SubList HTML
+        raw_html    = response.text
+        parsed_html = BeautifulSoup(raw_html, "html.parser")
+        course_urls = self.get_subject_list_hrefs(parsed_html, department_abbr, department_url)
 
-        num_courses_collected = 0
-
-        match format_type:
-            # [Case #1] <main> & <a>
-            case SubjectListFormatType.A:
-
-                main_tag = response.css("main")
-                a_tags = main_tag.css("a")
-
-                for a_tag in a_tags:
-                    course_name = a_tag.css("::text").get().strip()
-                    course_url  = a_tag.css("::attr(href)").get()
-
-                    if self.is_url_valid(course_url, department_abbr, check):
-                        if course_name: print(f"       -:< {course_name}")
-                        print(f"            => {course_url}")
-
-            # [Case #2] <main> & <tr>
-            case SubjectListFormatType.B:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
+        print(f"NUM COURSE URLS: {len(course_urls)}")
+        for course_url in course_urls:
+            print(f"Raw Course URL:       =* {course_url}")
+            print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
             
-                main_tag = response.css("main")
+            # TODO: Revert!
+            # yield scrapy.Request(
+            #     url=course_url,
+            #     callback=self.scrape_single_course,
+            #     meta={'department_name': department_name}
+            # )
 
-                tr_tags = main_tag.css("tr")
-                
-                for tr_tag in tr_tags:
-                    if num_courses_collected > 10: break # TODO: REMOVE THIS [Data Accuracy - Viggo]
-                    course_url  = tr_tag.css("::attr(data-href)").get()
-
-                    if self.is_url_valid(course_url, department_abbr, check):
-                        sanitized_url = self.sanitize_course_url(response.request.url, course_url)
-                        
-                        yield scrapy.Request(
-                            url=sanitized_url,
-                            callback=self.scrape_single_course,
-                            meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
-                        )
-
-                    num_courses_collected += 1 # TODO: REMOVE THIS [Data Accuracy - Viggo]
-            
-            # [Case #3] ...
-            case SubjectListFormatType.C:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
-            
-                main_tag = response.css("main")
-
-                pag_elements = main_tag.css("li.pagination-list__itm.pagination-list__itm--number a::text").getall()
-                if pag_elements:
-                    last_element_num = int(pag_elements[-1].strip())
-
-                    for pg_num in range(1, last_element_num + 1):
-                        pag_url = (f"{response.request.url}?page={pg_num}")
-                        print(f"        -> {pag_url}")
-                        
-                        yield scrapy.Request(
-                            url=pag_url,
-                            callback=self.handle_format_type_c,
-                            meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
-                        )
-
-
-            # [Case #4] ...
-            case SubjectListFormatType.D:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
-                
-                course_urls = response.css("a::attr(href)").getall()
-
-                for course_url in course_urls:
-                    sanitized_url = self.sanitize_course_url(response.request.url, course_url)
-                    #print(f"            => {course_url}")
-
-                    # [] In some instances the URL is not complete and we need to append university base URL
-
-                    yield scrapy.Request(
-                        url=sanitized_url,
-                        callback=self.scrape_single_course,
-                        meta={'department_name': department_name}
-                    )          
-        
-            # [Case #5] ...
-            case SubjectListFormatType.E:
-
-                search_results = response.css("article p a")
-                print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
-
-                for search_result in search_results:
-                    search_result_link = search_result.css("::attr(href)").get()
-                    # print(f"       -> {search_result_link}")
-
-                    yield scrapy.Request(
-                        url=search_result_link,
-                        callback=self.scrape_single_course,
-                        meta={'department_name': department_name}
-                    )
-
-            case _:
-                print(f"   *= {department_name}: None!")
-
-    # []
+    """ Step 4 """
     def scrape_single_course(self, response):
         department_name = response.meta['department_name']
 
@@ -225,8 +149,10 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                     elif reading_list_bool:
                         literature.extend(row[1:])
 
+            #! LLM Trigger:
+            #TODO: Change this to use "call_llm" as opposed to the "clean_literature" which needs to be removed
             literature = self.clean_literature(literature)
-            print(f"      -> Literature: {literature}\n -||- \n")
+
             yield {
                 'name': subject_title,
                 'code': subject_code,
@@ -234,12 +160,56 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 'department': department_name
             }
 
-        except Exception:
-            return
+        except Exception as e:
+            frame = inspect.currentframe().f_back
 
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
+
+
+    def call_llm(self, core_message):
+        match self.llm_type:
+            case LLMType.CHAT_GPT:
+                response = gpt_client.chat.completions.create(
+                    model="gpt-4-turbo",                      
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": (
+                                core_message
+                            )
+                        }
+                    ],
+                    temperature=0,                                  # Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. 
+                )
+
+                content = response.choices[0].message.content.strip()
+            
+                return content
+            
+            case LLMType.GEMINI:
+                response = gemini_client.models.generate_content(
+                    model="gemini-2.0-flash",
+                    contents=core_message,
+                    config={
+                        'response_mime_type': 'application/json',
+                        'response_schema': list[str], 
+                    }
+                    
+                )
+
+                return response.text
+            
+            case _: pass
 
     """ LOCAL METHODS """
-    # [LM #1] ...
+    # [LM #1] Takes the department URL and reformats it if necessary. Some departments will write "https://www.DEP_ABBR.polyu.edu.hk/" or will only have the abbreviation
+    #         however, it should be "https://www.polyu.edu.hk/DEP_ABBR/":
     def sanitize_department_url(self, dep_url) -> str:
         parsed_url = urlparse(dep_url)
 
@@ -252,7 +222,8 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
         
         return dep_url
     
-    # [LM #2] Takes the department URL (base_url) are mashes it together 
+    # [LM #2] Takes the course URL and makes sure that it is properly associated with the correct department as some
+    #         departments will have courses from other departments, resulting in duplicates:
     def sanitize_course_url(self, dep_url, course_url) -> str:
         parsed_url = urlparse(course_url)
 
@@ -261,66 +232,13 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         return course_url
     
-    # [LM #2] ...
+    # [LM #3] Harvest the university abbreviation to be used for correct association between the course and department:
     def get_department_abbreviation(self, dep_url) -> str:
         abbreviation = dep_url.rstrip("/").split("/")[-1]
         if abbreviation == "lms": abbreviation = "lgt"
         return abbreviation
-
-    # [LM #3] ...
-    def search_for_course_urls(self, response):
-        print("is being called yo!")
-
-    # [LM #4] ...
-    def scrape_course_from_department_subject_list(self, dep_url, dep_abbr) -> (list[str] | SubjectListFormatType | bool):
-        match dep_abbr:
-            case "lgt":  return ([(f"{dep_url}/study/subject-syllabi/")],                                                                               SubjectListFormatType.C, False) # Department of Logistics and Maritime Studies              :: 
-            case "mm":   return ([(f"{dep_url}/study/subject-syllabi/")],                                                                               SubjectListFormatType.A, False) # Department of Management and Marketing                    :: 
-            case "af":   return ([(f"{dep_url}/study/subject-syllabi/")],                                                                               SubjectListFormatType.C, True)  # Department of Accounting and Finance                      :: 
-            
-            case "ama":  return ([(f"{dep_url}/study/subject-library/")],                                                                               SubjectListFormatType.A, False) # Department of Applied Mathematics                         :: 
-            case "dsai": return ([(f"{dep_url}/study/ug/bsc-scheme-in-data-science-and-artificial-intelligence/subjects/")],                            SubjectListFormatType.A, False) # Department of Data Science and Artificial Intelligence    :: 
-            
-            case "bre":  return ([(f"{dep_url}/study/undergraduate-programmes/subjects_syllabi/2023-2024/")],                                           SubjectListFormatType.A, True)  # Department of Building and Real Estate                    :: 
-            case "cee":  return ([(f"{dep_url}/current-students/teaching-and-learning/syllabus/")],                                                     SubjectListFormatType.A, False) # Department of Civil and Environmental Engineering         :: 
-            case "lsgi": return ([(f"{dep_url}/study/lsgi-subject-list/")],                                                                             SubjectListFormatType.A, False) # Department of Land Surveying and Geo-Informatics          :: 
-            
-            case "aae":  return ([(f"{dep_url}/study/subject-list/")],                                                                                  SubjectListFormatType.A, False) # Department of Aeronautical and Aviation Engineering       :: 
-            case "bme":  return ([(f"{dep_url}/study/undergraduate-programme/admissions/list-of-subjects-and-subject-description-forms/"), 
-                                  (f"{dep_url}/study/taught-postgraduate-programme/master-of-science-in-biomedical-engineering/programme-structure/")], SubjectListFormatType.A, True)  # Department of Biomedical Engineering                      :: 
-            case "ise":  return ([(f"{dep_url}/study/information-for-current-students/programme-related-info/subject-syllabi/")],                       SubjectListFormatType.A, False) # Department of Industrial and Systems Engineering          :: 
-            case "eee":  return ([(f"{dep_url}/study/information-for-current-students/subject-syllabi/")],                                              SubjectListFormatType.A, False) # Department of Electrical and Electronic Engineering       :: 
-            case "me":   return ([(f"{dep_url}/study/course-info/subject-list/")],                                                                      SubjectListFormatType.A, False) # Department of Mechanical Engineering                      :: 
-
-            case "apss": return ([(f"{dep_url}docdrive/subject/")],                                                                                     SubjectListFormatType.D, False) # Department of Applied Social Sciences                     :: 
-            # TODO: Think of a nifty solution... rip
-            case "hti":  return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
-            case "rs":   return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
-            case "sn":   return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
-            case "so":   return ([(f"{dep_url}/search-result/?query=Subject+Description+Form")],                                                        SubjectListFormatType.E, True)
-            
-            case "cbs":  return ([(f"{dep_url}/study/undergraduate-programmes/gur-subjects-offered-by-cbs/cluster-area-requirements/"), 
-                                  (f"{dep_url}/study/undergraduate-programmes/gur-subjects-offered-by-cbs/service-learning/")],                         SubjectListFormatType.A, False) # Chinese and Bilingual Studies                             :: 
-            case "chc":  return ([(f"{dep_url}/study/undergraduate-programmes/bachc--list-of-all-subjects/")],                                          SubjectListFormatType.A, True)  # The Chinese History Center                                :: 
-
-            case "clc":  return ([(f"{dep_url}/subjects/chinese-discipline-specific-requirement-subjects/subject-information/"), 
-                                  (f"{dep_url}/subjects/chinese-language-and-communication-requirement-subjects/"), 
-                                  (f"{dep_url}/subjects/chinese-subjects-for-non-chinese-speaking-students/")],                                         SubjectListFormatType.A, True)  # Chinese Language Center                                   :: 
-            case "engl": return ([(f"{dep_url}/study/full-subject-list/")],                                                                             SubjectListFormatType.A, False) # Department of English & Communication                     :: 
-            case "elc":  return ([(f"{dep_url}/subjects/all-subjects/")],                                                                               SubjectListFormatType.A, True)  # English Language Center                                   :: 
-
-            case "ap":   return ([(f"{dep_url}/study/subject-list/bachelor-programme/"), (f"{dep_url}/study/subject-list/master-programme/")],          SubjectListFormatType.B, False) # Department of Applied Physics                             :: 
-
-            case "abct": return ([(f"{dep_url}/study/undergraduate-programmes/list-of-all-subjects_ug/"), 
-                                 (f"{dep_url}/study/taught-postgraduate-programmes/list-of-all-subjects_tpg/"), 
-                                 (f"{dep_url}/study/research-postgraduate-programme/list-of-all-subjects_rpg/")],                                       SubjectListFormatType.A, False) # Department of Applied Biology and Chemical Technology     :: 
-
-            case "fsn":  return ([(f"{dep_url}/study/list-of-all-subjects/")],                                                                          SubjectListFormatType.A, True)  # Department of Food Science and Nutrition                  :: 
-            case "sft":  return ([(f"{dep_url}/programme-information/subject-synopsis/")],                                                              SubjectListFormatType.B, False) # School of Fashion and Textiles                            :: 
-
-            case _:      return ([],                                                                                                        SubjectListFormatType.F, False)
-
-    # [LM #5] Used to confirm that the retrieved URL is a PDF file as that indicates it is a course
+    
+    # [LM #4] Used to confirm that the retrieved URL is a PDF file as that indicates it is a course
     def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
         parsed_url = urlparse(url)
 
@@ -344,27 +262,185 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
         
         return True
     
-    # [LM #6]  
-    def handle_format_type_c(self, response):
-        department_name = response.meta['department_name']
-        department_abbr = response.meta['department_abbr']
-        check           = response.meta['check']
+    # [LM #5] Used in conjunction with finding the "Subject List URL"
+    #         We remove everything but the <header> tag and append it to a clean <body> tag
+    def truncate_html_sublist_url(self, raw_html : BeautifulSoup, dep_abbr : str) -> BeautifulSoup:
+        # [] Parsed the raw HTML:
+        parsed_html = BeautifulSoup("<html><body></body></html>", "html.parser")
+        body = parsed_html.body 
 
-        tr_tags    = response.css("tr.ITS_clickableTableRow")
+        # [] Harvest the necessary data from the <nav> tag:
+        nav = raw_html.find("nav", class_="mn__nav")
+        if nav:
+            ul = nav.find("ul", class_="mn__list--1")
+            if ul:
+                li_tags = ul.find_all("li", class_="mn__item--1 has-sub")
+                if len(li_tags) >= 2:
+                    # [] Unfortunately, a huge draw back to all of this is still the need to truncate the data. 
+                    if dep_abbr == "cee":
+                        second_li = li_tags[2]  
+                        body.append(second_li)
+                    elif dep_abbr == "sft":
+                        third_li = li_tags[3]
+                        body.append(third_li)
+                    else:
+                        second_li = li_tags[1] 
+                        body.append(second_li)
+
+        # [] Method to harvest all the <a> tags located in the <header>
+        # for tag in header_tag:
+            # for a in tag.find_all("a"):
+            #     tag_href = a.get("href")
+            #     tag_text = a.get_text(strip=True)
+
+            #     if tag_href and tag_text:
+            #         if tag_href == "javascript:void(0);": continue
+
+            #         header_links.append({
+            #             "aTagText": tag_text,
+            #             "aTagHref": tag_href
+            #         })
+
+        return body
+    
+    """ Step 3 """ 
+    # [LM #6]
+    def scrape_department_subject_list(self, response):
+        department_name   = response.meta['department_name']
+        department_abbr   = response.meta['department_abbr']
+
+        subject_element   = None
+        subject_link_href = None
+
+        json_path = "./LLMScrapers/LLMScrapyScrapers/LLMPolyUCrawler/DepSubListXpath.json"
+
+        # [] We load the JSON file and try to use the currently stored XPath. If we fail we will go further down
+        #    to trigger the LLM call:
+        try:
+            with open(json_path, "r") as f:
+                dep_subject_list_xpaths = json.load(f)
+
+            xpath_query = dep_subject_list_xpaths.get(department_abbr)
+
+            subject_element   = response.xpath(xpath_query).get()
+            subject_link_href = response.xpath(xpath_query).attrib.get("href") if subject_element else None
+
+        except ValueError as e:
+            print(f"XPath failed with error: {e}")
+            subject_element   = None
+            subject_link_href = None
+
+        # [] 
+        if subject_link_href == None:
+            # [] Parse the raw HTML and strip it down to the fundamental parts:
+            raw_html          = response.text
+            parsed_html       = BeautifulSoup(raw_html, "html.parser")
+            header_links_raw  = self.truncate_html_sublist_url(parsed_html, department_abbr)
+            file_lock = threading.Lock()
+            
+            # [] 
+            core_message = f"""
+            You are a helpful web scraping assistant skilled in HTML parsing and Scrapy XPath.
+
+            ### GOAL
+            Your task is to find the most appropriate XPath query that selects a hyperlink element (<a>) pointing to the department's subject list.
+
+            ### INSTRUCTIONS
+            - The hyperlink might be labeled with terms such as:
+            - "Subject List", "Subject Syllabus", "Subject Syllabi", "Course Info", etc.
+            - In some cases, these links may be nested inside <li> or other tags.
+            - If there's no direct subject list, fallback options might include links like:
+            - "CAR Subjects", "Undergraduate Programmes", or even "Programmes".
+            - Return only the internal portion of the XPath query that selects this <a> tag.
+            - Do **not** include `response.xpath(...)`, just the string inside the parentheses.
+            - Do **not** return any extra text or explanation.
+
+            ### EXAMPLE OUTPUT
+            //a[contains(text(), "Subject List")]
+
+            ### HTML INPUT
+            {header_links_raw}
+            """
+
+            # [] Call the LLM and retrieve the subject list 'href' attribute
+            llm_response      = self.call_llm(core_message)
+            subject_element   = response.xpath(llm_response).get()
+            subject_link_href = response.xpath(llm_response).attrib.get("href") if subject_element else None
+
+            # [] Using thread locks we ensure that when we write the XPath to the file we dont' have read/write
+            #    conflicts:
+            with file_lock:
+                with open(json_path, "r") as f:
+                    dep_subject_list_xpaths = json.load(f)
+
+                dep_subject_list_xpaths[department_abbr] = llm_response.strip()
+
+                with open(json_path, "w") as f:
+                    json.dump(dep_subject_list_xpaths, f, indent=2)
+
+        # []
+        if subject_link_href != None:
+            department_url = (f"https://www.polyu.edu.hk/{subject_link_href}")
+
+            # TODO: Clean this up...
+            # [] Thus far, the LLMs are incapable of diving deep down the URLs:
+            if department_abbr == 'me':  (f"{department_url}subject-list/")
+            if department_abbr == 'bre': (f"{department_url}2023-2024/")
+
+            # [] Scrape the department courses:
+            yield scrapy.Request(
+                url=department_url,
+                callback=self.scrape_department_courses,
+                meta={'department_name': department_name, 'department_abbr': department_abbr}
+            )
+
+        else:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
+
+    # [LM #6] Used to get scrape the necessary URLs from the previously retrieved subject list page.
+    #         This method is necessary because unfortunately, AI can't fix the badly written raw html:
+    def get_subject_list_hrefs(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> str:
+        # [] 
+        course_urls = []
+        raw_html    = requests.get(dep_url)
+        parsed_html = BeautifulSoup(raw_html.text, 'html.parser')
+
+        # [] For 3 departments it is necessary to go through a page-pagination structure:
+        if dep_abbr in ["lgt", "af", "shtm"]:
+            num_pages_element = parsed_html.select("li.pagination-list__itm.pagination-list__itm--number a")
+            num_pages         = int(num_pages_element[-1].get_text(strip=True))
+
+            # [] Enumerate over all the pages:
+            for page_num in range(1, num_pages + 1):
+                page_url     = (f"{dep_url}?&page={page_num}")
+                raw_html     = requests.get(page_url)
+                parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
+                page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
+
+                course_urls.extend(tr["data-href"] for tr in page_courses)
+
+            return course_urls
+        else:
+            # [] Departments with a table that have <td> tags with "data-href" values:
+            try:
+                page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
+                course_urls.extend(tr["data-href"] for tr in page_courses if self.is_url_valid(tr["data-href"], dep_abbr, True))
+                if len(page_courses) >= 1: return course_urls
+            except: pass
+
+            # [] Departments with OR without a table but not "data-ref" attribute in <tr>:
+            try: 
+                page_courses = parsed_html.find_all("a", attrs={"href": True})
+                course_urls.extend(a["href"] for a in page_courses if self.is_url_valid(a["href"], dep_abbr, True))
+                if len(page_courses) >= 1: return course_urls
+            except: pass
         
-        for course in tr_tags:
-            course_url = course.css("::attr(data-href)").get()
-
-            if self.is_url_valid(course_url, department_abbr, check):
-                
-                yield scrapy.Request(
-                    url=course_url,
-                    callback=self.scrape_single_course,
-                    meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
-                )
-
-    def spider_closed():
-        print("PolyU Finished!")
-
-    def call_llm(self):
-        return super().call_llm()
+        return None

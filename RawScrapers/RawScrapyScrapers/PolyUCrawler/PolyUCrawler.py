@@ -1,14 +1,22 @@
+# Scraping APIs:
 import scrapy 
-import pymupdf
+
+# Native Python Packages:
 import re 
 import requests
+import inspect
 from urllib.parse import urlparse, unquote, urljoin
 from enum import Enum
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
 
+# Additional Imports:
+import pymupdf
+
+# Local Imports:
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
 from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
 
 # TODO: Move to "Defs.py"
+# These departments have no publicaly available subject list
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
 
 class SubjectListFormatType(Enum):
@@ -23,160 +31,179 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
     def __init__(self, _name="", _url="", **kwargs):
         super().__init__(_name=_name, _url=_url, **kwargs)
 
+    """ Step 1 """
     def parse(self, response):
         yield from self.scrape_departments(response)
 
+    """ Step 2 """
     def scrape_departments(self, response):
-        faculty_containers = response.css(".ITS_Content_News_Highlight_Collection")
+        try:
+            faculty_containers = response.css(".ITS_Content_News_Highlight_Collection")
 
-        for fac_container in faculty_containers:
-            # [] Faculty Components:
-            fac_header     = fac_container.css("p.list-highlight__heading")
-            fac_name       = fac_header.css("a span.underline-link__line::text").get().strip() 
-            
-            # [] Department Components:
-            dep_containers = fac_container.css("ul.border-link-list li a")
-
-            #if fac_name != "School of Fashion and Textiles": continue
-
-            for dep_container in dep_containers:
-                # []
-                dep_url  = dep_container.css("::attr(href)").get()
-                dep_name = dep_container.css("span.underline-link__line::text").get().strip()
-                dep_url  = self.sanitize_department_url(dep_url)
-                dep_abbr = self.get_department_abbreviation(dep_url)
-
-                # []
-                (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(dep_url, dep_abbr)
-
-                if format_type != SubjectListFormatType.E: continue
+            for fac_container in faculty_containers:
+                # [] Faculty Components:
+                fac_header     = fac_container.css("p.list-highlight__heading")
+                fac_name       = fac_header.css("a span.underline-link__line::text").get().strip() 
                 
-                # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
-                if len(subject_list_urls) < 1: continue
+                # [] Department Components:
+                dep_containers = fac_container.css("ul.border-link-list li a")
 
-                # []
-                yield scrapy.Request(
-                    url=subject_list_urls[0], 
-                    callback=self.scrape_department_courses,
-                    meta={'department_name': dep_name, 'department_abbr': dep_abbr, 'subject_list_urls': subject_list_urls, 'format_type': format_type, 'check': check}
-                )
+                #if fac_name != "School of Fashion and Textiles": continue
 
-            # TODO: UNDO THIS! + CODE DUPLICATION
-            # Specialty case required for Faculties which are also departments:
-            # if fac_name == "School of Fashion and Textiles":
-            #     # []
-            #     fac_url  = fac_header.css("a::attr(href)").get()
-            #     fac_url  = self.sanitize_department_url(fac_url)
-            #     fac_abbr = self.get_department_abbreviation(fac_url)
-                
-            #     # []
-            #     (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(fac_url, fac_abbr)
+                for dep_container in dep_containers:
+                    # []
+                    dep_url  = dep_container.css("::attr(href)").get()
+                    dep_name = dep_container.css("span.underline-link__line::text").get().strip()
+                    dep_url  = self.sanitize_department_url(dep_url)
+                    dep_abbr = self.get_department_abbreviation(dep_url)
 
-            #     # TODO: LIST WITH MULTIPLE VLAUES REQUIRES A SOLUTION
-            #     if len(subject_list_urls) < 1: continue
+                    # []
+                    (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(dep_url, dep_abbr)
 
-            #     yield scrapy.Request(
-            #         url=subject_list_urls[0],  
-            #         callback=self.scrape_department_courses,
-            #         meta={'department_name': fac_name, 'department_abbr': fac_abbr, 'format_type': format_type, 'check': check}
-            #     )
+                    if format_type != SubjectListFormatType.E: continue
 
+                    # []
+                    yield scrapy.Request(
+                        url=subject_list_urls[0], 
+                        callback=self.scrape_department_courses,
+                        meta={'department_name': dep_name, 'department_abbr': dep_abbr, 'subject_list_urls': subject_list_urls, 'format_type': format_type, 'check': check}
+                    )
+
+                # Specialty case required for Faculties which are also departments:
+                if fac_name == "School of Fashion and Textiles":
+                    # []
+                    fac_url  = fac_header.css("a::attr(href)").get()
+                    fac_url  = self.sanitize_department_url(fac_url)
+                    fac_abbr = self.get_department_abbreviation(fac_url)
+                    
+                    # []
+                    (subject_list_urls, format_type, check) = self.scrape_course_from_department_subject_list(fac_url, fac_abbr)
+
+                    yield scrapy.Request(
+                        url=subject_list_urls[0],  
+                        callback=self.scrape_department_courses,
+                        meta={'department_name': fac_name, 'department_abbr': fac_abbr, 'format_type': format_type, 'check': check}
+                    )
+
+        except Exception as e:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
+
+    """ Step 3 """
     def scrape_department_courses(self, response):
         department_name   = response.meta['department_name']
         department_abbr   = response.meta['department_abbr']
         format_type       = response.meta['format_type']
         check             = response.meta['check']
 
-        scraped_courses = []
+        try:
+            match format_type:
+                # [Case #1] <main> & <a>
+                case SubjectListFormatType.A:
 
-        match format_type:
-            # [Case #1] <main> & <a>
-            case SubjectListFormatType.A:
+                    main_tag = response.css("main")
+                    a_tags = main_tag.css("a")
 
-                main_tag = response.css("main")
-                a_tags = main_tag.css("a")
+                    for a_tag in a_tags:
+                        course_name = a_tag.css("::text").get().strip()
+                        course_url  = a_tag.css("::attr(href)").get()
 
-                for a_tag in a_tags:
-                    course_name = a_tag.css("::text").get().strip()
-                    course_url  = a_tag.css("::attr(href)").get()
+                        if self.is_url_valid(course_url, department_abbr, check):
+                            if course_name: print(f"       -:< {course_name}")
+                            print(f"            => {course_url}")
 
-                    if self.is_url_valid(course_url, department_abbr, check):
-                        if course_name: print(f"       -:< {course_name}")
-                        print(f"            => {course_url}")
+                # [Case #2] <main> & <tr>
+                case SubjectListFormatType.B:
+                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                
+                    main_tag = response.css("main")
 
-            # [Case #2] <main> & <tr>
-            case SubjectListFormatType.B:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
-            
-                main_tag = response.css("main")
+                    tr_tags = main_tag.css("tr")
 
-                tr_tags = main_tag.css("tr")
+                    for tr_tag in tr_tags:
+                        course_url  = tr_tag.css("::attr(data-href)").get()
 
-                for tr_tag in tr_tags:
-                    course_url  = tr_tag.css("::attr(data-href)").get()
+                        if self.is_url_valid(course_url, department_abbr, check):
+                            print(f"            => {course_url}")
+                
+                # [Case #3] ...
+                case SubjectListFormatType.C:
+                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                
+                    main_tag = response.css("main")
 
-                    if self.is_url_valid(course_url, department_abbr, check):
-                        print(f"            => {course_url}")
-            
-            # [Case #3] ...
-            case SubjectListFormatType.C:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
-            
-                main_tag = response.css("main")
+                    pag_elements = main_tag.css("li.pagination-list__itm.pagination-list__itm--number a::text").getall()
+                    if pag_elements:
+                        last_element_num = int(pag_elements[-1].strip())
 
-                pag_elements = main_tag.css("li.pagination-list__itm.pagination-list__itm--number a::text").getall()
-                if pag_elements:
-                    last_element_num = int(pag_elements[-1].strip())
+                        for pg_num in range(1, last_element_num + 1):
+                            pag_url = (f"{response.request.url}?page={pg_num}")
+                            print(f"        -> {pag_url}")
+                            
+                            yield scrapy.Request(
+                                url=pag_url,
+                                callback=self.handle_format_type_c,
+                                meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
+                            )
 
-                    for pg_num in range(1, last_element_num + 1):
-                        pag_url = (f"{response.request.url}?page={pg_num}")
-                        print(f"        -> {pag_url}")
-                        
+
+                # [Case #4] ...
+                case SubjectListFormatType.D:
+                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                    
+                    course_urls = response.css("a::attr(href)").getall()
+
+                    for course_url in course_urls:
+                        sanitized_url = self.sanitize_course_url(response.request.url, course_url)
+                        #print(f"            => {course_url}")
+
+                        # [] In some instances the URL is not complete and we need to append university base URL
+
                         yield scrapy.Request(
-                            url=pag_url,
-                            callback=self.handle_format_type_c,
-                            meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
+                            url=sanitized_url,
+                            callback=self.scrape_single_course,
+                            meta={'department_name': department_name}
+                        )          
+            
+                # [Case #5] ...
+                case SubjectListFormatType.E:
+
+                    search_results = response.css("article p a")
+                    print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
+
+                    for search_result in search_results:
+                        search_result_link = search_result.css("::attr(href)").get()
+                        # print(f"       -> {search_result_link}")
+
+                        yield scrapy.Request(
+                            url=search_result_link,
+                            callback=self.scrape_single_course,
+                            meta={'department_name': department_name}
                         )
 
+                case _:
+                    # TODO: Change to throw
+                    print(f"   *= {department_name}: None!")
 
-            # [Case #4] ...
-            case SubjectListFormatType.D:
-                print(f"   *= {department_name}: {response.request.url} - {check}")
-                
-                course_urls = response.css("a::attr(href)").getall()
+        except Exception as e:
+            frame = inspect.currentframe().f_back
 
-                for course_url in course_urls:
-                    sanitized_url = self.sanitize_course_url(response.request.url, course_url)
-                    #print(f"            => {course_url}")
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
 
-                    # [] In some instances the URL is not complete and we need to append university base URL
-
-                    yield scrapy.Request(
-                        url=sanitized_url,
-                        callback=self.scrape_single_course,
-                        meta={'department_name': department_name}
-                    )          
-        
-            # [Case #5] ...
-            case SubjectListFormatType.E:
-
-                search_results = response.css("article p a")
-                print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
-
-                for search_result in search_results:
-                    search_result_link = search_result.css("::attr(href)").get()
-                    # print(f"       -> {search_result_link}")
-
-                    yield scrapy.Request(
-                        url=search_result_link,
-                        callback=self.scrape_single_course,
-                        meta={'department_name': department_name}
-                    )
-
-            case _:
-                print(f"   *= {department_name}: None!")
-
-    # []
+    """ Step 4 """
     def scrape_single_course(self, response):
         department_name = response.meta['department_name']
 
@@ -217,8 +244,16 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                 'dep_name': department_name
             }
 
-        except Exception:
-            return
+        except Exception as e:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
 
 
     """ LOCAL METHODS """
@@ -345,6 +380,3 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                     callback=self.scrape_single_course,
                     meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
                 )
-
-    def spider_closed():
-        print("PolyU Finished!")

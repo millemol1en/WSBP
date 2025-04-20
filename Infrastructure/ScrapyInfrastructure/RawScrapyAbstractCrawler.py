@@ -27,7 +27,7 @@ class RawScrapyAbstractCrawler(scrapy.Spider, ABC):
         self.start_urls = [_url] 
         super().__init__(**kwargs)
 
-    """ Step 1 - Required Method in for Scrapy to execute """
+    """ Step 1 - Init """
     @abstractmethod
     def parse(self, response):
         pass
