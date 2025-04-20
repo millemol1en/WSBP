@@ -41,7 +41,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
     def parse(self, response):
         yield from self.scrape_departments(response)
 
-    # [1] 
+    """ Step 1 """
     def scrape_departments(self, response):
         faculty_containers = response.xpath("//*[contains(@class, 'ITS_Content_News_Highlight_Collection')]")
 
@@ -66,7 +66,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 if dep_abbr in EXCLUDE_DEPARTMENTS : continue
 
                 # [] Prior to each we will sleep in order to prevent a 429 Error - too many requests.
-                if dep_abbr != 'engl': continue
+                if dep_abbr != 'ama': continue
 
                 time.sleep(1.5)
                 yield scrapy.Request(
@@ -89,113 +89,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             #         meta={'department_name': fac_name, 'department_abbr': fac_abbr}
             #     )
 
-    # [1.5] 
-    def scrape_department_subject_list(self, response):
-        department_name   = response.meta['department_name']
-        department_abbr   = response.meta['department_abbr']
-
-        subject_element   = None
-        subject_link_href = None
-
-        json_path = "./LLMScrapers/LLMScrapyScrapers/LLMPolyUCrawler/DepSubListXpath.json"
-
-        # [] We load the JSON file and try to use the currently stored XPath. If we fail we will go further down
-        #    to trigger the LLM call:
-        try:
-            with open(json_path, "r") as f:
-                dep_subject_list_xpaths = json.load(f)
-
-            xpath_query = dep_subject_list_xpaths.get(department_abbr)
-
-            subject_element   = response.xpath(xpath_query).get()
-            subject_link_href = response.xpath(xpath_query).attrib.get("href") if subject_element else None
-
-        except ValueError as e:
-            print(f"XPath failed with error: {e}")
-            subject_element   = None
-            subject_link_href = None
-
-        # [] 
-        if subject_link_href == None:
-            # [] Parse the raw HTML and strip it down to the fundamental parts:
-            raw_html          = response.text
-            parsed_html       = BeautifulSoup(raw_html, "html.parser")
-            header_links_raw  = self.truncate_html_sublist_url(parsed_html, department_abbr)
-            file_lock = threading.Lock()
-            
-            # [] 
-            core_message = f"""
-            You are a helpful web scraping assistant skilled in HTML parsing and Scrapy XPath.
-
-            ### GOAL
-            Your task is to find the most appropriate XPath query that selects a hyperlink element (<a>) pointing to the department's subject list.
-
-            ### INSTRUCTIONS
-            - The hyperlink might be labeled with terms such as:
-            - "Subject List", "Subject Syllabus", "Subject Syllabi", "Course Info", etc.
-            - In some cases, these links may be nested inside <li> or other tags.
-            - If there's no direct subject list, fallback options might include links like:
-            - "CAR Subjects", "Undergraduate Programmes", or even "Programmes".
-            - Return only the internal portion of the XPath query that selects this <a> tag.
-            - Do **not** include `response.xpath(...)`, just the string inside the parentheses.
-            - Do **not** return any extra text or explanation.
-
-            ### EXAMPLE OUTPUT
-            //a[contains(text(), "Subject List")]
-
-            ### HTML INPUT
-            {header_links_raw}
-            """
-
-            # [] Call the LLM and retrieve the subject list 'href' attribute
-            llm_response      = self.call_llm(core_message)
-            subject_element   = response.xpath(llm_response).get()
-            subject_link_href = response.xpath(llm_response).attrib.get("href") if subject_element else None
-
-            # TODO: Remove!
-            print(f"{department_name} | {response.request.url}")
-            print(f"   *= Raw LLM Res: {llm_response}")
-            print(f"   *= Subject Link Href: {subject_link_href}")
-
-            # [] Using thread locks we ensure that when we write the XPath to the file we dont' have read/write
-            #    conflicts:
-            with file_lock:
-                with open(json_path, "r") as f:
-                    dep_subject_list_xpaths = json.load(f)
-
-                dep_subject_list_xpaths[department_abbr] = llm_response.strip()
-
-                with open(json_path, "w") as f:
-                    json.dump(dep_subject_list_xpaths, f, indent=2)
-
-        # []
-        if subject_link_href != None:
-            department_url = (f"https://www.polyu.edu.hk/{subject_link_href}")
-
-            # TODO: Clean this up...
-            # [] Thus far, the LLMs are incapable of diving deep down the URLs:
-            if department_abbr == 'me':  (f"{department_url}subject-list/")
-            if department_abbr == 'bre': (f"{department_url}2023-2024/")
-
-            # [] Scrape the department courses:
-            yield scrapy.Request(
-                url=department_url,
-                callback=self.scrape_department_courses,
-                meta={'department_name': department_name, 'department_abbr': department_abbr}
-            )
-
-        else:
-            frame = inspect.currentframe().f_back
-
-            yield ScrapyErrorDTO(
-                error=str(e),
-                url=response.url,
-                file=frame.f_code.co_filename,
-                line=frame.f_code.co_filename,
-                func=frame.f_code.co_name
-            )
-
-    # [2]  
+    """ Step 2 """
     def scrape_department_courses(self, response):
         department_name   = response.meta['department_name']
         department_abbr   = response.meta['department_abbr']
@@ -218,7 +112,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             #     meta={'department_name': department_name}
             # )
 
-    # [3] Scrape the Single Courses using LLMs to handle the literature:
+    """ Step 4 """
     def scrape_single_course(self, response):
         department_name = response.meta['department_name']
 
@@ -277,7 +171,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 func=frame.f_code.co_name
             )
 
-    # [4]
+
     def call_llm(self, core_message):
         match self.llm_type:
             case LLMType.CHAT_GPT:
@@ -375,7 +269,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
         parsed_html = BeautifulSoup("<html><body></body></html>", "html.parser")
         body = parsed_html.body 
 
-        # [] 
+        # [] Harvest the necessary data from the <nav> tag:
         nav = raw_html.find("nav", class_="mn__nav")
         if nav:
             ul = nav.find("ul", class_="mn__list--1")
@@ -409,92 +303,144 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
         return body
     
-    # [LM #6] 
-    #         This method is necessary because unfortunately, AI can't fix the raw html and the many flaws 
-    def get_subject_list_hrefs(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> str:
-        def get_dep_type(abbr : str) -> str:
-            match abbr:
-                # Faculty of Business:
-                case "lgt" : return "pt"     # Pagination Table      :: Aggregate Data
-                case "mm"  : return "tl"     # Table List            :: Retrieve Table
-                case "af"  : return "pt"     # Pagination Table      :: Aggregate Data
-                case "tls" : return "tls"    # Table List(s)         :: Retrieve all the Tables
+    """ Step 3 """ 
+    # [LM #6]
+    def scrape_department_subject_list(self, response):
+        department_name   = response.meta['department_name']
+        department_abbr   = response.meta['department_abbr']
 
-                # Faculty of Computer and Mathematical Sciences:
-                case "ama" : return "tls"    # Table List(s)         :: Retrieve all the Tables
+        subject_element   = None
+        subject_link_href = None
 
-                # Faculty of Construction and Environment:
-                case "bre" : return "tl"     # Table List            :: Retrieve Table
-                case "cee" : return "tls"    # Table List(s)         :: Retrieve all the Tables
-                case "lsgi": return "tls"    # Table List(s)         :: Retrieve all the Tables
+        json_path = "./LLMScrapers/LLMScrapyScrapers/LLMPolyUCrawler/DepSubListXpath.json"
 
-                # Faculty of Engineering:
-                case "aae" : return "con"    # <a> tags              :: Retrieve <div class="container">
-                case "bme" : return "tls"    # Table List(s)         :: Retrieve all the Tables
-                case "eee" : return "con"    # <ul>/<li> tags        :: Retrieve <div class="container"> TODO: Might still be too much!
-                case "ise" : return "con"    # <ul>/<li> tags        :: Retrieve <div class="container">
-                case "me"  : return "tl"     # Table List            :: Retrieve Table 
+        # [] We load the JSON file and try to use the currently stored XPath. If we fail we will go further down
+        #    to trigger the LLM call:
+        try:
+            with open(json_path, "r") as f:
+                dep_subject_list_xpaths = json.load(f)
 
-                # Faculty of Health and Social Sciences:
-                # NONE
+            xpath_query = dep_subject_list_xpaths.get(department_abbr)
 
-                # Faculty of Humanities:
-                case "chc" : return "tl"    # Table List            :: 
-                case "cbs" : return "tl"    # Table List            :: TODO: Fix is required! Needs to travel deeper in. Make sure that no HTML is lost during truncation
-                case "engl": return "con"   # <ul>/<li> tags        :: Retrieve <div class="container">
-            
-                # Faculty of Sciences:
-                case "abct": return "tl"    # Table List            :: Retrieve Table
-                case "ap"  : return "tl"    # Table List            :: Retrieve Table
-                case "fsn" : return "tl"    # Table List            :: Retrieve Table
+            subject_element   = response.xpath(xpath_query).get()
+            subject_link_href = response.xpath(xpath_query).attrib.get("href") if subject_element else None
 
-                # Fashion & Hotel:
-                case "sft" : return "tl"    # Table List            :: Retrieve Table
-                case "shtm": return "pt"    # Pagination Table      :: Aggregate Data
-
-        dep_type = get_dep_type(dep_abbr)
-        course_urls = []
+        except ValueError as e:
+            print(f"XPath failed with error: {e}")
+            subject_element   = None
+            subject_link_href = None
 
         # [] 
-        match dep_type:
-            case "pt" : 
-                # Originally this was Scrapy 
-                num_pages_element = raw_html.select("li.pagination-list__itm.pagination-list__itm--number a")
-                num_pages = int(num_pages_element[-1].get_text(strip=True))
-                
-                # [] For each of the pagination pages we 
-                for page_num in range(1, num_pages + 1):
-                    page_url     = (f"{dep_url}?&page={page_num}")
-                    raw_html     = requests.get(page_url)
-                    parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
-                    page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
-
-                    # [] Extend the list with the scraped courses from this paginated iteration:
-                    course_urls.extend(tr["data-href"] for tr in page_courses)
+        if subject_link_href == None:
+            # [] Parse the raw HTML and strip it down to the fundamental parts:
+            raw_html          = response.text
+            parsed_html       = BeautifulSoup(raw_html, "html.parser")
+            header_links_raw  = self.truncate_html_sublist_url(parsed_html, department_abbr)
+            file_lock = threading.Lock()
             
-            case "tl" : 
-                raw_html     = requests.get(dep_url)
+            # [] 
+            core_message = f"""
+            You are a helpful web scraping assistant skilled in HTML parsing and Scrapy XPath.
+
+            ### GOAL
+            Your task is to find the most appropriate XPath query that selects a hyperlink element (<a>) pointing to the department's subject list.
+
+            ### INSTRUCTIONS
+            - The hyperlink might be labeled with terms such as:
+            - "Subject List", "Subject Syllabus", "Subject Syllabi", "Course Info", etc.
+            - In some cases, these links may be nested inside <li> or other tags.
+            - If there's no direct subject list, fallback options might include links like:
+            - "CAR Subjects", "Undergraduate Programmes", or even "Programmes".
+            - Return only the internal portion of the XPath query that selects this <a> tag.
+            - Do **not** include `response.xpath(...)`, just the string inside the parentheses.
+            - Do **not** return any extra text or explanation.
+
+            ### EXAMPLE OUTPUT
+            //a[contains(text(), "Subject List")]
+
+            ### HTML INPUT
+            {header_links_raw}
+            """
+
+            # [] Call the LLM and retrieve the subject list 'href' attribute
+            llm_response      = self.call_llm(core_message)
+            subject_element   = response.xpath(llm_response).get()
+            subject_link_href = response.xpath(llm_response).attrib.get("href") if subject_element else None
+
+            # [] Using thread locks we ensure that when we write the XPath to the file we dont' have read/write
+            #    conflicts:
+            with file_lock:
+                with open(json_path, "r") as f:
+                    dep_subject_list_xpaths = json.load(f)
+
+                dep_subject_list_xpaths[department_abbr] = llm_response.strip()
+
+                with open(json_path, "w") as f:
+                    json.dump(dep_subject_list_xpaths, f, indent=2)
+
+        # []
+        if subject_link_href != None:
+            department_url = (f"https://www.polyu.edu.hk/{subject_link_href}")
+
+            # TODO: Clean this up...
+            # [] Thus far, the LLMs are incapable of diving deep down the URLs:
+            if department_abbr == 'me':  (f"{department_url}subject-list/")
+            if department_abbr == 'bre': (f"{department_url}2023-2024/")
+
+            # [] Scrape the department courses:
+            yield scrapy.Request(
+                url=department_url,
+                callback=self.scrape_department_courses,
+                meta={'department_name': department_name, 'department_abbr': department_abbr}
+            )
+
+        else:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
+
+    # [LM #6] Used to get scrape the necessary URLs from the previously retrieved subject list page.
+    #         This method is necessary because unfortunately, AI can't fix the badly written raw html:
+    def get_subject_list_hrefs(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> str:
+        # [] 
+        course_urls = []
+        raw_html    = requests.get(dep_url)
+        parsed_html = BeautifulSoup(raw_html.text, 'html.parser')
+
+        # [] For 3 departments it is necessary to go through a page-pagination structure:
+        if dep_abbr in ["lgt", "af", "shtm"]:
+            num_pages_element = parsed_html.select("li.pagination-list__itm.pagination-list__itm--number a")
+            num_pages         = int(num_pages_element[-1].get_text(strip=True))
+
+            # [] Enumerate over all the pages:
+            for page_num in range(1, num_pages + 1):
+                page_url     = (f"{dep_url}?&page={page_num}")
+                raw_html     = requests.get(page_url)
                 parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
                 page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
-                
-                # [] Extend the list with the scraped courses from this paginated iteration:
+
                 course_urls.extend(tr["data-href"] for tr in page_courses)
-            
-            case "tls": 
-                raw_html     = requests.get(dep_url)
-                parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
+
+            return course_urls
+        else:
+            # [] Departments with a table that have <td> tags with "data-href" values:
+            try:
                 page_courses = parsed_html.find_all("tr", attrs={"data-href": True})
+                course_urls.extend(tr["data-href"] for tr in page_courses if self.is_url_valid(tr["data-href"], dep_abbr, True))
+                if len(page_courses) >= 1: return course_urls
+            except: pass
 
-                # [] Extend the list with the scraped courses from this paginated iteration:
-                course_urls.extend(tr["data-href"] for tr in page_courses)
-                
-            # Try to get all <a> tags and sort it out through there
-            case "con": 
-                print(f"DEPARTMENT URL: {dep_url}")
-                raw_html     = requests.get(dep_url)
-                parsed_html  = BeautifulSoup(raw_html.text, 'html.parser')
-                course_urls.extend(a["href"] for a in parsed_html.find_all("a", href=True) if self.is_url_valid(a["href"], dep_abbr, True))
-
-            case _: return None
-            
-        return course_urls
+            # [] Departments with OR without a table but not "data-ref" attribute in <tr>:
+            try: 
+                page_courses = parsed_html.find_all("a", attrs={"href": True})
+                course_urls.extend(a["href"] for a in page_courses if self.is_url_valid(a["href"], dep_abbr, True))
+                if len(page_courses) >= 1: return course_urls
+            except: pass
+        
+        return None
