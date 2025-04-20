@@ -1,0 +1,1060 @@
+[
+ {
+  "name": "Integrated product innovation in the food industry",
+  "code": "23564",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "George Allen & Unwin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton, Whitehall"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "J. B. Lippincott & Co."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Entrepreneurship in photonics and communications",
+  "code": "34541",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 978061826022,
+    "pubFirm": "George Allen & Unwin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton, Whitehall"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780446310789,
+    "pubFirm": "J. B. Lippincott & Co."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Sustainable Entrepreneurship",
+  "code": "38001",
+  "literature": [
+   {
+    "title": "Market imperfections, opportunity and sustainable entrepreneurship",
+    "year": 2007,
+    "author": "Cohen, B., & Winn, M. I.",
+    "edition": 22,
+    "isbn": 0,
+    "pubFirm": "Journal of business venturing"
+   },
+   {
+    "title": "Transforming our world: the 2030 Agenda for Sustainable Development",
+    "year": 2015,
+    "author": "United Nations General Assembly",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "United Nations"
+   },
+   {
+    "title": "Why the lean start-up changes everything",
+    "year": 2013,
+    "author": "Blank, S.",
+    "edition": 91,
+    "isbn": 0,
+    "pubFirm": "Harvard business review"
+   },
+   {
+    "title": "The sustainable business model pattern taxonomy—45 patterns to support sustainability-oriented business model innovation",
+    "year": 2018,
+    "author": "Lüdeke-Freund, F., Carroux, S., Joyce, A., Massa, L., & Breuer, H.",
+    "edition": 15,
+    "isbn": 0,
+    "pubFirm": "Sustainable Production and Consumption"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "BSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Technology Entrepreneurship",
+  "code": "38102",
+  "literature": [
+   {
+    "title": "Crossing the Chasm",
+    "year": 2014,
+    "author": "G. Moore",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Prior Knowledge and the Discovery of Entrepreneurial Opportunities",
+    "year": 2000,
+    "author": "S. Shane",
+    "edition": 11,
+    "isbn": 0,
+    "pubFirm": "Organization Science"
+   },
+   {
+    "title": "Business Model, Business Strategy and Innovation",
+    "year": 2010,
+    "author": "D. Teece",
+    "edition": 43,
+    "isbn": 0,
+    "pubFirm": "Long Range Planning"
+   },
+   {
+    "title": "Critical junctures in the development of university high-tech spinout companies",
+    "year": 2004,
+    "author": "A. Vohora, M. Wright, & A. Lockett",
+    "edition": 33,
+    "isbn": 0,
+    "pubFirm": "Research Policy"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "X-Tech Entrepreneurship",
+  "code": "38103",
+  "literature": [
+   {
+    "title": "Disciplined entrepreneurship: 24 steps to a successful startup",
+    "year": 2013,
+    "author": "Aulet, B.",
+    "edition": 1,
+    "isbn": 1234567890,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "Effectual Entrepreneurship",
+    "year": 2017,
+    "author": "Read S., Sarasvathy S., Dew N., Wiltbank R.",
+    "edition": 2,
+    "isbn": 9876543210,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Startup Funding",
+    "year": 2017,
+    "author": "Nielsen, N.H.",
+    "edition": 1,
+    "isbn": 1122334455,
+    "pubFirm": "Unknown"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Finance",
+  "code": "38104",
+  "literature": [
+   {
+    "title": "Fundamentals of Entrepreneurial Finance",
+    "year": 2020,
+    "author": "Da Rin, M. and Hellmann, T.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Financial intelligence for entrepreneurs: What you really need to know about the numbers",
+    "year": 2008,
+    "author": "Berman, K., Knight, J., and Case, J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harvard Business Press"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Developing an Entrepreneurial mindset",
+  "code": "38106",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Technology and Innovation Management",
+  "code": "38108",
+  "literature": [
+   {
+    "title": "Managing innovation: integrating technological, market and organizational change",
+    "year": 2020,
+    "author": "Joe Tidd and Joe Bessant",
+    "edition": 1,
+    "isbn": 9781119606249,
+    "pubFirm": "John Wiley & Sons"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "X-Tech+",
+  "code": "38109",
+  "literature": [
+   {
+    "title": "Startup Funding",
+    "year": 2017,
+    "author": "Nicolaj Højer Nielsen",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Strategic Management of Intellectual Property",
+    "year": 2013,
+    "author": "William W. Fisher III and Felix Oberholzer-Gee",
+    "edition": 55,
+    "isbn": 4,
+    "pubFirm": "California Management Review"
+   },
+   {
+    "title": "Start-Up Law",
+    "year": 2020,
+    "author": "Alexandra Andhov",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "Edward Elgar Publishing Ltd."
+   },
+   {
+    "title": "Where to play",
+    "year": 2017,
+    "author": "Marc Gruber and Sharon Tal",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "Pearson Education Limited"
+   },
+   {
+    "title": "The Business Model Navigator, 55 business models",
+    "year": 2020,
+    "author": "Oliver Gassmann, Karolin Frankenberger and Michaela Choudury",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "Pearson Education Limited"
+   },
+   {
+    "title": "Beyond Spin",
+    "year": 1999,
+    "author": "Markos Kounalakis, Drew Banks and Kim Daus",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "101 Design Methods",
+    "year": 2013,
+    "author": "Vijay Kumar",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "Stop Complainers and Energy Drainers",
+    "year": 2013,
+    "author": "Linda Swindling",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "The Lean Startup",
+    "year": 2011,
+    "author": "Eric Ries",
+    "edition": 1,
+    "isbn": 1,
+    "pubFirm": "Penguin Random House"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Staging co-creation and creativity",
+  "code": "38110",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "The Practice of Consulting",
+  "code": "38111",
+  "literature": [
+   {
+    "title": "Management consultancy: A handbook for best practice",
+    "year": 2001,
+    "author": "P. Sadler",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Kogan Page Publishers"
+   },
+   {
+    "title": "Semi-structured interviews",
+    "year": 2020,
+    "author": "D. Magaldi & M. Berler",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Encyclopedia of personality and individual differences"
+   },
+   {
+    "title": "Benchmarking the benchmarking models",
+    "year": 2008,
+    "author": "G. Anand & R. Kodali",
+    "edition": 15,
+    "isbn": 0,
+    "pubFirm": "Benchmarking: An international journal"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Marketing",
+  "code": "38112",
+  "literature": [
+   {
+    "title": "Patient information leaflets for medicines: using consumer testing to determine the most effective design",
+    "year": 2001,
+    "author": "Dickinson, D., Raynor, D. K., & Duman, M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Patient education and counseling"
+   },
+   {
+    "title": "Pricing, Chapter 10 in Principles of Marketing",
+    "year": 2006,
+    "author": "Brassington F. & Pettitt, S.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Pearson Education Ltd"
+   },
+   {
+    "title": "Consumer Testing of Commercial Lager Beers in Blind vs. Informed Conditions: Relation with Descriptive Analysis and Expert Quality Ratings",
+    "year": 2000,
+    "author": "Gurnard, J, et al.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Journal of the Institute of Brewing"
+   },
+   {
+    "title": "Pricing strategies and models",
+    "year": 2010,
+    "author": "Dolgui, A., & Proth, J. M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Annual Reviews in Control"
+   },
+   {
+    "title": "Smash Your Brand, in Brand Sense: How to Build Powerful Brands Through Touch, Taste, Smell, Sight and Sound",
+    "year": 2005,
+    "author": "Lindstrom, M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Kogan"
+   },
+   {
+    "title": "Branding in the digital age",
+    "year": 2010,
+    "author": "Edelman, D. C.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harvard business review"
+   },
+   {
+    "title": "In the laboratories of desire: Advertising as an intermediary between products and consumers",
+    "year": 1993,
+    "author": "Hennion, A., Méadel, C. & Libbrecht, L.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Reseaux"
+   },
+   {
+    "title": "The Five Competitive Forces That Shape Strategy",
+    "year": 2008,
+    "author": "Porter, M.E.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harvard Business Review"
+   },
+   {
+    "title": "Analytical Tools and Frameworks, in Blue Ocean Strategy – How to Create Uncontested Market Space and Make the Competition Irrelevant",
+    "year": 2005,
+    "author": "Kim, W.C. & Mauborgne, M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harvard Business Press"
+   },
+   {
+    "title": "Unpacking the notion of prototype archetypes in the early phase of an innovation process",
+    "year": 2020,
+    "author": "BenMahmoud‐Jouini, S., & Midler, C.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Creativity and Innovation Management"
+   },
+   {
+    "title": "Innovation Design",
+    "year": 2012,
+    "author": "den Ouden, E.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Springer"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Applied AI for Entrepreneurs",
+  "code": "38113",
+  "literature": [
+   {
+    "title": "Online videos",
+    "year": 2023,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 9780000000000,
+    "pubFirm": "DTU Learn"
+   },
+   {
+    "title": "Jupyter Notebook Python code examples",
+    "year": 2023,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 9781111111111,
+    "pubFirm": "DTU Learn"
+   },
+   {
+    "title": "Scientific articles",
+    "year": 2023,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 9782222222222,
+    "pubFirm": "DTU Learn"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Life Skills",
+  "code": "38201",
+  "literature": [
+   {
+    "title": "Strategic management and organisational dynamics: The challenge of complexity to ways of thinking about organisations.",
+    "year": 2007,
+    "author": "R. D. Stacey",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Pearson education"
+   },
+   {
+    "title": "Working with Startups? These are the Three Things You Ought to Know about Startup Teams.",
+    "year": 2019,
+    "author": "A. Brattström",
+    "edition": 9,
+    "isbn": 0,
+    "pubFirm": "Technology Innovation Management Review"
+   },
+   {
+    "title": "Entrepreneurial Pitching: A Critical Review and Integrative Framework.",
+    "year": 2024,
+    "author": "S. G. Kalvapalle, N. Phillips, & J. Cornelissen",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Academy of Management Annals"
+   },
+   {
+    "title": "How do startups manage external resources in innovation ecosystems? A resource perspective of startups’ lifecycle.",
+    "year": 2021,
+    "author": "A. Marcon and J.L.D. Ribeiro",
+    "edition": 171,
+    "isbn": 0,
+    "pubFirm": "Technological Forecasting and Social Change"
+   },
+   {
+    "title": "How Entrepreneurs use Networks to Address Changing Resource Requirements during Early Venture Development.",
+    "year": 2014,
+    "author": "D. M. Sullivan, & C. M. Ford",
+    "edition": 38,
+    "isbn": 0,
+    "pubFirm": "Entrepreneurship Theory and Practice"
+   },
+   {
+    "title": "What is a pivot? Explaining when and how entrepreneurial firms decide to make strategic change and pivot.",
+    "year": 2023,
+    "author": "J Kirtley, S O'Mahony",
+    "edition": 44,
+    "isbn": 0,
+    "pubFirm": "Strategic Management Journal"
+   },
+   {
+    "title": "The Dark Side of Leadership: Towards a Mid-Range Theory of Hubris and Greed in Entrepreneurial Contexts.",
+    "year": 2015,
+    "author": "K.T. Haynes, M.A. Hitt and J.T. Campbell",
+    "edition": 52,
+    "isbn": 0,
+    "pubFirm": "Journal of Management Studies"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Leadership Journey",
+  "code": "38202",
+  "literature": [
+   {
+    "title": "Hiring and Human Resources. In: Build, Run, and Sell Your Apple Consulting Practice",
+    "year": 2018,
+    "author": "Edge C.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Apress, Berkeley, CA"
+   },
+   {
+    "title": "Strategy for Start-up",
+    "year": 2018,
+    "author": "Gans J., E. Scott & Stern, S.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harvard Business Review"
+   },
+   {
+    "title": "Investment in Organizational Capital",
+    "year": 2007,
+    "author": "Gomes O.",
+    "edition": 28,
+    "isbn": 0,
+    "pubFirm": "Manage. Decis. Econ."
+   },
+   {
+    "title": "Adding fuel to the ﬁre: need for achievement diversity and relationship conﬂict in entrepreneurial teams",
+    "year": 2015,
+    "author": "Khan, M.S., Breitenecker, R.J. and Schwarz, E.J.",
+    "edition": 53,
+    "isbn": 0,
+    "pubFirm": "Management Decision"
+   },
+   {
+    "title": "The role of relationships in start-up development",
+    "year": 2019,
+    "author": "Mattsson, J., Helmersson, H., & Standing, C.",
+    "edition": 27,
+    "isbn": 0,
+    "pubFirm": "Journal of Strategic Marketing"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Due Diligence of New Ventures",
+  "code": "38203",
+  "literature": [
+   {
+    "title": "Founder’s Pocket Guide: Founder Equity Splits",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 9798350832660,
+    "pubFirm": "Independently published"
+   },
+   {
+    "title": "Founder’s Pocket Guide: Cap Tables",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 9798350833230,
+    "pubFirm": "Independently published"
+   },
+   {
+    "title": "Founder’s Pocket Guide: Startup Valuation",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 9798350834282,
+    "pubFirm": "Independently published"
+   },
+   {
+    "title": "Founder’s Pocket Guide: Term Sheets and Preferred Shares",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 9798350834657,
+    "pubFirm": "Independently published"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Feasibility Studies",
+  "code": "38204",
+  "literature": [
+   {
+    "title": "Disciplined entrepreneurship: 24 steps to a successful startup",
+    "year": 2013,
+    "author": "Aulet, B.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Where to Play: 3 steps for discovering your most valuable market opportnity",
+    "year": 2017,
+    "author": "Gruber G. & Tal. S.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "The new business road test: What entrepreneurs and executives should do before writing a business plan",
+    "year": 2006,
+    "author": "Mullins, J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Module 1: Start-up Exploration",
+  "code": "38301",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "Allen & Unwin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton, Whitehall"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "J. B. Lippincott & Co."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Module 2: Start-up Incubation",
+  "code": "38302",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "Houghton Mifflin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "Penguin Classics"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "Harper Perennial Modern Classics"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Introduction to econometrics for Innovation and Entrepreneurship researchers",
+  "code": "38798",
+  "literature": [
+   {
+    "title": "Introductory Econometrics - A Modern Approach, International Student Edition",
+    "year": 2009,
+    "author": "Wooldridge, J. M.",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "South Western"
+   },
+   {
+    "title": "Interaction terms in logit and probit models",
+    "year": 2003,
+    "author": "Ai C., & Norton E.C.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Econ. Let."
+   },
+   {
+    "title": "The Moderator-Mediator Variable Distinction in Social Psychological Research: Conceptual, Strategic, and Statistical Considerations",
+    "year": 1986,
+    "author": "Baron, R. M., & Kenny, D. A.",
+    "edition": 51,
+    "isbn": 0,
+    "pubFirm": "J. of Personality and Social Psychology"
+   },
+   {
+    "title": "The use of logit and probit models in strategic management research: critical issues",
+    "year": 2007,
+    "author": "Hoetker G",
+    "edition": 28,
+    "isbn": 0,
+    "pubFirm": "SMJ"
+   },
+   {
+    "title": "Correcting for Endogeneity in Strategic Management Research",
+    "year": 2003,
+    "author": "Hamilton, B. H. & Nickerson, J. A.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "SO"
+   },
+   {
+    "title": "Common method bias in behavioral research: a critical review of the literature and recommended remedies",
+    "year": 2003,
+    "author": "Podsakoff, P. M., MacKenzie, S. B., & Podsakoff, N. P.",
+    "edition": 88,
+    "isbn": 0,
+    "pubFirm": "J. of Appl. Psych."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "Ph.D.",
+  "points": "3 ECTS"
+ },
+ {
+  "name": "Patent Course",
+  "code": "38799",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "Houghton Mifflin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "Penguin Classics"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "Harper Perennial Modern Classics"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "Ph.D.",
+  "points": "3 ECTS"
+ },
+ {
+  "name": "Journal club in entrepreneurship and innovation research",
+  "code": "38888",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "George Allen & Unwin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton, Whitehall"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "J. B. Lippincott & Co."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "Ph.D.",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Innovation in Engineering (Polytechnical Foundation)",
+  "code": "42500",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "George Allen & Unwin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton, Whitehall"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780446310789,
+    "pubFirm": "J. B. Lippincott & Co."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Innovation in Engineering (Polytechnical Foundation)",
+  "code": "42501",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "Houghton Mifflin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "Penguin Classics"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "Harper Perennial Modern Classics"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Facilitating Innovation in Multidisciplinary Teams",
+  "code": "42502",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 978061826022,
+    "pubFirm": "Houghton Mifflin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "Penguin Classics"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780446310789,
+    "pubFirm": "Warner Books"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Facilitating Innovation in Multidisciplinary Teams",
+  "code": "42503",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "Houghton Mifflin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "Penguin Classics"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780446310789,
+    "pubFirm": "Warner Books"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Innovation in Engineering (Polytechnical Foundation)",
+  "code": "42504",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260264,
+    "pubFirm": "Allen & Unwin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton, Whitehall"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780446310789,
+    "pubFirm": "J. B. Lippincott & Co."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Facilitating Innovation in Multidisciplinary Teams",
+  "code": "42505",
+  "literature": [
+   {
+    "title": "The Lord of the Rings",
+    "year": 1954,
+    "author": "J.R.R. Tolkien",
+    "edition": 1,
+    "isbn": 9780618260290,
+    "pubFirm": "Allen & Unwin"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton"
+   },
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "J. B. Lippincott & Co."
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ }
+]

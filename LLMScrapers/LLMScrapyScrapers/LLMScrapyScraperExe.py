@@ -16,7 +16,7 @@ def llm_scrapy_scraper_executor():
 
         #[] ...:
         'FEEDS': {
-            'dtu_gpt.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+            'polyu_gpt_zeroshot.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
         },
 
         # Pipeline Configuration:
@@ -54,17 +54,17 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ Data Accuracy - KU """
-    #process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
+    #process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.GEMINI)
     #process.start()
 
     """ Data Accuracy - DTU """
-    process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.CHAT_GPT)
-    process.start()
+    #process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.GEMINI)
+    #process.start()
 
     """ Crawling Accuracy - Groningen """
     # process.crawl(LLMGroningenCrawler, _name="University of Groningen", _url="https://ocasys.rug.nl/current/catalog", _llm_type=LLMType.GEMINI)
     # process.start()
 
     """ PolyU """
-    # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
-    # process.start()
+    process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
+    process.start()

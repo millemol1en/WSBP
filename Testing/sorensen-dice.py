@@ -136,9 +136,9 @@ def exec_sorensen_dice(baseline_title, llm_title):
         #! ONLY PRINT BAD RESULTS IF SATEMENT
         if comp.get("literature", 0.0) < threshold: 
             course_name = baseline.get("name") if baseline.get("name") else baseline.get("code")
-            print(f"Comparison for course {k} ({course_name}):")
-            print(json.dumps(comp, indent=2))
-            print("-" * 40)
+            #print(f"Comparison for course {k} ({course_name}):")
+            #print(json.dumps(comp, indent=2))
+            #print("-" * 40)
 
     #Calculating results
     for comp in comparisons:
@@ -161,13 +161,13 @@ print("\n**** KU COURSES ****")
 #exec_sorensen_dice("dtu_baseline.json", "dtu_gemini.json")
 #exec_sorensen_dice("dtu_baseline.json", "dtu_gpt.json")
 
-type = UniversityType.DTU
+type = UniversityType.POLYU
 baseline = f"{type.value}/{type.value}_baseline.json"
 llm = f"{type.value}/{type.value}_gpt.json"
 
 exec_sorensen_dice(baseline, llm)
 
 baseline = f"{type.value}/{type.value}_baseline.json"
-llm = f"{type.value}/{type.value}_gpt_ft.json"
+llm = f"{type.value}/{type.value}_gemini.json"
 
 exec_sorensen_dice(baseline, llm)

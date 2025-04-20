@@ -73,10 +73,9 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
         match self.llm_type:
             case LLMType.CHAT_GPT:
                 print("Chat GPT API")
-                messages = [
-                    {
-                        "role": "system",
-                        "content": """You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.). 
+
+                """"""
+                gpt_prompt_orig = """You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.). 
                         You must follow these rules:
                         1) always ensure the only separator between names are commas.
                         2) always return a json object representing a course, where literature is an array of books.
@@ -88,6 +87,12 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
                         3c) NOTE: 'literature': [] holds a single array and a single array ONLY.
                         Example: Below is an example of the structure you must follow:
                         { "name": "38102 - Technology Entrepreneurship", "code": "", "literature": [ { "title": "Crossing the Chasm", "year": 2014, "author": "G. Moore", "edition": 0, "isbn": 0, "pubFirm": "" }], "department": "38 DTU Entrepreneurship", "level": 0, "points": "NA" }"""
+                
+                gpt_prompt = f"Fetch books from text {raw_literature}"
+                messages = [
+                    {
+                        "role": "system",
+                        "content": gpt_prompt
                     },
                     {
                         "role": "user",
@@ -107,9 +112,8 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
                 return books_list
             
             case LLMType.GEMINI:
-                response = gemini_client.models.generate_content(
-                    model="gemini-2.0-flash",
-                    contents=f"""
+                print("Gemini API")
+                gemini_prompt_orig =f"""
                     You are a literature fetcher bot. You get a string, and are supposed to return all relevant books (NOT articles, etc.).
                     You must follow these rules:
                     1) always ensure the only separator between names are commas.
@@ -118,6 +122,12 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
                     "2b) if a field is not present, it should be an empty string
                     3) NOTE: There should be no duplicates, so if a book is mentioned multiple times, it should only be returned once.
                     Text: {raw_literature}""",
+                
+                gemini_prompt = f"Fetch books from text{raw_literature}"
+                
+                response = gemini_client.models.generate_content(
+                    model="gemini-2.0-flash",
+                    contents= gemini_prompt,
                     config={
                         'response_mime_type': 'application/json',
                         'response_schema': list[Book], 
