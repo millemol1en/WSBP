@@ -94,10 +94,9 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
                         "content": f"Text: {raw_literature}"
                     }
                 ]
-                # Call the API
-                #client.chat.completions.create
+
                 response = gpt_client.beta.chat.completions.parse(
-                model="gpt-4o-2024-08-06",
+                model="gpt-4-turbo",    # NEW FT Model: ft:gpt-4o-2024-08-06:personal::BONn8Qbr
                 messages=messages,
                 response_format=BooksResponse,
                 max_tokens=1000,
@@ -107,8 +106,6 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
                 books_list : dict = data_dict['books']
                 return books_list
             
-
-                #yield
             case LLMType.GEMINI:
                 response = gemini_client.models.generate_content(
                     model="gemini-2.0-flash",
@@ -127,7 +124,7 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
                     }
                 )
                 return json.loads(response.text)
-                #yield
+
             case LLMType.DEEPSEEKER:
                 pass
             case LLMType.NULL_AI:

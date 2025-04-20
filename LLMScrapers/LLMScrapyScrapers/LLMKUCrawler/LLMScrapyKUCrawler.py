@@ -21,6 +21,7 @@ class LLMKUCrawler(LLMScrapyAbstractCrawler):
             option_value = dep_option.css("::attr(value)").get()
             # print(f"Department: {option_text}, Value: {option_value}")
 
+            if option_value != "DEPARTMENT_0013": continue
             if option_text and option_value:
                 department_url = (f"https://kurser.ku.dk/search?programme=BA&departments={option_value}") # TODO: Consider Masters Courses???
                 

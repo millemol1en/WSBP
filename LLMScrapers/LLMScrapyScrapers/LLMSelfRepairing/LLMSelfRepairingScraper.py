@@ -20,12 +20,12 @@ from bs4 import BeautifulSoup
 from openai import OpenAI
 from google import genai
 
-# Additionals:
+# Native Python Imports:
 from dotenv import load_dotenv
 import os
 import time
 
-# Local:
+# Local Imports:
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
 
 # Load in the LLM environment variables using LLM API keys:
