@@ -128,17 +128,19 @@ def exec_sorensen_dice(baseline_title, llm_title):
     threshold = 0.95
     correct = 0
     total = len(comparisons)
-
+    
+    debug_counter = 0
     #? JUST PRINTS
     for k, (baseline, comp) in enumerate(zip(baseline_json, comparisons)):
         # Use the course name, or fall back to the code if the name is empty
         #HERE
         #! ONLY PRINT BAD RESULTS IF SATEMENT
-        if comp.get("literature", 0.0) < threshold: 
+        if comp.get("literature", 0.0) > threshold: 
             course_name = baseline.get("name") if baseline.get("name") else baseline.get("code")
-            #print(f"Comparison for course {k} ({course_name}):")
-            #print(json.dumps(comp, indent=2))
-            #print("-" * 40)
+            print(f"Comparison for course {k} ({course_name}):")
+            print(json.dumps(comp, indent=2))
+            print("-" * 40)
+            debug_counter += 1
 
     #Calculating results
     for comp in comparisons:
@@ -150,24 +152,19 @@ def exec_sorensen_dice(baseline_title, llm_title):
     print(f"========== TEST RESULTS FOR {str(baseline_title).upper()} AND {str(llm_title).upper()} ==========")
     print(f"*** {correct} out of {total} courses matched with a threshold of {threshold} ***")
     print(f"*** {coefficient} -> {data_accuracy} % accuracy ***")
-
+    print(f"DEBUG COUNTER: {debug_counter}")
     return data_accuracy
 
-print("**** KU COURSES ****")
-#exec_sorensen_dice("ku_baseline.json", "ku_gemini.json")
-#exec_sorensen_dice("ku_baseline.json", "ku_gpt.json")
 
-print("\n**** KU COURSES ****")
-#exec_sorensen_dice("dtu_baseline.json", "dtu_gemini.json")
-#exec_sorensen_dice("dtu_baseline.json", "dtu_gpt.json")
 
-type = UniversityType.POLYU
+type = UniversityType.DTU
 baseline = f"{type.value}/{type.value}_baseline.json"
-llm = f"{type.value}/{type.value}_gpt.json"
+llm = f"{type.value}/{type.value}_gpt_ft.json"
 
 exec_sorensen_dice(baseline, llm)
 
-baseline = f"{type.value}/{type.value}_baseline.json"
-llm = f"{type.value}/{type.value}_gemini.json"
 
-exec_sorensen_dice(baseline, llm)
+#baseline = f"{type.value}/{type.value}_baseline.json"
+#llm = f"{type.value}/{type.value}_gemini.json"
+
+#exec_sorensen_dice(baseline, llm)

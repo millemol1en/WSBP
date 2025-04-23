@@ -53,8 +53,8 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             # [] Department Components:
             dep_containers = fac_container.xpath(".//ul[contains(@class, 'border-link-list')]//li//a")
 
-            # TODO: Remove this! Only for testing...
-            # if fac_name != "School of Hotel and Tourism Management": continue
+            # TODO: Remove this! Only for testing... VICTOR!
+            if fac_name != "School of Hotel and Tourism Management": continue
 
             for dep_container in dep_containers:
                 raw_url  = dep_container.xpath("./@href").get()
@@ -66,7 +66,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 if dep_abbr in EXCLUDE_DEPARTMENTS : continue
 
                 # [] Prior to each we will sleep in order to prevent a 429 Error - too many requests.
-                if dep_abbr != 'ama': continue
+                # if dep_abbr != 'ama': continue
 
                 time.sleep(1.5)
                 yield scrapy.Request(
@@ -75,19 +75,19 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                     meta={'department_name': dep_name, 'department_abbr': dep_abbr}
                 )
 
-            # if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
-            #     fac_url  = fac_header.xpath(".//a/@href").get()
-            #     fac_url  = self.sanitize_department_url(fac_url)
-            #     fac_abbr = self.get_department_abbreviation(fac_url)
+            if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
+                fac_url  = fac_header.xpath(".//a/@href").get()
+                fac_url  = self.sanitize_department_url(fac_url)
+                fac_abbr = self.get_department_abbreviation(fac_url)
 
-            #     print(f"Running for {fac_name}")
+                print(f"Running for {fac_name}")
 
-            #     time.sleep(1.5)
-            #     yield scrapy.Request(
-            #         url=fac_url,
-            #         callback=self.scrape_department_subject_list,
-            #         meta={'department_name': fac_name, 'department_abbr': fac_abbr}
-            #     )
+                time.sleep(1.5)
+                yield scrapy.Request(
+                    url=fac_url,
+                    callback=self.scrape_department_subject_list,
+                    meta={'department_name': fac_name, 'department_abbr': fac_abbr}
+                )
 
     """ Step 2 """
     def scrape_department_courses(self, response):
@@ -106,11 +106,11 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
             
             # TODO: Revert!
-            # yield scrapy.Request(
-            #     url=course_url,
-            #     callback=self.scrape_single_course,
-            #     meta={'department_name': department_name}
-            # )
+            yield scrapy.Request(
+                url=course_url,
+                callback=self.scrape_single_course,
+                meta={'department_name': department_name}
+            )
 
     """ Step 4 """
     def scrape_single_course(self, response):

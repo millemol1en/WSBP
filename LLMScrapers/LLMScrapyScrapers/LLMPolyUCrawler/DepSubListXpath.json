@@ -1,5 +1,5 @@
 {
-  "lgt": "",
+  "lgt": "//a[contains(text(), \"Subject Syllabi\")]",
   "mm": "//a[contains(text(), \"Subject Syllabi\")]",
   "af": "//a[contains(text(), \"Subject Syllabi\")]",
   "ama": "//a[contains(text(), \"Subject Library\")]",
