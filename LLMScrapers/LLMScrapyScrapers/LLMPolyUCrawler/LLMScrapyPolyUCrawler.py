@@ -66,28 +66,30 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 if dep_abbr in EXCLUDE_DEPARTMENTS : continue
 
                 # [] Prior to each we will sleep in order to prevent a 429 Error - too many requests.
-                if dep_abbr != 'ama': continue
+                # if dep_abbr != 'ama': continue
 
                 time.sleep(1.5)
                 yield scrapy.Request(
                     url=dep_url,
-                    callback=self.scrape_department_subject_list,
+                    #callback=self.scrape_department_subject_list_href,  # HREF VARIANT
+                    callback=self.scrape_department_subject_list_xpath,  # XPATH VARIANT
                     meta={'department_name': dep_name, 'department_abbr': dep_abbr}
                 )
 
-            # if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
-            #     fac_url  = fac_header.xpath(".//a/@href").get()
-            #     fac_url  = self.sanitize_department_url(fac_url)
-            #     fac_abbr = self.get_department_abbreviation(fac_url)
+            if fac_name in ["School of Fashion and Textiles", "School of Hotel and Tourism Management"]:
+                fac_url  = fac_header.xpath(".//a/@href").get()
+                fac_url  = self.sanitize_department_url(fac_url)
+                fac_abbr = self.get_department_abbreviation(fac_url)
 
-            #     print(f"Running for {fac_name}")
+                print(f"Running for {fac_name}")
 
-            #     time.sleep(1.5)
-            #     yield scrapy.Request(
-            #         url=fac_url,
-            #         callback=self.scrape_department_subject_list,
-            #         meta={'department_name': fac_name, 'department_abbr': fac_abbr}
-            #     )
+                time.sleep(1.5)
+                yield scrapy.Request(
+                    url=fac_url,
+                    #callback=self.scrape_department_subject_list_href, # HREF VARIANT
+                    callback=self.scrape_department_subject_list_xpath,  # XPATH VARIANT
+                    meta={'department_name': fac_name, 'department_abbr': fac_abbr}
+                )
 
     """ Step 2 """
     def scrape_department_courses(self, response):
@@ -103,7 +105,7 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
         print(f"NUM COURSE URLS: {len(course_urls)}")
         for course_url in course_urls:
             print(f"Raw Course URL:       =* {course_url}")
-            print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
+            # print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
             
             # TODO: Revert!
             # yield scrapy.Request(
@@ -200,7 +202,6 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                         'response_mime_type': 'application/json',
                         'response_schema': list[str], 
                     }
-                    
                 )
 
                 return response.text
@@ -287,25 +288,40 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                         second_li = li_tags[1] 
                         body.append(second_li)
 
-        # [] Method to harvest all the <a> tags located in the <header>
-        # for tag in header_tag:
-            # for a in tag.find_all("a"):
-            #     tag_href = a.get("href")
-            #     tag_text = a.get_text(strip=True)
-
-            #     if tag_href and tag_text:
-            #         if tag_href == "javascript:void(0);": continue
-
-            #         header_links.append({
-            #             "aTagText": tag_text,
-            #             "aTagHref": tag_href
-            #         })
-
         return body
     
-    """ Step 3 """ 
     # [LM #6]
-    def scrape_department_subject_list(self, response):
+    def isolate_header_links(self, parsed_html : BeautifulSoup):
+        nav_tag     = parsed_html.find("nav", class_="mn__nav")
+        a_tags      = nav_tag.find_all("a")
+        link_lines  = []
+
+        for a_tag in a_tags:
+            a_text = a_tag.get_text(strip=True)
+            a_href = a_tag.get("href")
+
+            if a_href and a_text and a_href != "javascript:void(0);":
+                link_lines.append(f"{a_text} | {a_href}")
+
+        return "\n".join(link_lines)
+
+        # ORIGINAL:
+        # for tag in header_tag:
+        #     for a in tag.find_all("a"):
+        #         tag_href = a.get("href")
+        #         tag_text = a.get_text(strip=True)
+
+        #         if tag_href and tag_text:
+        #             if tag_href == "javascript:void(0);": continue
+
+        #             header_links.append({
+        #                 "aTagText": tag_text,
+        #                 "aTagHref": tag_href
+        #             })
+
+    """ Step 3 """ 
+    # [LM #7]
+    def scrape_department_subject_list_xpath(self, response):
         department_name   = response.meta['department_name']
         department_abbr   = response.meta['department_abbr']
 
@@ -384,8 +400,8 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
             # TODO: Clean this up...
             # [] Thus far, the LLMs are incapable of diving deep down the URLs:
-            if department_abbr == 'me':  (f"{department_url}subject-list/")
-            if department_abbr == 'bre': (f"{department_url}2023-2024/")
+            if department_abbr == 'me':  department_url = (f"{department_url}subject-list/")
+            if department_abbr == 'bre': department_url = (f"{department_url}2023-2024/")
 
             # [] Scrape the department courses:
             yield scrapy.Request(
@@ -394,18 +410,93 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 meta={'department_name': department_name, 'department_abbr': department_abbr}
             )
 
+    # [LM #8]
+    def scrape_department_subject_list_href(self, response):
+        department_name   = response.meta['department_name']
+        department_abbr   = response.meta['department_abbr']
+
+        subject_link_href = None
+
+        json_path = "./LLMScrapers/LLMScrapyScrapers/LLMPolyUCrawler/DepSubListHref.json"
+
+        # [] We load the JSON file and try to use the currently stored XPath. If we fail we will go further down
+        #    to trigger the LLM call:
+        with open(json_path, "r") as f:
+            dep_subject_list_href = json.load(f)
+
+        try:
+            subject_link_href = dep_subject_list_href.get(department_abbr)
+            full_href         = (f"https://www.polyu.edu.hk/{subject_link_href}")
+            req_res           = requests.get(full_href, timeout=5)
+
+            if req_res.status_code != 200: subject_link_href = None
+            print(f"HTTP Status: {req_res.status_code}")
+        except Exception as e:
+            subject_link_href = None
+
+        if subject_link_href == None:
+            print("CALLING LLM!") #TODO: Remove!
+            raw_html        = response.text
+            parsed_html     = BeautifulSoup(raw_html, "html.parser")
+            course_urls_str = self.isolate_header_links(parsed_html)
+            file_lock = threading.Lock()
+
+            # Prompt LLM to 
+            core_message = f"""
+            You are a helpful web assistant who is skilled at picking out the correct href URL.
+
+            ### GOAL
+            Your task is to select the most appropriate URL (href) from the list that points to the department's subject list or course information page.
+
+            ### INSTRUCTIONS
+            - The link text may include terms such as:
+                - "Subject List", "Subject Syllabus", "Subject Syllabi", "Course Info", "Bachelor Programme" and "Undergraduate Programmes" etc.
+            - If there's no direct subject list, fallback options might include links like:
+                - "CAR Subjects" or even "Programmes".
+            - Pick the href (the part after the '|') that most likely leads to a subject list or syllabi.
+            - Return ONLY the **href** — do NOT return the link text or any explanation.
+            - If no suitable href is found, return an **empty string**.
+
+            ### EXAMPLE OUTPUT
+            /ama/subject-syllabi
+
+            ### LINK CANDIDATES
+            
+            {course_urls_str}
+            """
+
+            llm_response      = self.call_llm(core_message)
+            subject_link_href = llm_response.strip()
+
+            # [] Using thread locks we ensure that when we write the XPath to the file we dont' have read/write
+            #    conflicts:
+            with file_lock:
+                with open(json_path, "r") as f:
+                    dep_subject_list_xpaths = json.load(f)
+
+                dep_subject_list_xpaths[department_abbr] = subject_link_href
+
+                with open(json_path, "w") as f:
+                    json.dump(dep_subject_list_xpaths, f, indent=2)
         else:
-            frame = inspect.currentframe().f_back
+            print("SKIPPING LLM!") # TODO: REMOVE!
 
-            yield ScrapyErrorDTO(
-                error=str(e),
-                url=response.url,
-                file=frame.f_code.co_filename,
-                line=frame.f_code.co_filename,
-                func=frame.f_code.co_name
-            )
+        if subject_link_href != None:
+            department_url = (f"https://www.polyu.edu.hk{subject_link_href}")
 
-    # [LM #6] Used to get scrape the necessary URLs from the previously retrieved subject list page.
+            if department_abbr == 'me':  department_url = (f"{department_url}subject-list/")
+            if department_abbr == 'bre': department_url = (f"{department_url}2023-2024/")
+
+            # # [] Scrape the department courses:
+            # yield scrapy.Request(
+            #     url=department_url,
+            #     callback=self.scrape_department_courses,
+            #     meta={'department_name': department_name, 'department_abbr': department_abbr}
+            # )
+
+            print(f"{department_abbr}   :: {department_url}")
+
+    # [LM #9] Used to get scrape the necessary URLs from the previously retrieved subject list page.
     #         This method is necessary because unfortunately, AI can't fix the badly written raw html:
     def get_subject_list_hrefs(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> str:
         # [] 

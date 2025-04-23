@@ -96,7 +96,7 @@ class LLMScrapyAbstractCrawler(scrapy.Spider, ABC):
                 ]
 
                 response = gpt_client.beta.chat.completions.parse(
-                model="gpt-4-turbo",    # NEW FT Model: ft:gpt-4o-2024-08-06:personal::BONn8Qbr
+                model="gpt-4-turbo",    # NEW FT Model ---> ft:gpt-4o-2024-08-06:personal::BONn8Qbr
                 messages=messages,
                 response_format=BooksResponse,
                 max_tokens=1000,

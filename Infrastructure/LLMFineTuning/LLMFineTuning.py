@@ -1,5 +1,3 @@
-
-
 # LLM APIs:
 from openai import OpenAI, OpenAIError
 import openai
@@ -22,6 +20,7 @@ gemini_client   = genai.Client(vertexai=True, project='groningencrawler', locati
 
 class LLMFineTuning:
     """ OPENAI FUNCTIONS """
+    @staticmethod
     def delete_openai_file(file_id : str):
         try:
             res = gpt_client.files.delete(
@@ -31,6 +30,7 @@ class LLMFineTuning:
         except OpenAIError as e:
             print(e)
 
+    @staticmethod
     def upload_openai_file(file_path : str):
         try: 
             res = gpt_client.files.create(
@@ -41,6 +41,7 @@ class LLMFineTuning:
         except OpenAIError as e:
             print(e)
 
+    @staticmethod
     def locally_validate_jsonl_file(file_path : str) -> bool:
         with open(file_path, "r", encoding="utf-8") as f:
             for i, line in enumerate(f, 1):
@@ -51,6 +52,7 @@ class LLMFineTuning:
                     return False
             return True
         
+    @staticmethod
     def create_tuned_model(file_id : str):
         try:
             model = gpt_client.fine_tuning.jobs.create(
@@ -68,11 +70,13 @@ class LLMFineTuning:
         except OpenAIError as e:
             print(f"Error occurred: {e}")
 
+    @staticmethod
     def print_openai_model_info():
         models = openai.models.list()
         for model in models.data:
             print(f"ID: {model.id} | Owned by: {model.owned_by}")
 
+    @staticmethod
     def print_openai_file_info():
         files = gpt_client.files.list()  
         for file in files.data:

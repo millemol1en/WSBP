@@ -8,6 +8,7 @@ from LLMScrapers.LLMScrapyScrapers.LLMDTUCrawler.LLMScrapyDTUCrawler import LLMD
 from LLMScrapers.LLMScrapyScrapers.LLMPolyUCrawler.LLMScrapyPolyUCrawler import LLMPolyUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairing.LLMSelfRepairingScraper import LLMSelfRepairingScraper
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
+from Infrastructure.LLMFineTuning.LLMFineTuning import LLMFineTuning 
 
 def llm_scrapy_scraper_executor():
     process = CrawlerProcess({
@@ -54,8 +55,8 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ Data Accuracy - KU """
-    process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
-    process.start()
+    # process.crawl(LLMKUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/", _llm_type=LLMType.CHAT_GPT)
+    # process.start()
 
     """ Data Accuracy - DTU """
     # process.crawl(LLMDTUCrawler, _name="Danmarks Tekniske Universitet", _url="https://kurser.dtu.dk/", _llm_type=LLMType.GEMINI)
@@ -66,5 +67,5 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ PolyU """
-    # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
-    # process.start()
+    process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
+    process.start()
