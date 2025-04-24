@@ -49,7 +49,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                 dep_containers = fac_container.css("ul.border-link-list li a")
 
                 #if fac_name != "School of Fashion and Textiles": continue
-
+                
                 for dep_container in dep_containers:
                     # []
                     dep_url  = dep_container.css("::attr(href)").get()
@@ -336,8 +336,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
             case "fsn":  return ([(f"{dep_url}/study/list-of-all-subjects/")],                                                                          SubjectListFormatType.A, True)  # Department of Food Science and Nutrition                  :: 
             case "sft":  return ([(f"{dep_url}/programme-information/subject-synopsis/")],                                                              SubjectListFormatType.B, False) # School of Fashion and Textiles                            :: 
 
-            case _:      return ([],                                                                                                        SubjectListFormatType.F, False)
-
+            case _:      return ([],                                                                                                                    SubjectListFormatType.F, False)
     # [LM #5] Used to confirm that the retrieved URL is a PDF file as that indicates it is a course
     def is_url_valid(self, url : str, dep_abbr : str, check_abbr : bool) -> bool:
         parsed_url = urlparse(url)

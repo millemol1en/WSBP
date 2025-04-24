@@ -1,6 +1,10 @@
 # API Imports:
 from scrapy.crawler import CrawlerProcess
 
+# CC Imports:
+from radon.complexity import cc_visit
+from radon.raw import analyze
+
 # Local Imports:
 from LLMScrapers.LLMScrapyScrapers.LLMKUCrawler.LLMScrapyKUCrawler import LLMKUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMGronigenCrawler.LLMScrapyGroningen import LLMGroningenCrawler
@@ -9,6 +13,7 @@ from LLMScrapers.LLMScrapyScrapers.LLMPolyUCrawler.LLMScrapyPolyUCrawler import 
 from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairing.LLMSelfRepairingScraper import LLMSelfRepairingScraper
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
 from Infrastructure.LLMFineTuning.LLMFineTuning import LLMFineTuning 
+from Testing.WSCyclicalComplexity import WSCyclicalComplexity
 
 def llm_scrapy_scraper_executor():
     process = CrawlerProcess({
@@ -67,5 +72,21 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ PolyU """
-    process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
-    process.start()
+    # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
+    # process.start()
+
+
+    with open('RawScrapers/RawScrapyScrapers/PolyUCrawler/PolyUCrawler.py', 'r') as f:
+        code = f.read()
+
+    analyzer = WSCyclicalComplexity()
+    (func_wscc, aggregate_wscc) = analyzer.calc_wscc(code)
+
+    for (func, data) in func_wscc.items():
+        print(f"Function: {func}")
+        print(f"  =* Keywords: {data['keywords']}")
+        print(f"  =* Depth: {data['depth']}")
+        print(f"  =* Selector Complexity: {data['selector_complexity']}")
+    
+    print(f"Aggregate WSCC: {aggregate_wscc}")
+    

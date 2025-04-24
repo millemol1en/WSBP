@@ -1,0 +1,115 @@
+import ast
+import re
+
+class WSCyclicalComplexity(ast.NodeVisitor):
+    def __init__(self):
+        self.function_metrics = {}
+
+    # []
+    def calc_wscc(self, code : str) -> ( dict | int ):
+        self.function_metrics.clear()
+        tree = ast.parse(code)
+        self.visit(tree)
+        aggregate_wscc = sum(func["wsc_score"] for func in self.function_metrics.values())
+        return (self.function_metrics, aggregate_wscc)
+
+    # [] Handle a function declaration:
+    def visit_FunctionDef(self, node):
+        keyword_count, max_depth, selector_score = self._analyze_function(node.body)
+        wsc_score = keyword_count + (2 * max_depth) + (0.1 * selector_score)
+        self.function_metrics[node.name] = {
+            "keywords": keyword_count,
+            "depth": max_depth,
+            "selector_complexity": selector_score,
+            "wsc_score": round(wsc_score, 2)
+        }
+        self.generic_visit(node)  # In case there are inner functions
+
+    # [] Handle an asynchronous function:
+    def visit_AsyncFunctionDef(self, node):
+        self.visit_FunctionDef(node)
+
+    # []
+    def _analyze_function(self, body):
+        self._current_keyword_count = 0
+        self._current_selector_score = 0
+        for stmt in body:
+            self.visit(stmt)
+        max_depth = self._compute_depth(body, 0)
+        return self._current_keyword_count, max_depth, self._current_selector_score
+
+    # [] 
+    def _compute_depth(self, nodes, current_depth):
+        max_depth = current_depth
+        for node in nodes:
+            if isinstance(node, (ast.If, ast.For, ast.While, ast.Try, ast.Match, ast.match_case, ast.Yield)):
+                self._current_keyword_count += 1
+                nested = self._compute_depth(ast.iter_child_nodes(node), current_depth + 1)
+                max_depth = max(max_depth, nested)
+            elif hasattr(node, 'body'):
+                for field in ('body', 'orelse', 'finalbody', 'handlers'):
+                    inner = getattr(node, field, [])
+                    if isinstance(inner, list):
+                        nested = self._compute_depth(inner, current_depth)
+                        max_depth = max(max_depth, nested)
+        return max_depth
+    
+
+    
+    # [] 
+    #    Take note that multiplication indicates a higher emphasis on their typical impact on complexity
+    def css_complexity(self, selector: str) -> int:
+        score = 0
+        score += selector.count(' ')               # Descendant
+        score += selector.count('>') * 2           # Child
+        score += selector.count('+') * 2           # Adjacent sibling
+        score += selector.count('~') * 3           # General sibling
+        score += selector.count(':') * 3           # Pseudo-class
+        score += selector.count('::') * 4          # Pseudo-element
+        score += selector.count('[') * 2           # Attribute
+        score += selector.count('.')               # Class
+        score += selector.count('#')               # ID
+        score += selector.count('*') * 2           # Universal selector
+        score += selector.count(',') * 2           # Multiple selectors
+        return score
+    
+    # []
+    def xpath_complexity(self, query: str) -> int:
+        score = 0
+        score += query.count('/')                                                                           # Basic path depth
+        score += query.count('//') * 2                                                                      # Double slash increases scope
+        score += query.count('[') * 2                                                                       # Attribute specification
+        score += query.count('@')                                                                           # Targeting specific ID or Class
+        score += query.count('text()')                                                                      # Text node access
+        score += query.count('./')                                                                          # Context-based navigation
+        score += len(re.findall(r'\b(?:and|or)\b', query)) * 3                                              # Logic operands      
+        score += len(re.findall(r'\b(?:contains|starts-with|normalize-space|position|last)\(', query)) * 2  # Built-in functions
+
+    # []
+    def visit_Call(self, node):
+        if isinstance(node.func, ast.Attribute):
+            if node.func.attr in {'xpath', 'css'} and node.args:
+                arg = node.args[0]
+                if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                    query = arg.value
+                    if node.func.attr == 'xpath':
+                        self._current_selector_score += self.xpath_complexity(query)
+                    else:
+                        self._current_selector_score += self.css_complexity(query)
+
+        self.generic_visit(node)
+
+    # [] Specifically used to handle cases in which a ".xpath()" or ".css()" call is chained together 
+    def post_selector_chain_complexity(self, node):
+        """Traverse chained calls after .xpath() or .css() to account for method chaining complexity."""
+        score = 0
+        current = node
+        while isinstance(current.parent, ast.Call) or isinstance(current.parent, ast.Attribute) or isinstance(current.parent, ast.Subscript):
+            current = current.parent
+            if isinstance(current, ast.Call) and isinstance(current.func, ast.Attribute):
+                score += 1  # Each method call like .get(), .strip(), etc.
+            elif isinstance(current, ast.Subscript):
+                score += 1  # Slicing like [1:], [:2], etc.
+        return score
+
+# Add a thing on how to measure reliance of 1 function against another. So, how many unique functions are called within another - and is this nested? 
