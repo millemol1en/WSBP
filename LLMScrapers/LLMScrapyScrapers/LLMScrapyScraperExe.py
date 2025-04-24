@@ -69,3 +69,13 @@ def llm_scrapy_scraper_executor():
     """ PolyU """
     process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
     process.start()
+
+    """ Fine Tuning """
+
+    #! file-Nd6dDihkcA3gm4qhxW35F6    
+    # LLMFineTuning.upload_openai_file("LLMScrapers/LLMScrapyScrapers/FTOpenAI_PolyU.jsonl")
+    
+    # LLMFineTuning.create_tuned_model("file-Nd6dDihkcA3gm4qhxW35F6")
+    # LLMFineTuning.print_openai_model_info()
+
+    LLMFineTuning.print_job_list()
