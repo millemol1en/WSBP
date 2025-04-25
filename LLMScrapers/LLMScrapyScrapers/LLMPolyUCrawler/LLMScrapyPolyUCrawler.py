@@ -108,11 +108,11 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             # print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
             
             # TODO: Revert!
-            # yield scrapy.Request(
-            #     url=course_url,
-            #     callback=self.scrape_single_course,
-            #     meta={'department_name': department_name}
-            # )
+            yield scrapy.Request(
+                url=course_url,
+                callback=self.scrape_single_course,
+                meta={'department_name': department_name}
+            )
 
     """ Step 4 """
     def scrape_single_course(self, response):

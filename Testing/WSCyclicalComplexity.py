@@ -1,9 +1,12 @@
 import ast
 import re
 
+
+
 class WSCyclicalComplexity(ast.NodeVisitor):
     def __init__(self):
         self.function_metrics = {}
+        self._current_function_name = None
 
     # []
     def calc_wscc(self, code : str) -> ( dict | int ):
@@ -15,13 +18,20 @@ class WSCyclicalComplexity(ast.NodeVisitor):
 
     # [] Handle a function declaration:
     def visit_FunctionDef(self, node):
-        keyword_count, max_depth, selector_score = self._analyze_function(node.body)
-        wsc_score = keyword_count + (2 * max_depth) + (0.1 * selector_score)
+        # []
+        self._current_function_name = node.name                                                 # Save the name of the function we are currently working with
+        keyword_count, max_depth, selector_score = self._analyze_function(node.body)            # Retrieve the number of keywords and depth of the function
+        function_calls = self.function_metrics.get(node.name, {}).get("function_calls", 0)      # Retrieve the number of function calls within a function
+
+        # []
+        wsc_score = keyword_count + (2 * max_depth) + (0.1 * selector_score) + (0.75 * function_calls)
         self.function_metrics[node.name] = {
             "keywords": keyword_count,
             "depth": max_depth,
             "selector_complexity": selector_score,
-            "wsc_score": round(wsc_score, 2)
+            "function_calls": function_calls,
+            "wsc_score": round(wsc_score, 2),
+            "grade": self.grade(wsc_score)
         }
         self.generic_visit(node)  # In case there are inner functions
 
@@ -53,8 +63,6 @@ class WSCyclicalComplexity(ast.NodeVisitor):
                         nested = self._compute_depth(inner, current_depth)
                         max_depth = max(max_depth, nested)
         return max_depth
-    
-
     
     # [] 
     #    Take note that multiplication indicates a higher emphasis on their typical impact on complexity
@@ -88,14 +96,34 @@ class WSCyclicalComplexity(ast.NodeVisitor):
     # []
     def visit_Call(self, node):
         if isinstance(node.func, ast.Attribute):
-            if node.func.attr in {'xpath', 'css'} and node.args:
+            # []
+            attr_name = node.func.attr
+
+            if attr_name in {'xpath', 'css'} and node.args:
                 arg = node.args[0]
                 if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
                     query = arg.value
-                    if node.func.attr == 'xpath':
+                    if attr_name == 'xpath':
                         self._current_selector_score += self.xpath_complexity(query)
                     else:
                         self._current_selector_score += self.css_complexity(query)
+
+            # [] Handle BeautifulSoup queries
+            elif attr_name in {'find', 'find_all'} and node.args:
+                tag_arg = node.args[0]
+                if isinstance(tag_arg, ast.Constant) and isinstance(tag_arg.value, str):
+                    query = tag_arg.value
+                    score = 1      
+                    if len(node.args) > 1 or any(kw.arg in {"class_", "id", "attrs"} for kw in node.keywords):
+                        score += 2
+                    self._current_selector_score += score
+
+
+            # [] Track all 'self.some_func()' calls within a function to calculate its extent of dependency:
+            if isinstance(node.func.value, ast.Name) and node.func.value.id == "self":
+                if self._current_function_name:
+                    self.function_metrics.setdefault(self._current_function_name, {}).setdefault("function_calls", 0)
+                    self.function_metrics[self._current_function_name]["function_calls"] += 1
 
         self.generic_visit(node)
 
@@ -111,5 +139,21 @@ class WSCyclicalComplexity(ast.NodeVisitor):
             elif isinstance(current, ast.Subscript):
                 score += 1  # Slicing like [1:], [:2], etc.
         return score
+    
+    # [] Grading system is based entirely on the "radon" package:
+    #    
+    def grade(self, score):
+        if score <= 10:
+            return "A"
+        elif score <= 17:
+            return "B"
+        elif score <= 23:
+            return "C"
+        elif score <= 31:
+            return "D"
+        elif score <= 43:
+            return "E"
+        else:
+            return "F"
 
 # Add a thing on how to measure reliance of 1 function against another. So, how many unique functions are called within another - and is this nested? 

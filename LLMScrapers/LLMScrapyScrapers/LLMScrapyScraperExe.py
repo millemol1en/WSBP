@@ -86,6 +86,8 @@ def llm_scrapy_scraper_executor():
         print(f"Function: {func}")
         print(f"  =* Keywords: {data['keywords']}")
         print(f"  =* Depth: {data['depth']}")
+        print(f"  =* Func calls: {data['function_calls']}")
+        print(f"  =* Grade: {data['grade']}")
         print(f"  =* Selector Complexity: {data['selector_complexity']}")
     
     print(f"Aggregate WSCC: {aggregate_wscc}")

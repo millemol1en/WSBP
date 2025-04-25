@@ -1,6 +1,5 @@
 # Scrapying APIs
 import scrapy
-from bs4 import BeautifulSoup
 
 # LLM APIs:
 from openai import OpenAI
