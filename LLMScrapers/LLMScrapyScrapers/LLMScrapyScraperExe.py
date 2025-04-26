@@ -5,6 +5,11 @@ from scrapy.crawler import CrawlerProcess
 from radon.complexity import cc_visit
 from radon.raw import analyze
 
+# Native Python Packages:
+from pathlib import Path
+import traceback
+import sys
+
 # Local Imports:
 from LLMScrapers.LLMScrapyScrapers.LLMKUCrawler.LLMScrapyKUCrawler import LLMKUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMGronigenCrawler.LLMScrapyGroningen import LLMGroningenCrawler
@@ -74,21 +79,76 @@ def llm_scrapy_scraper_executor():
     """ PolyU """
     # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
     # process.start()
-
-
-    with open('RawScrapers/RawScrapyScrapers/PolyUCrawler/PolyUCrawler.py', 'r') as f:
-        code = f.read()
-
-    analyzer = WSCyclicalComplexity()
-    (func_wscc, aggregate_wscc) = analyzer.calc_wscc(code)
-
-    for (func, data) in func_wscc.items():
-        print(f"Function: {func}")
-        print(f"  =* Keywords: {data['keywords']}")
-        print(f"  =* Depth: {data['depth']}")
-        print(f"  =* Func calls: {data['function_calls']}")
-        print(f"  =* Grade: {data['grade']}")
-        print(f"  =* Selector Complexity: {data['selector_complexity']}")
     
-    print(f"Aggregate WSCC: {aggregate_wscc}")
+    rt = RunTests(['LLMScrapers/LLMScrapyScrapers', 'RawScrapers/RawScrapyScrapers'])
+    rt.exec()
+
+    # print("="*50)
+    # print("Analyzing RawScrapers/RawScrapyScrapers/KUCrawler/KUCrawler.py...\n" + "-"*50)
+
+    # with open("RawScrapers/RawScrapyScrapers/KUCrawler/KUCrawler.py", 'r', encoding='utf-8') as f:
+    #     code = f.read()
+
+    # analyzer = WSCyclicalComplexity()
+
+    # try:
+    #     (func_wscc, aggregate_wscc) = analyzer.calc_wscc(code)
+
+    #     for (func, data) in func_wscc.items():
+    #         print(f"Function: {func}")
+    #         print(f"  =* Keywords: {data['keywords']}")
+    #         print(f"  =* Depth: {data['depth']}")
+    #         print(f"  =* Func calls: {data['function_calls']}")
+    #         print(f"  =* Grade: {data['grade']}")
+    #         print(f"  =* Selector Complexity: {data['selector_complexity']}")
+        
+    #     print(f"Aggregate WSCC for RawScrapers/RawScrapyScrapers/KUCrawler/KUCrawler.py: {aggregate_wscc}")
+
+    # except Exception as e:
+    #     exc_type, exc_value, exc_traceback = sys.exc_info()
+    #     tb = traceback.extract_tb(exc_traceback)
+    #     print("Exception occurred:")
+    #     for entry in tb:
+    #         print(f"  File: {entry.filename}, Line: {entry.lineno}, in {entry.name}")
+    #         print(f"    Code: {entry.line}")
+
+    # print("="*50)
+
     
+
+class RunTests():
+    def __init__(self, _paths : list[str]):
+        self.paths = _paths
+
+    def exec(self):
+        for path in self.paths:
+            base_dir = Path(path)
+
+            py_files = list(base_dir.rglob('*.py'))
+
+            analyzer = WSCyclicalComplexity()
+
+            for py_file in py_files:
+                print("="*50)
+                print(f"\nAnalyzing {py_file}...\n" + "-"*50)
+
+                with open(py_file, 'r', encoding='utf-8') as f:
+                    code = f.read()
+
+                try:
+                    (func_wscc, aggregate_wscc) = analyzer.calc_wscc(code)
+
+                    for (func, data) in func_wscc.items():
+                        print(f"Function: {func}")
+                        print(f"  =* Keywords: {data['keywords']}")
+                        print(f"  =* Depth: {data['depth']}")
+                        print(f"  =* Func calls: {data['function_calls']}")
+                        print(f"  =* Grade: {data['grade']}")
+                        print(f"  =* Selector Complexity: {data['selector_complexity']}")
+                    
+                    print(f"Aggregate WSCC for {py_file.name}: {aggregate_wscc}")
+
+                except Exception as e:
+                    print(f"Failed to analyze {py_file.name}: {e}")
+
+                print("="*50)

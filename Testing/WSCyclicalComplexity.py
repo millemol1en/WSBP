@@ -1,8 +1,6 @@
 import ast
 import re
 
-
-
 class WSCyclicalComplexity(ast.NodeVisitor):
     def __init__(self):
         self.function_metrics = {}
@@ -92,6 +90,7 @@ class WSCyclicalComplexity(ast.NodeVisitor):
         score += query.count('./')                                                                          # Context-based navigation
         score += len(re.findall(r'\b(?:and|or)\b', query)) * 3                                              # Logic operands      
         score += len(re.findall(r'\b(?:contains|starts-with|normalize-space|position|last)\(', query)) * 2  # Built-in functions
+        return score
 
     # []
     def visit_Call(self, node):
@@ -155,5 +154,3 @@ class WSCyclicalComplexity(ast.NodeVisitor):
             return "E"
         else:
             return "F"
-
-# Add a thing on how to measure reliance of 1 function against another. So, how many unique functions are called within another - and is this nested? 

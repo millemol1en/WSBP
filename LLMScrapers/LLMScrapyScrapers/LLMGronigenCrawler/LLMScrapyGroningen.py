@@ -6,7 +6,6 @@ from openai import OpenAI
 from google import genai
 from google.genai import types
 
-
 # Native Python Packages:
 from urllib.parse import urlparse, urljoin
 import os
@@ -39,10 +38,6 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
         super().__init__(_name=_name, _url=_url, _llm_type=_llm_type, **kwargs)
 
     def parse(self, response):
-        
-
-
-
         yield from self.scrape_departments(response)
 
     # []
@@ -76,9 +71,12 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
 
     # [] Scrape all the departments using entirely LLM prompting techniques:
     def scrape_departments(self, response):
-        print("CALLING DEPARTMENTS")
+        faculty_name = response.meta['faculty_name']
+
+        print(f"CALLING DEPARTMENTS {faculty_name}")
+
         core_message = f"""
-        "You are a web scraping bot tasked at scraping the provided URL: https://ocasys.rug.nl/api/faculty/catalog/2024-2025 \n"
+        "You are a web scraping bot tasked at scraping the provided URL: {response.request.url} \n"
         "You are to scrape the JSON data located in the XHR Requests.\n"
         "Specifically, you are to scrape all the faculties and their bachelors level subjects.\n"
         "Crucially, there are 13 faculties in total, all of them at the top level, but not all them are of interest to us.\n"
