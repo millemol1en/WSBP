@@ -26,7 +26,6 @@ gemini_key = os.getenv("GEMINI_API_KEY")
 gpt_client = OpenAI(api_key=gpt_key)
 gemini_client = genai.Client(api_key=gemini_key)
 
-#TODO: Delete? 
 class BooksResponse(BaseModel):
     books: list[Book]
 

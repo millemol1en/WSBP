@@ -478,8 +478,6 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
                 with open(json_path, "w") as f:
                     json.dump(dep_subject_list_xpaths, f, indent=2)
-        else:
-            print("SKIPPING LLM!") # TODO: REMOVE!
 
         if subject_link_href != None:
             department_url = (f"https://www.polyu.edu.hk{subject_link_href}")
