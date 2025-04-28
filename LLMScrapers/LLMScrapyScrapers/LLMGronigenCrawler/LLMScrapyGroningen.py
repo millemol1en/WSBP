@@ -10,11 +10,13 @@ from google.genai import types
 import os
 import inspect
 import json
+from pydantic import BaseModel
 
 # .env Support:
 from dotenv import load_dotenv
 
 # Local Structs:
+from DataObjects.Book import Book
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMScrapyAbstractCrawler, LLMType
 from LLMScrapers.LLMScrapyScrapers.LLMGronigenCrawler.GeminiFTDataset import gemini_dataset
@@ -25,6 +27,14 @@ gpt_key         = os.getenv("OPENAI_API_KEY")
 gemini_key      = os.getenv("GEMINI_API_KEY")
 gpt_client      = OpenAI(api_key=gpt_key)
 gemini_client   = genai.Client(api_key=gemini_key)
+
+# ResponseSchema for OpenAI
+class ResponseSchema(BaseModel):
+    course_name   : str
+    course_code   : str
+    course_level  : str
+    course_points : str
+    course_lit    : list[Book]
 
 class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
     def __init__(self, 
@@ -51,12 +61,22 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
             faculty_programs = faculty.get("programs")
 
             core_message = f"""
-            "You are a web scraping bot tasked at scraping the provided JSON data: {faculty_programs} \n"
-            "Specifically, you are to scrape the bachelors and masters courses from the provided data.\n"
-            "Whether or not a course is is bachelors or masters can be inferred from looking at the 'levels' property.\n"
-            "Within each faculty there will be an array of programs. Each program contains a single attributes which we interested, 'code', which could for example look like so: '60365-5503'\n"
-            "Do not include thesis, projects or exchange.\n"
-            "Please write back the information you located in a Python list.\n"
+            You are a web scraping assistant.
+
+            You are given the following JSON data:
+            {faculty_programs}
+
+            Your task is to extract specific information according to these rules:
+            - Scrape only the Bachelor's and Master's courses.
+            - Determine whether a course is Bachelor's or Master's by checking the 'levels' property.
+            - Inside each 'faculty', there is an array of 'programs'. Each 'program' contains a 'code' attribute (e.g., '60365-5503') that you must extract.
+
+            Exclusion criteria:
+            - Do not include any programs related to 'thesis', 'project', or 'exchange' in their titles.
+
+            Format the output as a Python list of strings.
+
+            Do not include any additional commentary. Only output the list.
             """
 
             if faculty_name != 'Law': continue  # TODO: Remove! Only for testing
@@ -93,10 +113,29 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
         data = json.loads(response.text)
 
         core_message = f"""
-        "You are a web scraping bot tasked with scraping the following JSON data: {data} \n"
-        "Your are tasked with scraping the provided JSON data - specifically the 'code' property which can be found in each of the many 'courseOffering' properties.\n"
-        "However, you are to exclude the programs which have the following words in their title: 'Project', 'Thesis', 'Internship', 'Academic', 'Bachelor', 'Research' and 'Ceramony'"
-        "Please write back the information in a Python list.\n"
+        You are a web scraping assistant.
+
+        You are given the following JSON data:
+        {data}
+
+        Your task is to extract specific information according to these rules:
+        - From each 'courseOffering' object, extract the value of the 'code' property.
+        - Exclude any course where the course title contains any of the following words: 'Project', 'Thesis', 'Internship', 'Academic', 'Bachelor', 'Research', or 'Ceremony'.
+
+        Example input:
+        [
+        {
+            "faculty": "Engineering",
+            "programs": [
+                {"title": "Bachelor of Mechanical Engineering", "levels": ["Bachelor"], "code": "60365-5503"},
+                {"title": "Research Project in Mechanical Engineering", "levels": ["Bachelor"], "code": "60365-5504"}
+            ]
+        }
+        ]
+
+        Format the output as a Python list of strings.
+
+        Do not include any additional commentary. Only output the list.
         """
 
         llm_response = self.call_llm(core_message)
@@ -127,23 +166,43 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
         data = json.loads(response.text)
 
         core_message = f"""
-        "You are a web scraping bot tasked with scraping the following JSON data: {data} \n"
-        "Your task is to harvest the following key pieces of information. Firstly, you need to get the course title which is stored in the key 'titleEn' and the course code which is stored in the key 'code'.\n"
-        "Secondly, you need to harvest the information within "
+        You are a web scraping assistant. 
+
+        You are given the following JSON data: {data}
+
+        Your task is to extract the following pieces of information:
+        - Course title: from the key 'titleEn'
+        - Course code: from the key 'code'
+        - Course literature (books): from the 'books' key, extract 'author', 'title', and 'isbn'
+
+        Additionally:
+        - From each book's 'title', also extract the title, ISBN, and publishing firm if available.
+
+        You must return the extracted information following this response schema:
+
+        class ResponseSchema(BaseModel):
+            course_name: str
+            course_code: str
+            course_level: str
+            course_points: str
+            course_books: list[Book]
+
+        Do not include any extra commentary. Only output data in the exact structure above.
         """
 
-    
         try:
             llm_response = self.call_llm(core_message)
 
-            yield CourseDTO(
-                name = course_title,
-                code = course_code,
-                literature = course_literature,
-                department = faculty_name,
-                level      = course_level,
-                points     = course_points
-            )
+            for course in llm_response:
+                
+                yield CourseDTO(
+                    name       = course.course_name,
+                    code       = course.course_code,
+                    literature = course.course_lit,
+                    department = faculty_name,
+                    level      = course.course_level,
+                    points     = course.course_points
+                )
             
         except Exception as e:
             frame = inspect.currentframe().f_back
@@ -156,11 +215,7 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
                 func=frame.f_code.co_name
             )
     
-    def call_llm(self, core_message):   
-        print("CALLING LLM")
-        rs_f  = open("./LLMScrapers/LLMScrapyScrapers/LLMGronigenCrawler/ResponseSchema.json", "r")
-        rs_j = json.load(rs_f)
-
+    def call_llm(self, core_message, response_schema : ResponseSchema):   
         match self.llm_type:
             case LLMType.CHAT_GPT:
                 response = gpt_client.chat.completions.create(
@@ -177,7 +232,7 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
                         "format": {
                             "type": "json_schema",
                             "name": "groningen_university_departments_and_courses",
-                            "schema": rs_j
+                            "schema": response_schema
                         }
                     }                                  
                 )
@@ -208,23 +263,13 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
                     )
                 )
 
-                job_id    = tuning_job.name
-                job_state = tuning_job.state
-                print(f"Started tuning job: {job_id}")
-                print(f"Job state name: {job_state.name}")
-                    
-                while job_state.name != "JOB_STATE_SUCCEEDED":
-                    print(f"Running! Current job state is: {job_state.name}")
-
-                print(f"Job state name: {job_state.name}")
-
                 try:
                     response = gemini_client.models.generate_content(
                         model=tuning_job.tuned_model.model,
                         contents=core_message,
                         config={
                             'response_mime_type': 'application/json',
-                            'response_schema': rs_j, 
+                            'response_schema': response_schema, 
                         }
                     )
                 except Exception as e:

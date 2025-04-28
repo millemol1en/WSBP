@@ -80,7 +80,7 @@ def llm_scrapy_scraper_executor():
     # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
     # process.start()
     
-    rt = RunTests(['LLMScrapers/LLMScrapyScrapers', 'RawScrapers/RawScrapyScrapers'])
+    rt = RunTests(['LLMScrapers/LLMScrapyScrapers', 'RawScrapers/RawScrapyScrapers', 'Infrastructure/LiteratureCleaner'])
     rt.exec()
 
     # print("="*50)
@@ -143,10 +143,9 @@ class RunTests():
                         print(f"  =* Keywords: {data['keywords']}")
                         print(f"  =* Depth: {data['depth']}")
                         print(f"  =* Func calls: {data['function_calls']}")
-                        print(f"  =* Grade: {data['grade']}")
+                        print(f"  =* Regex complexity: {data['regex_score']}")
                         print(f"  =* Selector Complexity: {data['selector_complexity']}")
-                    
-                    print(f"Aggregate WSCC for {py_file.name}: {aggregate_wscc}")
+                        print(f"  =* Grade: {data['grade']}")
 
                 except Exception as e:
                     print(f"Failed to analyze {py_file.name}: {e}")

@@ -5,6 +5,7 @@ class WSCyclicalComplexity(ast.NodeVisitor):
     def __init__(self):
         self.function_metrics = {}
         self._current_function_name = None
+        self.grades = []
 
     # []
     def calc_wscc(self, code : str) -> ( dict | int ):
@@ -17,20 +18,22 @@ class WSCyclicalComplexity(ast.NodeVisitor):
     # [] Handle a function declaration:
     def visit_FunctionDef(self, node):
         # []
-        self._current_function_name = node.name                                                 # Save the name of the function we are currently working with
-        keyword_count, max_depth, selector_score = self._analyze_function(node.body)            # Retrieve the number of keywords and depth of the function
-        function_calls = self.function_metrics.get(node.name, {}).get("function_calls", 0)      # Retrieve the number of function calls within a function
+        self._current_function_name = node.name                                                             # Save the name of the function we are currently working with
+        keyword_count, max_depth, selector_score, regex_score = self._analyze_function(node.body)           # Retrieve the number of keywords, max depth, selector score and regex score [if present]
+        function_calls = self.function_metrics.get(node.name, {}).get("function_calls", 0)                  # Retrieve the number of function calls within a function
 
         # []
-        wsc_score = keyword_count + (2 * max_depth) + (0.1 * selector_score) + (0.75 * function_calls)
+        wsc_score = keyword_count + (1.5 * max_depth) + (0.5 * selector_score) + (0.75 * function_calls) + (2 * regex_score)
         self.function_metrics[node.name] = {
             "keywords": keyword_count,
             "depth": max_depth,
             "selector_complexity": selector_score,
             "function_calls": function_calls,
+            "regex_score": regex_score,
             "wsc_score": round(wsc_score, 2),
             "grade": self.grade(wsc_score)
         }
+        self.grades.append(self.grade(wsc_score))
         self.generic_visit(node)  # In case there are inner functions
 
     # [] Handle an asynchronous function:
@@ -41,10 +44,11 @@ class WSCyclicalComplexity(ast.NodeVisitor):
     def _analyze_function(self, body):
         self._current_keyword_count = 0
         self._current_selector_score = 0
+        self._current_regex_score = 0
         for stmt in body:
             self.visit(stmt)
         max_depth = self._compute_depth(body, 0)
-        return self._current_keyword_count, max_depth, self._current_selector_score
+        return self._current_keyword_count, max_depth, self._current_selector_score, self._current_regex_score
 
     # [] 
     def _compute_depth(self, nodes, current_depth):
@@ -71,7 +75,7 @@ class WSCyclicalComplexity(ast.NodeVisitor):
         score += selector.count('+') * 2           # Adjacent sibling
         score += selector.count('~') * 3           # General sibling
         score += selector.count(':') * 3           # Pseudo-class
-        score += selector.count('::') * 4          # Pseudo-element
+        score += selector.count('::') * 3          # Pseudo-element
         score += selector.count('[') * 2           # Attribute
         score += selector.count('.')               # Class
         score += selector.count('#')               # ID
@@ -80,6 +84,7 @@ class WSCyclicalComplexity(ast.NodeVisitor):
         return score
     
     # []
+    #    Take note that multiplication indicates a higher emphasis on their typical impact on complexity
     def xpath_complexity(self, query: str) -> int:
         score = 0
         score += query.count('/')                                                                           # Basic path depth
@@ -88,8 +93,17 @@ class WSCyclicalComplexity(ast.NodeVisitor):
         score += query.count('@')                                                                           # Targeting specific ID or Class
         score += query.count('text()')                                                                      # Text node access
         score += query.count('./')                                                                          # Context-based navigation
-        score += len(re.findall(r'\b(?:and|or)\b', query)) * 3                                              # Logic operands      
+        score += len(re.findall(r'\b(?:and|or)\b', query)) * 2                                              # Logic operands      
         score += len(re.findall(r'\b(?:contains|starts-with|normalize-space|position|last)\(', query)) * 2  # Built-in functions
+        return score
+
+    def regex_complexity(self, pattern: str) -> int:
+        score = 0
+        score += len(pattern) // 6                   # 1 point per 6 characters
+        score += pattern.count('(')                  # 1 point per group
+        score += pattern.count('(?:') * 2            # Non-capturing groups are tricky
+        score += pattern.count('(?=') * 2            # Lookaheads are tricky
+        score += pattern.count('|')                  # Branching
         return score
 
     # []
@@ -98,6 +112,7 @@ class WSCyclicalComplexity(ast.NodeVisitor):
             # []
             attr_name = node.func.attr
 
+            # [] Handle '.xpath' and '.css' queries:
             if attr_name in {'xpath', 'css'} and node.args:
                 arg = node.args[0]
                 if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
@@ -117,6 +132,13 @@ class WSCyclicalComplexity(ast.NodeVisitor):
                         score += 2
                     self._current_selector_score += score
 
+            # [] 
+            elif isinstance(node.func, ast.Attribute) and node.func.attr in {'match', 'search'}:
+                if isinstance(node.func.value, ast.Name) and node.func.value.id == 're' and node.args:
+                    arg = node.args[0]
+                    if isinstance(arg, ast.Constant) and isinstance(arg.value, str):
+                        pattern = arg.value
+                        self._current_regex_score += self.regex_complexity(pattern)
 
             # [] Track all 'self.some_func()' calls within a function to calculate its extent of dependency:
             if isinstance(node.func.value, ast.Name) and node.func.value.id == "self":
@@ -142,15 +164,15 @@ class WSCyclicalComplexity(ast.NodeVisitor):
     # [] Grading system is based entirely on the "radon" package:
     #    
     def grade(self, score):
-        if score <= 10:
+        if score <= 5:
             return "A"
-        elif score <= 17:
+        elif score <= 10:
             return "B"
-        elif score <= 23:
+        elif score <= 14:
             return "C"
-        elif score <= 31:
+        elif score <= 18:
             return "D"
-        elif score <= 43:
+        elif score <= 20:
             return "E"
         else:
             return "F"
