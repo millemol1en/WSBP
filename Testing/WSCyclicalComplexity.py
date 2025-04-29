@@ -1,5 +1,43 @@
+# Native Python Imports:
 import ast
 import re
+from pathlib import Path
+
+class WSCCExecutor():
+    def __init__(self, _paths : list[str]):
+        self.paths = _paths
+
+    def exec(self):
+        for path in self.paths:
+            base_dir = Path(path)
+
+            py_files = list(base_dir.rglob('*.py'))
+
+            analyzer = WSCyclicalComplexity()
+
+            for py_file in py_files:
+                print("="*50)
+                print(f"\nAnalyzing {py_file}...\n" + "-"*50)
+
+                with open(py_file, 'r', encoding='utf-8') as f:
+                    code = f.read()
+
+                try:
+                    (func_wscc, aggregate_wscc) = analyzer.calc_wscc(code)
+
+                    for (func, data) in func_wscc.items():
+                        print(f"Function: {func}")
+                        print(f"  =* Keywords: {data['keywords']}")
+                        print(f"  =* Depth: {data['depth']}")
+                        print(f"  =* Func calls: {data['function_calls']}")
+                        print(f"  =* Regex complexity: {data['regex_score']}")
+                        print(f"  =* Selector Complexity: {data['selector_complexity']}")
+                        print(f"  =* Grade: {data['grade']}")
+
+                except Exception as e:
+                    print(f"Failed to analyze {py_file.name}: {e}")
+
+                print("="*50)
 
 class WSCyclicalComplexity(ast.NodeVisitor):
     def __init__(self):

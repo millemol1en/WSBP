@@ -42,10 +42,10 @@ def llm_scrapy_scraper_executor():
         'DOWNLOAD_DELAY': 0.0,                      # At "0.0" this may cause an overloader so 0.25 would be safer
         
         # AutoThrottle (Adaptive Speed Control)
-        # 'AUTOTHROTTLE_ENABLED': True,
-        # 'AUTOTHROTTLE_START_DELAY': 1,
-        # 'AUTOTHROTTLE_MAX_DELAY': 5,
-        # 'AUTOTHROTTLE_TARGET_CONCURRENCY': 10,
+        'AUTOTHROTTLE_ENABLED': True,
+        'AUTOTHROTTLE_START_DELAY': 1,
+        'AUTOTHROTTLE_MAX_DELAY': 5,
+        'AUTOTHROTTLE_TARGET_CONCURRENCY': 10,
 
         # Middleware Optimizations
         'DOWNLOADER_MIDDLEWARES': {
@@ -54,10 +54,10 @@ def llm_scrapy_scraper_executor():
             'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware': 580,
         },
 
-        # Cache (Optional for even faster scraping if data is static)
-        # 'HTTPCACHE_ENABLED': True,
-        # 'HTTPCACHE_EXPIRATION_SECS': 86400,  # Cache for 1 day
-        # 'HTTPCACHE_DIR': 'httpcache',
+        # Cache the information after initial run - will make testing a little bit faster:
+        'HTTPCACHE_ENABLED': True,
+        'HTTPCACHE_EXPIRATION_SECS': 86400,  # Cache for 1 day
+        'HTTPCACHE_DIR': 'httpcache',
     })
 
     """ Self Repairing """
@@ -80,74 +80,3 @@ def llm_scrapy_scraper_executor():
     # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
     # process.start()
     
-    rt = RunTests(['LLMScrapers/LLMScrapyScrapers', 'RawScrapers/RawScrapyScrapers', 'Infrastructure/LiteratureCleaner'])
-    rt.exec()
-
-    # print("="*50)
-    # print("Analyzing RawScrapers/RawScrapyScrapers/KUCrawler/KUCrawler.py...\n" + "-"*50)
-
-    # with open("RawScrapers/RawScrapyScrapers/KUCrawler/KUCrawler.py", 'r', encoding='utf-8') as f:
-    #     code = f.read()
-
-    # analyzer = WSCyclicalComplexity()
-
-    # try:
-    #     (func_wscc, aggregate_wscc) = analyzer.calc_wscc(code)
-
-    #     for (func, data) in func_wscc.items():
-    #         print(f"Function: {func}")
-    #         print(f"  =* Keywords: {data['keywords']}")
-    #         print(f"  =* Depth: {data['depth']}")
-    #         print(f"  =* Func calls: {data['function_calls']}")
-    #         print(f"  =* Grade: {data['grade']}")
-    #         print(f"  =* Selector Complexity: {data['selector_complexity']}")
-        
-    #     print(f"Aggregate WSCC for RawScrapers/RawScrapyScrapers/KUCrawler/KUCrawler.py: {aggregate_wscc}")
-
-    # except Exception as e:
-    #     exc_type, exc_value, exc_traceback = sys.exc_info()
-    #     tb = traceback.extract_tb(exc_traceback)
-    #     print("Exception occurred:")
-    #     for entry in tb:
-    #         print(f"  File: {entry.filename}, Line: {entry.lineno}, in {entry.name}")
-    #         print(f"    Code: {entry.line}")
-
-    # print("="*50)
-
-    
-
-class RunTests():
-    def __init__(self, _paths : list[str]):
-        self.paths = _paths
-
-    def exec(self):
-        for path in self.paths:
-            base_dir = Path(path)
-
-            py_files = list(base_dir.rglob('*.py'))
-
-            analyzer = WSCyclicalComplexity()
-
-            for py_file in py_files:
-                print("="*50)
-                print(f"\nAnalyzing {py_file}...\n" + "-"*50)
-
-                with open(py_file, 'r', encoding='utf-8') as f:
-                    code = f.read()
-
-                try:
-                    (func_wscc, aggregate_wscc) = analyzer.calc_wscc(code)
-
-                    for (func, data) in func_wscc.items():
-                        print(f"Function: {func}")
-                        print(f"  =* Keywords: {data['keywords']}")
-                        print(f"  =* Depth: {data['depth']}")
-                        print(f"  =* Func calls: {data['function_calls']}")
-                        print(f"  =* Regex complexity: {data['regex_score']}")
-                        print(f"  =* Selector Complexity: {data['selector_complexity']}")
-                        print(f"  =* Grade: {data['grade']}")
-
-                except Exception as e:
-                    print(f"Failed to analyze {py_file.name}: {e}")
-
-                print("="*50)
