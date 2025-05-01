@@ -79,4 +79,3 @@ def llm_scrapy_scraper_executor():
     """ PolyU """
     # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
     # process.start()
-    

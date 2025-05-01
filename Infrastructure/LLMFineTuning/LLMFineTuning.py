@@ -56,17 +56,18 @@ class LLMFineTuning:
     def create_tuned_model(file_id : str):
         try:
             model = gpt_client.fine_tuning.jobs.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4o-2024-08-06",
                 training_file=file_id,
-                hyperparameters={
-                    "n_epochs": 5,
-                    "batch_size": 3,
-                    "learning_rate_multiplier": 0.3
+                method={
+                    "type": "dpo",
+                    "dpo": {
+                        "hyperparameters": {"beta": 0.1},
+                    }
                 }
             )
 
-            print(model.id)
-            print(model.status)
+            print(model)
+            
         except OpenAIError as e:
             print(f"Error occurred: {e}")
 
@@ -74,7 +75,7 @@ class LLMFineTuning:
     def print_openai_model_info():
         models = openai.models.list()
         for model in models.data:
-            print(f"ID: {model.id} | Owned by: {model.owned_by}")
+            print(f"ID: {model.id} | Owned by: {model.owned_by} | Purpose: {model}")
 
     @staticmethod
     def print_openai_file_info():
@@ -85,6 +86,16 @@ class LLMFineTuning:
             print(f"Status      : {file.status}")
             print(f"Purpose     : {file.purpose}")
             print(f"Expires At  : {file.expires_at}")
+            print("-" * 40)
+
+    @staticmethod
+    def print_job_list():
+        job_list = gpt_client.fine_tuning.jobs.list()
+
+        for ft_job in job_list:
+            print(f"ID : {ft_job.id}")
+            print(f"Model Name : {ft_job.model}")
+            print(f"FT Model : {ft_job.fine_tuned_model}")
             print("-" * 40)
 
     """ GEMINI / VERTEX FUNCTIONS """
