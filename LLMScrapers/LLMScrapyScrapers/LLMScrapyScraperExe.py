@@ -1,10 +1,6 @@
 # API Imports:
 from scrapy.crawler import CrawlerProcess
 
-# CC Imports:
-from radon.complexity import cc_visit
-from radon.raw import analyze
-
 # Native Python Packages:
 from pathlib import Path
 import traceback
