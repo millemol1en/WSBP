@@ -1,25 +1,23 @@
 # Scrapying APIs
 import scrapy
-from bs4 import BeautifulSoup
 
 # LLM APIs:
 from openai import OpenAI
 from google import genai
 from google.genai import types
 
-
 # Native Python Packages:
-from urllib.parse import urlparse, urljoin
 import os
-import re
-import time
+import inspect
 import json
+from pydantic import BaseModel
 
 # .env Support:
 from dotenv import load_dotenv
 
 # Local Structs:
-from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO
+from DataObjects.Book import Book
+from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMScrapyAbstractCrawler, LLMType
 from LLMScrapers.LLMScrapyScrapers.LLMGronigenCrawler.GeminiFTDataset import gemini_dataset
 
@@ -29,6 +27,14 @@ gpt_key         = os.getenv("OPENAI_API_KEY")
 gemini_key      = os.getenv("GEMINI_API_KEY")
 gpt_client      = OpenAI(api_key=gpt_key)
 gemini_client   = genai.Client(api_key=gemini_key)
+
+# ResponseSchema for OpenAI
+class ResponseSchema(BaseModel):
+    course_name   : str
+    course_code   : str
+    course_level  : str
+    course_points : str
+    course_lit    : list[Book]
 
 class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
     def __init__(self, 
@@ -40,73 +46,176 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
         super().__init__(_name=_name, _url=_url, _llm_type=_llm_type, **kwargs)
 
     def parse(self, response):
-        
-
-
-
         yield from self.scrape_departments(response)
 
-    # []
-    def scrape_departments_subset(self, response):
+    # [] Scrape all the departments using entirely LLM prompting techniques:
+    #    Compared to the raw scraper only 5 lines of code were removed.
+    def scrape_departments(self, response):
         data = json.loads(response.text)
 
-        # TODO: Reformat this code...
+        # [] Both models were unsuccessful at getting the necessary information with a single prompt so for each faculty.
+        #    we must call the LLM - it was either this or truncating the data and getting even worse results.
         for faculty in data:
             faculty_name = faculty.get("titleEn", "Unknown")
+            if faculty_name in ['Honours College', 'Campus Fryslân', 'Teaching Centre']: continue
             faculty_programs = faculty.get("programs")
 
-            faculty_program_urls = []
+            core_message = f"""
+            You are a web scraping assistant.
 
-            # Subset to test will be "Law":
-            if faculty_name != "Law": continue
-            
-            for program in faculty_programs:
-                program_level = program.get("levels")
-                program_name = program.get("titleEn")
-                program_code = program.get("code")
+            You are given the following JSON data:
+            {faculty_programs}
 
-                if program_code and any(level in {"BACHELOR", "MASTER"} for level in program_level):
+            Your task is to extract specific information according to these rules:
+            - Scrape only the Bachelor's and Master's courses.
+            - Determine whether a course is Bachelor's or Master's by checking the 'levels' property.
+            - Inside each 'faculty', there is an array of 'programs'. Each 'program' contains a 'code' attribute (e.g., '60365-5503') that you must extract.
+
+            Exclusion criteria:
+            - Do not include any programs related to 'thesis', 'project', or 'exchange' in their titles.
+
+            Format the output as a Python list of strings.
+
+            Do not include any additional commentary. Only output the list.
+            """
+
+            if faculty_name != 'Law': continue  # TODO: Remove! Only for testing
+            llm_response = self.call_llm(core_message)
+            print(llm_response)
+
+
+            for program_code in llm_response:
+                try:
+
                     program_url = (f"https://ocasys.rug.nl/api/2024-2025/scheme/program/{program_code}")
-                    faculty_program_urls.append(program_url)
             
+                    yield scrapy.Request(
+                        url=program_url,
+                        callback=self.scrape_department_courses,
+                        meta={ 'faculty_name': faculty_name }
+                    )
+
+                except Exception as e:
+                    frame = inspect.currentframe().f_back
+
+                    yield ScrapyErrorDTO(
+                        error=str(e),
+                        url=response.url,
+                        file=frame.f_code.co_filename,
+                        line=frame.f_code.co_filename,
+                        func=frame.f_code.co_name
+                    )
+
+    # [] Performance is terrible without truncation. This need for first hand truncation essentially renders the LLM useless here. 
+    #    Reduced the number lines of code down a bit more this time - specifically by 8. 
+    def scrape_department_courses(self, response):
+        faculty_name = response.meta['faculty_name']
+        data = json.loads(response.text)
+
+        core_message = f"""
+        You are a web scraping assistant.
+
+        You are given the following JSON data:
+        {data}
+
+        Your task is to extract specific information according to these rules:
+        - From each 'courseOffering' object, extract the value of the 'code' property.
+        - Exclude any course where the course title contains any of the following words: 'Project', 'Thesis', 'Internship', 'Academic', 'Bachelor', 'Research', or 'Ceremony'.
+
+        Example input:
+        [
+        {
+            "faculty": "Engineering",
+            "programs": [
+                {"title": "Bachelor of Mechanical Engineering", "levels": ["Bachelor"], "code": "60365-5503"},
+                {"title": "Research Project in Mechanical Engineering", "levels": ["Bachelor"], "code": "60365-5504"}
+            ]
+        }
+        ]
+
+        Format the output as a Python list of strings.
+
+        Do not include any additional commentary. Only output the list.
+        """
+
+        llm_response = self.call_llm(core_message)
+
+        for course_code in llm_response:
+            try:
+                course_data_url = (f"https://ocasys.rug.nl/api/2024-2025/course/page/{course_code}")
+        
                 yield scrapy.Request(
-                    url=program_url,
+                    url=course_data_url,
                     callback=self.scrape_department_courses,
                     meta={ 'faculty_name': faculty_name }
                 )
 
-    # [] Scrape all the departments using entirely LLM prompting techniques:
-    def scrape_departments(self, response):
-        print("CALLING DEPARTMENTS")
-        core_message = f"""
-        "You are a web scraping bot tasked at scraping the provided URL: https://ocasys.rug.nl/api/faculty/catalog/2024-2025 \n"
-        "You are to scrape the JSON data located in the XHR Requests.\n"
-        "Specifically, you are to scrape all the faculties and their bachelors level subjects.\n"
-        "Crucially, there are 13 faculties in total, all of them at the top level, but not all them are of interest to us.\n"
-        "Within each faculty there will be an array of programs. Each program contains 3 key attributes which we interested in, 'levels', 'titleEn' and 'code'. Crucially, the code is a number, like '60365-5503'\n"
-        "Do not include thesis, projects or exchange.\n"
-        "Please write back the information you located in provided JSON 'response_schema', wherein the top level is the faculty name, followed by all the programmes they provide.\n"
-        """
+            except Exception as e:
+                frame = inspect.currentframe().f_back
 
-        scraped_departments = self.call_llm(core_message)
-        
-        print(f"DEPARTMENTS: \n{scraped_departments}")
-
-    def scrape_department_courses(self, response):
-        core_message = f"""
-        "You are a JSON parser"
-        """
-
-        return super().scrape_department_courses(response)
+                yield ScrapyErrorDTO(
+                    error=str(e),
+                    url=response.url,
+                    file=frame.f_code.co_filename,
+                    line=frame.f_code.co_filename,
+                    func=frame.f_code.co_name
+                )
     
     def scrape_single_course(self, response):
-        return super().scrape_single_course(response)
-    
-    def call_llm(self, core_message):   
-        print("CALLING LLM")
-        rs_f  = open("./LLMScrapers/LLMScrapyScrapers/LLMGronigenCrawler/ResponseSchema.json", "r")
-        rs_j = json.load(rs_f)
+        faculty_name = response.meta['faculty_name']
+        data = json.loads(response.text)
 
+        core_message = f"""
+        You are a web scraping assistant. 
+
+        You are given the following JSON data: {data}
+
+        Your task is to extract the following pieces of information:
+        - Course title: from the key 'titleEn'
+        - Course code: from the key 'code'
+        - Course literature (books): from the 'books' key, extract 'author', 'title', and 'isbn'
+
+        Additionally:
+        - From each book's 'title', also extract the title, ISBN, and publishing firm if available.
+
+        You must return the extracted information following this response schema:
+
+        class ResponseSchema(BaseModel):
+            course_name: str
+            course_code: str
+            course_level: str
+            course_points: str
+            course_books: list[Book]
+
+        Do not include any extra commentary. Only output data in the exact structure above.
+        """
+
+        try:
+            llm_response = self.call_llm(core_message)
+
+            for course in llm_response:
+                
+                yield CourseDTO(
+                    name       = course.course_name,
+                    code       = course.course_code,
+                    literature = course.course_lit,
+                    department = faculty_name,
+                    level      = course.course_level,
+                    points     = course.course_points
+                )
+            
+        except Exception as e:
+            frame = inspect.currentframe().f_back
+
+            yield ScrapyErrorDTO(
+                error=str(e),
+                url=response.url,
+                file=frame.f_code.co_filename,
+                line=frame.f_code.co_filename,
+                func=frame.f_code.co_name
+            )
+    
+    def call_llm(self, core_message, response_schema : ResponseSchema):   
         match self.llm_type:
             case LLMType.CHAT_GPT:
                 response = gpt_client.chat.completions.create(
@@ -123,7 +232,7 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
                         "format": {
                             "type": "json_schema",
                             "name": "groningen_university_departments_and_courses",
-                            "schema": rs_j
+                            "schema": response_schema
                         }
                     }                                  
                 )
@@ -154,23 +263,13 @@ class LLMGroningenCrawler(LLMScrapyAbstractCrawler):
                     )
                 )
 
-                job_id    = tuning_job.name
-                job_state = tuning_job.state
-                print(f"Started tuning job: {job_id}")
-                print(f"Job state name: {job_state.name}")
-                    
-                while job_state.name != "JOB_STATE_SUCCEEDED":
-                    print(f"Running! Current job state is: {job_state.name}")
-
-                print(f"Job state name: {job_state.name}")
-
                 try:
                     response = gemini_client.models.generate_content(
                         model=tuning_job.tuned_model.model,
                         contents=core_message,
                         config={
                             'response_mime_type': 'application/json',
-                            'response_schema': rs_j, 
+                            'response_schema': response_schema, 
                         }
                     )
                 except Exception as e:

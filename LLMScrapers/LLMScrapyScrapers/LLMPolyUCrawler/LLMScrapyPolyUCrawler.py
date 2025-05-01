@@ -108,11 +108,11 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
             # print(f"Sanitized Course URL: =* {self.sanitize_course_url(department_url, course_url)}")
             
             # TODO: Revert!
-            # yield scrapy.Request(
-            #     url=course_url,
-            #     callback=self.scrape_single_course,
-            #     meta={'department_name': department_name}
-            # )
+            yield scrapy.Request(
+                url=course_url,
+                callback=self.scrape_single_course,
+                meta={'department_name': department_name}
+            )
 
     """ Step 4 """
     def scrape_single_course(self, response):
@@ -478,21 +478,20 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
 
                 with open(json_path, "w") as f:
                     json.dump(dep_subject_list_xpaths, f, indent=2)
-        else:
-            print("SKIPPING LLM!") # TODO: REMOVE!
 
         if subject_link_href != None:
             department_url = (f"https://www.polyu.edu.hk{subject_link_href}")
 
+            # [] Incomplete departments must still be topped off:
             if department_abbr == 'me':  department_url = (f"{department_url}subject-list/")
             if department_abbr == 'bre': department_url = (f"{department_url}2023-2024/")
 
-            # # [] Scrape the department courses:
-            # yield scrapy.Request(
-            #     url=department_url,
-            #     callback=self.scrape_department_courses,
-            #     meta={'department_name': department_name, 'department_abbr': department_abbr}
-            # )
+            # [] Scrape the department courses:
+            yield scrapy.Request(
+                url=department_url,
+                callback=self.scrape_department_courses,
+                meta={'department_name': department_name, 'department_abbr': department_abbr}
+            )
 
             print(f"{department_abbr}   :: {department_url}")
 

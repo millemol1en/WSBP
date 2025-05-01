@@ -1,6 +1,15 @@
 # API Imports:
 from scrapy.crawler import CrawlerProcess
 
+# CC Imports:
+from radon.complexity import cc_visit
+from radon.raw import analyze
+
+# Native Python Packages:
+from pathlib import Path
+import traceback
+import sys
+
 # Local Imports:
 from LLMScrapers.LLMScrapyScrapers.LLMKUCrawler.LLMScrapyKUCrawler import LLMKUCrawler
 from LLMScrapers.LLMScrapyScrapers.LLMGronigenCrawler.LLMScrapyGroningen import LLMGroningenCrawler
@@ -9,6 +18,7 @@ from LLMScrapers.LLMScrapyScrapers.LLMPolyUCrawler.LLMScrapyPolyUCrawler import 
 from LLMScrapers.LLMScrapyScrapers.LLMSelfRepairing.LLMSelfRepairingScraper import LLMSelfRepairingScraper
 from Infrastructure.ScrapyInfrastructure.LLMScrapyAbstractCrawler import LLMType
 from Infrastructure.LLMFineTuning.LLMFineTuning import LLMFineTuning 
+from Testing.WSCyclicalComplexity import WSCyclicalComplexity
 
 def llm_scrapy_scraper_executor():
     process = CrawlerProcess({
@@ -32,10 +42,10 @@ def llm_scrapy_scraper_executor():
         'DOWNLOAD_DELAY': 0.0,                      # At "0.0" this may cause an overloader so 0.25 would be safer
         
         # AutoThrottle (Adaptive Speed Control)
-        # 'AUTOTHROTTLE_ENABLED': True,
-        # 'AUTOTHROTTLE_START_DELAY': 1,
-        # 'AUTOTHROTTLE_MAX_DELAY': 5,
-        # 'AUTOTHROTTLE_TARGET_CONCURRENCY': 10,
+        'AUTOTHROTTLE_ENABLED': True,
+        'AUTOTHROTTLE_START_DELAY': 1,
+        'AUTOTHROTTLE_MAX_DELAY': 5,
+        'AUTOTHROTTLE_TARGET_CONCURRENCY': 10,
 
         # Middleware Optimizations
         'DOWNLOADER_MIDDLEWARES': {
@@ -44,10 +54,10 @@ def llm_scrapy_scraper_executor():
             'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware': 580,
         },
 
-        # Cache (Optional for even faster scraping if data is static)
-        # 'HTTPCACHE_ENABLED': True,
-        # 'HTTPCACHE_EXPIRATION_SECS': 86400,  # Cache for 1 day
-        # 'HTTPCACHE_DIR': 'httpcache',
+        # Cache the information after initial run - will make testing a little bit faster:
+        'HTTPCACHE_ENABLED': True,
+        'HTTPCACHE_EXPIRATION_SECS': 86400,  # Cache for 1 day
+        'HTTPCACHE_DIR': 'httpcache',
     })
 
     """ Self Repairing """
@@ -67,15 +77,5 @@ def llm_scrapy_scraper_executor():
     # process.start()
 
     """ PolyU """
-    process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
-    process.start()
-
-    """ Fine Tuning """
-
-    #! file-Nd6dDihkcA3gm4qhxW35F6    
-    # LLMFineTuning.upload_openai_file("LLMScrapers/LLMScrapyScrapers/FTOpenAI_PolyU.jsonl")
-    
-    # LLMFineTuning.create_tuned_model("file-Nd6dDihkcA3gm4qhxW35F6")
-    # LLMFineTuning.print_openai_model_info()
-
-    LLMFineTuning.print_job_list()
+    # process.crawl(LLMPolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/", _llm_type=LLMType.CHAT_GPT)
+    # process.start()

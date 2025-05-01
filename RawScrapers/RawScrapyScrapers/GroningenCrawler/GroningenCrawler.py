@@ -63,10 +63,7 @@ class GroningenCrawler(RawScrapyAbstractCrawler):
         try:
             faculty_name = response.meta['faculty_name']
             data = json.loads(response.text)
-
-            blocks  = data.get("blocks", [])
-
-            course_urls = []    # TODO: Remove! This is temporary
+            blocks = data.get("blocks", [])
 
             for block in blocks:                        
                 courseEntries = block.get("entries", [])
@@ -78,7 +75,6 @@ class GroningenCrawler(RawScrapyAbstractCrawler):
                     course_name     = course_block.get("titleEn")
                     if any(keyword in course_name.lower() for keyword in EXCLUDE_KEY_WORDS): continue
                     course_data_url = (f"https://ocasys.rug.nl/api/2024-2025/course/page/{course_code}")
-                    course_urls.append(course_data_url)
                     
                     yield scrapy.Request(
                         url=course_data_url,

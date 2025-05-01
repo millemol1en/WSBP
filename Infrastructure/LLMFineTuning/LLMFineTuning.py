@@ -2,7 +2,7 @@
 from openai import OpenAI, OpenAIError
 import openai
 from google import genai
-from google.genai.types import CreateTuningJobConfig, TuningExample, TuningDataset, CreateBatchJobConfig, JobState, HttpOptions
+from google.genai.types import TuningDataset, CreateTuningJobConfig, TuningExample, TuningDataset, CreateBatchJobConfig, JobState, HttpOptions
 from dotenv import load_dotenv
 
 # Native Python Imports:
@@ -99,4 +99,18 @@ class LLMFineTuning:
             print("-" * 40)
 
     """ GEMINI / VERTEX FUNCTIONS """
-    
+    @staticmethod
+    def submit_tuning_job(file_path : str):
+        dataset=Path(file_path)
+
+
+        training_dataset = TuningDataset(
+        examples=[
+            TuningExample(
+                text_input=input_text,
+                output=output_text
+            )
+            for input_text, output_text in dataset
+        ]
+    )
+

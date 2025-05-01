@@ -1,5 +1,3 @@
-
-
 gemini_dataset = [
     # Example 1: Masters and Bachelors
     (
