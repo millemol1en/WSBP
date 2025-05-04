@@ -12,8 +12,10 @@ EXCLUDE_KEY_WORDS   = {
 # Keywords to remove certain types of literature.
 # This translates to all the universities:
 NON_BOOK_MARKERS    = { 
+    "materials",
     "papers", 
     "list of", 
+    "exhaustive list",
     "various", 
     "videos", 
     "speeches", 
@@ -30,42 +32,61 @@ NON_BOOK_MARKERS    = {
     "syllabus", 
     "absalon",
     "pensum",
-    "books:", 
-    "references:", 
+    "books", 
+    "references", 
     "reference", 
     "textbook", 
-    "useful references", 
-    "recommended textbooks and references", 
-    "reference books", 
     "useful journals", 
     "further reading:", 
-    "required reading:", 
-    "recommended reading",
+    "required", 
+    "recommended",
     "forventet sideantal",
     "samlet",
     "chapters",
     "pages",
-    "TBA",
-    "info følger"
+    "info følger",
+    "i alt",
+    "materiale",
+    "overordnet",
+    "lærebog",
+    "litteratur",
+    "samling",
+    "mandatory",
+    "suggested",
+    "deadline",
+    "maximum number of students",
+    "exhaustive list",
+    "jupyter",
+    "research articles in innovation studies",
+    "dtu learn",
+    "course material"
 }
 
 # Regex pattern specifically for KU:
+# Keep in mind that the order is IMPERITIVE!
 CLEANING_PATTERNS = [
-    r'\bkapitel\s*\d+\b',                                       # "kapitel X"
-    r'\bkap\.\s*\d+\b',                                         # "kap. X"
-
+    r'\bkapitel\s*\d+\b.*',                                     # "kapitel X" and everything after
+    r'\bkap\.?\s*\d+\s*[-–]\s*\d+\b.*',                         # "kap. X–Y" and "kap X–Y"
+    r'\bkap\.\s*\d+\s*[-–]\s*\d+\b.*',                          # "kap. X–Y" and remove everything after
+    r'\bkap\.\s*\d+\b.*',                                       # "kap. X" and everything after
     r'\bpp\.\s*\d+(\s*[-–]\s*\d+)?\b',                          # "pp. X" or "pp. X–Y"
     r'\bpp\s*\d+(\s*[-–]\s*\d+)?\b',                            # "pp X" or "pp X–Y"
+    r'\bp\.\s*\d+\s*[-–]\s*\d+\.'                               # "p. X-X."
     r'\bside\.*\s*\d+\b',                                       # "side X"
     r'\bside\.*\s*\d+\s*[-–]\s*\d+\b',                          # "side X–Y"
     #r'\bSamlet sideantal:\s*Ca\.\s*\d+\b',                      # "Samlet sideantal: Ca. X" TODO: Maybe uncomment this?
     r'\b\d+\s+sider\b',                                         # "X sider"
-    r'\bs\.?\s*\d+\s*[-–]\s*\d+\s+og\s+\d+\s*[-–]\s*\d+\b',     # "s. X–Y og X–Y"
+    r'\bs\.?\s*\d+\s*[-–]\s*\d+\.',                             # "s. 241-242."
     r'\bs\.?\s*\d+\s*[-–]\s*\d+\b',                             # "s. X–Y"
     r'\b\d+\s*[-–]\s*\d+\b',                                    # "X–Y"
     r'\b- Hele bogen.*$',                                       # "- Hele bogen" to end
     r'\(red\.\)',                                               # "(red.)"
-    
+    r'\bside\s*\d+\s*[-–]\s*\d+\b',                             # "side X–X" specifically
+    r'\bnr\.\s*\d+\b',                                          # "nr. X"
+    r'-\s*Hele bogen.*',                                        # "- Hele bogen" and anything after
+    r'\bsemester\:*',                                           # "semester"
+    r'^\s*•\s*'                                                 # " •"
+    r'^\s*[-–—]\s*'                                             # " -"   
 ]
 
 # Keywords to remove from Literature List:
@@ -98,6 +119,7 @@ PUBLISHING_MARKERS  = {
     "Macmillan Publishers",
     "Hachette Book Group",
     "Wiley"
+    "John Wiley & Sons"
 }
 
 

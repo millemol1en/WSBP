@@ -4,7 +4,8 @@ import scrapy
 # Local Imports:
 from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
-from Defs.Defs import EXCLUDE_KEY_WORDS
+from Infrastructure.LiteratureCleaner.KU_DTU_LiteratureCleaner import extract_literature
+from Defs.Defs import NON_BOOK_MARKERS, CLEANING_PATTERNS
 
 # Native Python Imports:
 import re
@@ -41,9 +42,12 @@ class DTUCrawler(RawScrapyAbstractCrawler):
                 option_value = dep_option.xpath('@value').get()
                 # print(f"Department: {option_text}, Value: {option_value}")
 
+                # [] Testing for Data Accuracy Baseline:
+                if option_value != "38": continue
+
                 if option_text and option_value:
-                    # TODO: Remove the "CourseType=DTU_BSC&" - ONLY FOR TESTING
-                    department_url = (f"https://kurser.dtu.dk/search?Department={option_value}")
+                    department_url = (f"https://kurser.dtu.dk/search?Volume=2024%2F2025&Department={option_value}")
+                    #department_url = (f"https://kurser.dtu.dk/search?Department={option_value}")
 
                     yield scrapy.Request(
                         url=department_url,
@@ -104,21 +108,68 @@ class DTUCrawler(RawScrapyAbstractCrawler):
         course_level    = response.meta['course_level']
         course_code     = response.meta['course_code']
 
+        course_literature = []
         # [] Retrieve the raw literature text block:
-        course_literature = response.xpath(
-            "//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()[1]"
-        ).get()
+        course_lit_elements = response.xpath(
+            #"//div[@class='bar' and contains(text(), 'Course literature')]/following-sibling::text()"
+            """
+                //div[@class='bar' and contains(text(), 'Course literature')]
+                /following-sibling::node()
+                [not(self::div[@class='bar' and (contains(text(), 'Remarks') or contains(text(), 'Last updated'))])
+                and
+                not(preceding-sibling::div[@class='bar' and (contains(text(), 'Remarks') or contains(text(), 'Last updated'))])
+                ]
+            """
+        )
+        print(f"!==================={course_name}=================!")
+        buffer = ""
 
+        valid_course_literature = []
+        for el in course_lit_elements:
+            raw_texts = el.getall() 
+            
+            for raw_text in raw_texts:
+                raw_strs = raw_text.split("<br>")
+
+                for raw_str in raw_strs:
+                    refined_str = raw_str.strip()
+
+                    if refined_str:
+                        # for marker in NON_BOOK_MARKERS:
+                        #     if marker.lower() in refined_str.lower():
+                        #         print(f"SKIPPED DUE TO MARKER: {marker} in line: {refined_str}")
+                        #         continue
+                        if any(marker.lower() in refined_str.lower() for marker in NON_BOOK_MARKERS):
+                            continue
+
+                        for pattern in CLEANING_PATTERNS:
+                            refined_str = re.sub(pattern, '', refined_str)
+
+                        
+                        print("-------------------------------")
+                        print(refined_str)
+                        print("-------------------------------")
+
+                        course_literature = extract_literature(refined_str)
+
+                        if course_literature and "literature" in course_literature:
+                            valid_literature = []
+                            for lit in course_literature["literature"]:
+                                # Check if both author and title are longer than 4 characters
+                                if len(lit.get("author", "")) > 4 and len(lit.get("title", "")) > 4:
+                                    valid_literature.append(lit)
+                            
+                            # Update course_literature with only valid entries
+                            valid_course_literature = valid_literature
+            
         if course_name != None or course_code != None: 
-            course_dto = CourseDTO(
+            yield CourseDTO(
                 name       = course_name,
                 code       = course_code,
-                literature = [course_literature],
+                literature = valid_course_literature,
                 department = department_name,
                 level      = course_level.split(',')
             )
-
-            yield course_dto
 
     """ LOCAL METHODS """
     # []

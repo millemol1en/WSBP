@@ -1,3 +1,6 @@
+# ORIGINAL!
+# THIS FILE IS DEPRECIATED!
+
 import re
 from DataObjects.Book import Book
 from Defs.Defs import BOOK_START_MARKERS, EDITION_MARKERS, PUBLISHING_MARKERS, NON_BOOK_MARKERS

@@ -5,8 +5,8 @@ import scrapy
 from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScrapyAbstractCrawler
 from Infrastructure.ScrapyInfrastructure.ScrapyDTO import CourseDTO, ScrapyErrorDTO
 from Infrastructure.LiteratureCleaner.LiteratureCleaner import sanitize_course_literature, extract_books, new_fixer
-from Infrastructure.LiteratureCleaner.KU_DTU_LiteratureCleaner import clean_literature
-from Defs.Defs import NON_BOOK_MARKERS, CLEANING_PATTERNS
+from Infrastructure.LiteratureCleaner.KU_DTU_LiteratureCleaner import extract_literature
+from Defs.Defs import NON_BOOK_MARKERS, CLEANING_PATTERNS, EXCLUDE_KEY_WORDS
 
 # Native Python Imports:
 import inspect
@@ -33,12 +33,14 @@ class KUCrawler(RawScrapyAbstractCrawler):
                 if option_text and option_value:
                     department_url = (f"https://kurser.ku.dk/search?programme=BA&volume=2024/2025&departments={option_value}") # TODO: Consider Masters Courses???
                     
-                    if option_value == "DEPARTMENT_0013":
-                        yield scrapy.Request(
-                            url=department_url,
-                            callback=self.scrape_department_courses,
-                            meta={'department_name': option_text}
-                        )
+                    # Testing for Data Accuracy Baseline:
+                    if option_value != "DEPARTMENT_0013": continue
+                    
+                    yield scrapy.Request(
+                        url=department_url,
+                        callback=self.scrape_department_courses,
+                        meta={'department_name': option_text}
+                    )
                         
         except Exception as e:
             frame = inspect.currentframe().f_back
@@ -64,13 +66,7 @@ class KUCrawler(RawScrapyAbstractCrawler):
                 course_name = course.css("::text").get().strip()
                 course_url  = course.css("::attr(href)").get()
 
-                # if course_name != "General Administrative Law": continue
-                # if course_name != "Tort and contract": continue
-                # if course_name != "Police and Police Law": continue
-                # if course_name != "Compliance in the public sector": continue
-                # if course_name != "Philosophy of Law and Sociology of Law": continue
-                # if course_name != "International Law": continue
-                if course_name != "Property and Creditor Law": continue
+                if any(phrase in course_name.lower() for phrase in EXCLUDE_KEY_WORDS): continue
 
                 if course_url:
                     full_course_url = (f"https://kurser.ku.dk/{course_url}")
@@ -122,7 +118,7 @@ class KUCrawler(RawScrapyAbstractCrawler):
             # The following regex must NOT change as it will undoubtly result in key pieces of info being cut from it.
             # Danish variant:
             course_lit_html = re.sub(
-                r'<em>\s*Det er ulovligt at dele digitale studiebøger med hinanden uden tilladelse fra rettighedshaver\.\s*</em>',
+                r'Det\s+er\s+ulovligt\s+at\s+dele\s+digitale\s+studiebøger\s+med\s+hinanden\s+uden\s+tilladelse\s+fra\s+rettighedshaver\.?',
                 '',
                 course_literature_container,
                 flags=re.IGNORECASE
@@ -130,7 +126,7 @@ class KUCrawler(RawScrapyAbstractCrawler):
 
             # English variant:
             course_lit_html = re.sub(
-                r'<em>\s*It is illegal to share digital textbooks with each other without permission from the copyright holder\.\s*</em>',
+                r'It\s+is\s+illegal\s+to\s+share\s+digital\s+textbooks\s+with\s+each\s+other\s+without\s+permission\s+from\s+the\s+copyright\s+holder\.?',
                 '',
                 course_lit_html,
                 flags=re.IGNORECASE
@@ -140,7 +136,8 @@ class KUCrawler(RawScrapyAbstractCrawler):
             potential_books = []
 
 
-            # [] Specialty Case for [Tort and contract, ]:
+            # [] Specialty Case for "Tort and Contract".
+            #    The HTML is completely broken so we needed this long subsegment to take care of this:
             if course_code == "JJUB57004U":
                 p_tags = selector.xpath('//p')
                 current_book = []
@@ -191,8 +188,7 @@ class KUCrawler(RawScrapyAbstractCrawler):
                         potential_books.append(text)
 
 
-
-            print(f"\n=============Literature for {course_title}==============")
+            course_literature = None
             for book in potential_books:
                 # clean_line = ' '.join(book.split())
                 clean_line = self.clean_text(' '.join(book.split()))
@@ -204,18 +200,27 @@ class KUCrawler(RawScrapyAbstractCrawler):
                 elif course_code == "JJUB57011U":
                     clean_line = self.clean_JJUB57011U(clean_line)
 
-                print(clean_line)
-
-            print("==================================================================\n")
+                course_literature = extract_literature(clean_line)
+                
+                # Validate that author and title have values greater than 4 characters
+                if course_literature and "literature" in course_literature:
+                    valid_literature = []
+                    for lit in course_literature["literature"]:
+                        # Check if both author and title are longer than 4 characters
+                        if len(lit.get("author", "")) > 4 and len(lit.get("title", "")) > 4:
+                            valid_literature.append(lit)
+                    
+                    # Update course_literature with only valid entries
+                    course_literature["literature"] = valid_literature
         
-            # yield CourseDTO(
-            #     name = course_title,
-            #     code = course_code,
-            #     literature = course_literature,
-            #     department = course_department,
-            #     level      = course_level,
-            #     points     = course_points
-            # )
+            yield CourseDTO(
+                name = course_title,
+                code = course_code,
+                literature = course_literature,
+                department = course_department,
+                level      = course_level,
+                points     = course_points
+            )
 
         except Exception as e:
             frame = inspect.currentframe().f_back

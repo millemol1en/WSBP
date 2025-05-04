@@ -13,7 +13,7 @@ def raw_scrapy_scraper_executor():
 
         # [] ...:
         # 'FEEDS': {
-        #      'polyu.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+        #      './Testing/DTU/dtu_raw.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
         # },
 
         # Pipeline Configuration:
@@ -47,16 +47,16 @@ def raw_scrapy_scraper_executor():
     })
 
     """ KU Crawler """
-    process.crawl(KUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/")
-    process.start()
+    # process.crawl(KUCrawler, _name="København Universitet", _url="https://kurser.ku.dk/")
+    # process.start()
 
     """ Groningen Crawler """
     # process.crawl(GroningenCrawler, _name="Groningen University", _url="https://ocasys.rug.nl/api/faculty/catalog/2024-2025")
     # process.start()
 
     """ DTU Crawler """
-    # process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")
-    # process.start()
+    process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")
+    process.start()
 
     """ PolyU Crawler """
     # process.crawl(PolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
