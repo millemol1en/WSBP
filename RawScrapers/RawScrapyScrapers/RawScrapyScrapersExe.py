@@ -12,9 +12,9 @@ def raw_scrapy_scraper_executor():
         'LOG_LEVEL': 'INFO', # INFO, ERROR, CRITICAL, DEBUG
 
         # [] ...:
-        # 'FEEDS': {
-        #      './Testing/DTU/dtu_raw.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
-        # },
+        'FEEDS': {
+             './Testing/PolyU/polyu_raw.json': {'format': 'json', 'overwrite': True, 'encoding': 'utf-8'},
+        },
 
         # Pipeline Configuration:
         'ITEM_PIPELINES': {
@@ -55,10 +55,10 @@ def raw_scrapy_scraper_executor():
     # process.start()
 
     """ DTU Crawler """
-    process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")
-    process.start()
+    # process.crawl(DTUCrawler, _name="DTU", _url="https://kurser.dtu.dk/")
+    # process.start()
 
     """ PolyU Crawler """
-    # process.crawl(PolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
-    # process.start()
+    process.crawl(PolyUCrawler, _name="PolyU", _url="https://www.polyu.edu.hk/en/education/faculties-schools-departments/")
+    process.start()
 

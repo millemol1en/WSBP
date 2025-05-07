@@ -121,7 +121,6 @@ class DTUCrawler(RawScrapyAbstractCrawler):
                 ]
             """
         )
-        print(f"!==================={course_name}=================!")
         buffer = ""
 
         valid_course_literature = []
@@ -143,12 +142,7 @@ class DTUCrawler(RawScrapyAbstractCrawler):
                             continue
 
                         for pattern in CLEANING_PATTERNS:
-                            refined_str = re.sub(pattern, '', refined_str)
-
-                        
-                        print("-------------------------------")
-                        print(refined_str)
-                        print("-------------------------------")
+                            refined_str = re.sub(pattern, '', refined_str).strip()
 
                         course_literature = extract_literature(refined_str)
 
@@ -168,7 +162,7 @@ class DTUCrawler(RawScrapyAbstractCrawler):
                 code       = course_code,
                 literature = valid_course_literature,
                 department = department_name,
-                level      = course_level.split(',')
+                level      = (f"{course_level.split(',')} ECTS")
             )
 
     """ LOCAL METHODS """

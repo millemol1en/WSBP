@@ -62,7 +62,7 @@ NON_BOOK_MARKERS    = {
     "course material"
 }
 
-# Regex pattern specifically for KU:
+# Regex pattern specifically for KU & DTU:
 # Keep in mind that the order is IMPERITIVE!
 CLEANING_PATTERNS = [
     r'\bkapitel\s*\d+\b.*',                                     # "kapitel X" and everything after
@@ -74,7 +74,7 @@ CLEANING_PATTERNS = [
     r'\bp\.\s*\d+\s*[-–]\s*\d+\.'                               # "p. X-X."
     r'\bside\.*\s*\d+\b',                                       # "side X"
     r'\bside\.*\s*\d+\s*[-–]\s*\d+\b',                          # "side X–Y"
-    #r'\bSamlet sideantal:\s*Ca\.\s*\d+\b',                      # "Samlet sideantal: Ca. X" TODO: Maybe uncomment this?
+    r'\bSamlet sideantal:\s*Ca\.\s*\d+\b',                      # "Samlet sideantal: Ca. X"
     r'\b\d+\s+sider\b',                                         # "X sider"
     r'\bs\.?\s*\d+\s*[-–]\s*\d+\.',                             # "s. 241-242."
     r'\bs\.?\s*\d+\s*[-–]\s*\d+\b',                             # "s. X–Y"
