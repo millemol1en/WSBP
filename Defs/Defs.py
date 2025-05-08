@@ -86,7 +86,8 @@ CLEANING_PATTERNS = [
     r'-\s*Hele bogen.*',                                        # "- Hele bogen" and anything after
     r'\bsemester\:*',                                           # "semester"
     r'^\s*•\s*'                                                 # " •"
-    r'^\s*[-–—]\s*'                                             # " -"   
+    r'^\s*[-–—]\s*'                                             # " -"  
+     
 ]
 
 # Keywords to remove from Literature List:
@@ -104,8 +105,11 @@ PUBLISHING_MARKERS  = {
     "Forlaget Forum", "Rosinante",
     "Jensens Forlag",
     "Jurist- og Økonomforbundets Forlag",
-    "Djøf Forlag", "Djøf", "Gads Forlag",
-    "Gads", "Karnov",
+    "Djøf Forlag", 
+    "Djøf", 
+    "Gads Forlag",
+    "Gads", 
+    "Karnov",
     "Karnov Group",
     "KarnovGroup",
     "Hans Reitzels Forlag",

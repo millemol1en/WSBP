@@ -97,6 +97,7 @@ class KUCrawler(RawScrapyAbstractCrawler):
             course_department = response.meta['department_name']
             course_points     = "NA"
             course_level      = "NA"
+            valid_literature  = [] 
 
             # [] Course Description:
             dl_element  = response.xpath('//dl[@class="dl-horizontal"]')
@@ -135,6 +136,8 @@ class KUCrawler(RawScrapyAbstractCrawler):
             selector = scrapy.Selector(text=course_lit_html)
             potential_books = []
 
+            # TODO: Remove!
+            print(f"{course_code}")
 
             # [] Specialty Case for "Tort and Contract".
             #    The HTML is completely broken so we needed this long subsegment to take care of this:
@@ -202,21 +205,20 @@ class KUCrawler(RawScrapyAbstractCrawler):
 
                 course_literature = extract_literature(clean_line)
                 
+                # print(f"    *= Cleaned Line: {clean_line}")
+
                 # Validate that author and title have values greater than 4 characters
                 if course_literature and "literature" in course_literature:
-                    valid_literature = []
                     for lit in course_literature["literature"]:
+
                         # Check if both author and title are longer than 4 characters
                         if len(lit.get("author", "")) > 4 and len(lit.get("title", "")) > 4:
                             valid_literature.append(lit)
-                    
-                    # Update course_literature with only valid entries
-                    course_literature["literature"] = valid_literature
         
             yield CourseDTO(
                 name = course_title,
                 code = course_code,
-                literature = course_literature,
+                literature = valid_literature,
                 department = course_department,
                 level      = course_level,
                 points     = course_points

@@ -18,6 +18,7 @@ from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScra
 # TODO: Move to "Defs.py"
 # These departments have no publicaly available subject list
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
+TEST_TARGETS = { "ITC1001D", "ITC1002G", "ITC1200D", "ITC1A03", "ITC1C02", "ITC1CN02", "ITC1D04", "ITC2001D", "ITC2002T", "ITC2003D" }
 
 class SubjectListFormatType(Enum):
     A = "<main>+<a>"
@@ -121,20 +122,20 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
 
                 # [Case #2] <main> & <tr>
                 case SubjectListFormatType.B:
-                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check}")
                 
                     main_tag = response.css("main")
 
                     tr_tags = main_tag.css("tr")
 
                     for tr_tag in tr_tags:
-                        td_tags     = tr_tag.css("td")
+                        #td_tags     = tr_tag.css("td")
                         course_url  = tr_tag.css("::attr(data-href)").get()
 
-                        if td_tags:
-                            first_td = td_tags[0].css("::text").get()
+                        # if td_tags:
+                        #     first_td = td_tags[0].css("::text").get()
 
-                            if first_td != "ITC1200D": continue
+                        #     if first_td != "ITC1200D": continue
 
                         if self.is_url_valid(course_url, department_abbr, check):
                             sanitized_url = self.sanitize_course_url(response.request.url, course_url)
@@ -147,7 +148,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                 
                 # [Case #3] ...
                 case SubjectListFormatType.C:
-                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check}")
                 
                     main_tag = response.css("main")
 
@@ -167,7 +168,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
 
                 # [Case #4] ...
                 case SubjectListFormatType.D:
-                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check}")
                     
                     course_urls = response.css("a::attr(href)").getall()
 
@@ -187,9 +188,8 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
             
                 # [Case #5] ...
                 case SubjectListFormatType.E:
-
                     search_results = response.css("article p a")
-                    print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
 
                     for search_result in search_results:
                         search_result_link = search_result.css("::attr(href)").get()
@@ -202,8 +202,8 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                         )
 
                 case _:
-                    # TODO: Change to throw
-                    print(f"   *= {department_name}: None!")
+                    #print(f"   *= {department_name}: None!")
+                    pass
 
         except Exception as e:
             frame = inspect.currentframe().f_back
@@ -240,7 +240,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                         match row[0]:
                             case 'Subject Code':
                                 course_code = row[1].strip()
-                                print(f"      -> Subject Code: {course_code}")
+                                #print(f"      -> Subject Code: {course_code}")
                             case 'Subject Title':
                                 course_title = row[1].strip()
                                 #print(f"      -> Subject Title: {course_title}")
@@ -248,19 +248,19 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                                 literature = row[1]
                                 #print(f"      -> Reading List: {literature}")
                             case _: continue                
-
-            # TODO: Clean the literature...
             
-            cleaned_literature = self.clean_literature(literature)
+            # TODO: Remove! Only for test case
+            if course_code in TEST_TARGETS:
+                cleaned_literature = self.clean_literature(literature)
 
-            yield CourseDTO(
-                name       = course_title,
-                code       = course_code,
-                literature = cleaned_literature,
-                department = course_department,
-                level      = "",
-                points     = ""
-            )
+                yield CourseDTO(
+                    name       = course_title,
+                    code       = course_code,
+                    literature = cleaned_literature,
+                    department = course_department,
+                    level      = "",
+                    points     = ""
+                )
 
         except Exception as e:
             frame = inspect.currentframe().f_back
