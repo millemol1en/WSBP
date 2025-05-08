@@ -493,8 +493,6 @@ class LLMPolyUCrawler(LLMScrapyAbstractCrawler):
                 meta={'department_name': department_name, 'department_abbr': department_abbr}
             )
 
-            print(f"{department_abbr}   :: {department_url}")
-
     # [LM #9] Used to get scrape the necessary URLs from the previously retrieved subject list page.
     #         This method is necessary because unfortunately, AI can't fix the badly written raw html:
     def get_subject_list_hrefs(self, raw_html : BeautifulSoup, dep_abbr : str, dep_url : str) -> str:

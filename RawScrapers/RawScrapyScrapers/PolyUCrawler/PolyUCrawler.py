@@ -18,6 +18,7 @@ from Infrastructure.ScrapyInfrastructure.RawScrapyAbstractCrawler import RawScra
 # TODO: Move to "Defs.py"
 # These departments have no publicaly available subject list
 EXCLUDE_DEPARTMENTS = {  "beee", "hti", "rs", "sn", "so", "cihk", "comp" }
+TEST_TARGETS = { "ITC1001D", "ITC1002G", "ITC1200D", "ITC1A03", "ITC1C02", "ITC1CN02", "ITC1D04", "ITC2001D", "ITC2002T", "ITC2003D" }
 
 class SubjectListFormatType(Enum):
     A = "<main>+<a>"
@@ -48,7 +49,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                 # [] Department Components:
                 dep_containers = fac_container.css("ul.border-link-list li a")
 
-                #if fac_name != "School of Fashion and Textiles": continue
+                if fac_name != "School of Fashion and Textiles": continue
                 
                 for dep_container in dep_containers:
                     # []
@@ -121,21 +122,33 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
 
                 # [Case #2] <main> & <tr>
                 case SubjectListFormatType.B:
-                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check}")
                 
                     main_tag = response.css("main")
 
                     tr_tags = main_tag.css("tr")
 
                     for tr_tag in tr_tags:
+                        #td_tags     = tr_tag.css("td")
                         course_url  = tr_tag.css("::attr(data-href)").get()
 
+                        # if td_tags:
+                        #     first_td = td_tags[0].css("::text").get()
+
+                        #     if first_td != "ITC1200D": continue
+
                         if self.is_url_valid(course_url, department_abbr, check):
-                            print(f"            => {course_url}")
+                            sanitized_url = self.sanitize_course_url(response.request.url, course_url)
+
+                            yield scrapy.Request(
+                                url=sanitized_url,
+                                callback=self.scrape_single_course,
+                                meta={'department_name': department_name}
+                            )
                 
                 # [Case #3] ...
                 case SubjectListFormatType.C:
-                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check}")
                 
                     main_tag = response.css("main")
 
@@ -145,7 +158,6 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
 
                         for pg_num in range(1, last_element_num + 1):
                             pag_url = (f"{response.request.url}?page={pg_num}")
-                            print(f"        -> {pag_url}")
                             
                             yield scrapy.Request(
                                 url=pag_url,
@@ -156,27 +168,28 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
 
                 # [Case #4] ...
                 case SubjectListFormatType.D:
-                    print(f"   *= {department_name}: {response.request.url} - {check}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check}")
                     
                     course_urls = response.css("a::attr(href)").getall()
 
                     for course_url in course_urls:
-                        sanitized_url = self.sanitize_course_url(response.request.url, course_url)
                         #print(f"            => {course_url}")
 
                         # [] In some instances the URL is not complete and we need to append university base URL
 
-                        yield scrapy.Request(
-                            url=sanitized_url,
-                            callback=self.scrape_single_course,
-                            meta={'department_name': department_name}
-                        )          
+                        if self.is_url_valid(course_url, department_abbr, check):
+                            sanitized_url = self.sanitize_course_url(response.request.url, course_url)
+
+                            yield scrapy.Request(
+                                url=sanitized_url,
+                                callback=self.scrape_single_course,
+                                meta={'department_name': department_name}
+                            )          
             
                 # [Case #5] ...
                 case SubjectListFormatType.E:
-
                     search_results = response.css("article p a")
-                    print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
+                    #print(f"   *= {department_name}: {response.request.url} - {check} - Num Res: {len(search_results)}")
 
                     for search_result in search_results:
                         search_result_link = search_result.css("::attr(href)").get()
@@ -189,8 +202,8 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                         )
 
                 case _:
-                    # TODO: Change to throw
-                    print(f"   *= {department_name}: None!")
+                    #print(f"   *= {department_name}: None!")
+                    pass
 
         except Exception as e:
             frame = inspect.currentframe().f_back
@@ -205,7 +218,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
 
     """ Step 4 """
     def scrape_single_course(self, response):
-        department_name = response.meta['department_name']
+        course_department = response.meta['department_name']
 
         try:
             # [] Retrieve the link to the PDF:
@@ -213,7 +226,7 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
             num_pages = len(pdf_doc)
             
             # [] The variable we use to store the necessary content
-            subject_code, subject_title, literature = None, None, []
+            course_code, course_title, literature = None, None, []
             
             for pg_idx in range(0, num_pages, 1):
                 # [] Get the current PDF page, locate the tables inside it and target the first (as there is only one table):
@@ -226,23 +239,28 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                     if row[0] in ['Subject Code', 'Subject Title', 'Reading List and\nReferences']:
                         match row[0]:
                             case 'Subject Code':
-                                subject_code = row[1].strip()
-                                print(f"      -> Subject Code: {subject_code}")
+                                course_code = row[1].strip()
+                                #print(f"      -> Subject Code: {course_code}")
                             case 'Subject Title':
-                                subject_title = row[1].strip()
-                                #print(f"      -> Subject Title: {subject_title}")
+                                course_title = row[1].strip()
+                                #print(f"      -> Subject Title: {course_title}")
                             case 'Reading List and\nReferences':
                                 literature = row[1]
                                 #print(f"      -> Reading List: {literature}")
                             case _: continue                
+            
+            # TODO: Remove! Only for test case
+            if course_code in TEST_TARGETS:
+                cleaned_literature = self.clean_literature(literature)
 
-            # TODO: Clean the literature...
-            yield {
-                'course_name': subject_title,
-                'course_code': subject_code,
-                'literature': literature,
-                'dep_name': department_name
-            }
+                yield CourseDTO(
+                    name       = course_title,
+                    code       = course_code,
+                    literature = cleaned_literature,
+                    department = course_department,
+                    level      = "",
+                    points     = ""
+                )
 
         except Exception as e:
             frame = inspect.currentframe().f_back
@@ -379,3 +397,53 @@ class PolyUCrawler(RawScrapyAbstractCrawler):
                     callback=self.scrape_single_course,
                     meta={'department_name': department_name, 'department_abbr': department_abbr, 'check': check}
                 )
+
+    def clean_literature(self, raw_literature : str):
+        entries = self.split_entries(raw_literature)
+        parsed_literature = [self.parse_entry(entry) for entry in entries]
+        return parsed_literature
+    
+    def split_entries(self, literature_str : str):
+        pattern = r'(?=(?:[A-Z][a-z]+,\s(?:[A-Z]\.\s*)+\(\d{4}\),))'
+        entries = re.split(pattern, literature_str)
+
+        fixed_entries = []
+        for i in range(1, len(entries)):
+            fixed_entries.append(entries[i-1].strip() + ' ' + entries[i].strip())
+        return fixed_entries
+
+    def parse_entry(self, entry):
+        # [] Necessary removal of lingering characters which results from extracting from PDF files:
+        entry = entry.replace('\nnd\n', ' ')
+        entry = entry.replace('\n', ' ')
+
+        # [] Apply the regex:
+        citation_regex = re.compile(
+            r'(?P<author>[A-Z][a-z]+,\s(?:[A-Z]\.\s*)+)\((?P<year>\d{4})\),\s*' #
+            r'(?P<title>.*?)(?:\.\s+|,\s+)'                                     # title ends with period or comma
+            r'(?:(?P<edition>[^.,]*?(?:ed\.|edition))[\s,.]*)?'                 # optional edition
+            r'(?P<pubFirm>.*?)(?:\.\s*|$)',                                     # publisher ends at next period
+            re.DOTALL
+        )
+
+        match = citation_regex.search(entry)
+        if not match:
+            return {
+                'author':   "",
+                'year':     "",
+                'title':    "",
+                'pubFirm':  "",
+                'edition':  "",
+                'isbn':     ""
+            }
+
+        data = match.groupdict()
+        
+        return {
+            'author':   data.get('author', '').strip() or "",
+            'year':     int(data['year']) if data.get('year') else "",
+            'title':    data.get('title', '').strip() or "",
+            'pubFirm':  data.get('pubFirm', '').strip() or "",
+            'edition':  "0",
+            'isbn':     ""
+        }

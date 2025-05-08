@@ -37,9 +37,9 @@ class DataPipeline:
             new_course = Course(
                 _name       = item['name'],
                 _code       = item['code'],
-                _points     = item['points'],
+                # _points     = item['points'],
                 _literature = item.get('literature', []),
-                _level      = item.get('level', [])
+                # _level      = item.get('level', [])
             )
 
             # [1.3] Retrieve the current department of interest and if the course is unique we add it.
