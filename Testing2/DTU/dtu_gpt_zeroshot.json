@@ -1,0 +1,519 @@
+[
+ {
+  "name": "Integrated product innovation in the food industry",
+  "code": "23564",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Entrepreneurship in photonics and communications",
+  "code": "34541",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Sustainable Entrepreneurship",
+  "code": "38001",
+  "literature": [
+   {
+    "title": "Market imperfections, opportunity and sustainable entrepreneurship",
+    "year": 2007,
+    "author": "Cohen, B., & Winn, M. I.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Journal of Business Venturing"
+   },
+   {
+    "title": "Transforming our world: the 2030 Agenda for Sustainable Development",
+    "year": 2015,
+    "author": "United Nations General Assembly",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "United Nations"
+   },
+   {
+    "title": "Why the lean start-up changes everything",
+    "year": 2013,
+    "author": "Blank, S.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Harvard Business Review"
+   },
+   {
+    "title": "The sustainable business model pattern taxonomy—45 patterns to support sustainability-oriented business model innovation",
+    "year": 2018,
+    "author": "Lüdeke-Freund, F., Carroux, S., Joyce, A., Massa, L., & Breuer, H.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Sustainable Production and Consumption"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "BSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Technology Entrepreneurship",
+  "code": "38102",
+  "literature": [
+   {
+    "title": "Crossing the Chasm",
+    "year": 2014,
+    "author": "Moore, G.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "X-Tech Entrepreneurship",
+  "code": "38103",
+  "literature": [
+   {
+    "title": "Disciplined entrepreneurship: 24 steps to a successful startup",
+    "year": 2013,
+    "author": "Aulet, B.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "Effectual Entrepreneurship",
+    "year": 2017,
+    "author": "Read S., Sarasvathy S., Dew N., Wiltbank R.",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Startup Funding",
+    "year": 2017,
+    "author": "Nielsen, N.H.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Finance",
+  "code": "38104",
+  "literature": [
+   {
+    "title": "Fundamentals of Entrepreneurial Finance",
+    "year": 2020,
+    "author": "Da Rin, M., & Hellmann, T.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Financial intelligence for entrepreneurs: What you really need to know about the numbers",
+    "year": 2008,
+    "author": "Berman, K., Knight, J., & Case, J.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Harvard Business Press"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Developing an Entrepreneurial mindset",
+  "code": "38106",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Technology and Innovation Management",
+  "code": "38108",
+  "literature": [
+   {
+    "title": "Managing innovation: integrating technological, market and organizational change",
+    "year": 2020,
+    "author": "Tidd, J., & Bessant, J. R.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "John Wiley & Sons"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "X-Tech+",
+  "code": "38109",
+  "literature": [
+   {
+    "title": "Startup Funding",
+    "year": 2017,
+    "author": "Nicolaj Højer Nielsen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Strategic Management of Intellectual Property",
+    "year": 2013,
+    "author": "William W. Fisher III and Felix Oberholzer-Gee",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "California Management Review"
+   },
+   {
+    "title": "Start-Up Law",
+    "year": 2020,
+    "author": "Alexandra Andhov",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Edward Elgar Publishing Ltd."
+   },
+   {
+    "title": "Where to Play",
+    "year": 2017,
+    "author": "Marc Gruber and Sharon Tal",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Pearson Education Limited"
+   },
+   {
+    "title": "The Business Model Navigator, 55 Business Models",
+    "year": 2020,
+    "author": "Oliver Gassmann, Karolin Frankenberger, and Michaela Choudury",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Pearson Education Limited"
+   },
+   {
+    "title": "Beyond Spin",
+    "year": 1999,
+    "author": "Markos Kounalakis, Drew Banks, and Kim Daus",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "101 Design Methods",
+    "year": 2013,
+    "author": "Vijay Kumar",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "Stop Complainers and Energy Drainers",
+    "year": 2013,
+    "author": "Linda Swindling",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "John Wiley & Sons"
+   },
+   {
+    "title": "The Lean Startup",
+    "year": 2011,
+    "author": "Eric Ries",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Penguin Random House"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Staging co-creation and creativity",
+  "code": "38110",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "The Practice of Consulting",
+  "code": "38111",
+  "literature": [
+   {
+    "title": "Management consultancy: A handbook for best practice",
+    "year": 2001,
+    "author": "Sadler, P. (Ed.)",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Kogan Page Publishers"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Marketing",
+  "code": "38112",
+  "literature": [
+   {
+    "title": "Principles of Marketing",
+    "year": 2006,
+    "author": "Brassington F. & Pettitt, S.",
+    "edition": 10,
+    "isbn": 0,
+    "pubFirm": "Pearson Education Ltd"
+   },
+   {
+    "title": "Brand Sense: How to Build Powerful Brands Through Touch, Taste, Smell, Sight and Sound",
+    "year": 2005,
+    "author": "Lindstrom, M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Kogan"
+   },
+   {
+    "title": "Blue Ocean Strategy – How to Create Uncontested Market Space and Make the Competition Irrelevant",
+    "year": 2005,
+    "author": "Kim, W.C. & Mauborgne, M.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Harvard Business Press"
+   },
+   {
+    "title": "Innovation Design",
+    "year": 2012,
+    "author": "den Ouden, E.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Springer"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Applied AI for Entrepreneurs",
+  "code": "38113",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Life Skills",
+  "code": "38201",
+  "literature": [
+   {
+    "title": "Strategic management and organisational dynamics: The challenge of complexity to ways of thinking about organisations",
+    "year": 2007,
+    "author": "Stacey, R. D.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Pearson education"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Entrepreneurial Leadership Journey",
+  "code": "38202",
+  "literature": [
+   {
+    "title": "Build, Run, and Sell Your Apple Consulting Practice",
+    "year": 2018,
+    "author": "Edge C.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Apress, Berkeley, CA"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Due Diligence of New Ventures",
+  "code": "38203",
+  "literature": [
+   {
+    "title": "Founder’s Pocket Guide: Founder Equity Splits",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 1234567890,
+    "pubFirm": "Startup Press"
+   },
+   {
+    "title": "Founder’s Pocket Guide: Cap Tables",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 1234567891,
+    "pubFirm": "Startup Press"
+   },
+   {
+    "title": "Founder’s Pocket Guide: Startup Valuation",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 1234567892,
+    "pubFirm": "Startup Press"
+   },
+   {
+    "title": "Founder’s Pocket Guide: Term Sheets and Preferred Shares",
+    "year": 2023,
+    "author": "Stephen R. Poland",
+    "edition": 1,
+    "isbn": 1234567893,
+    "pubFirm": "Startup Press"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Feasibility Studies",
+  "code": "38204",
+  "literature": [
+   {
+    "title": "Disciplined entrepreneurship: 24 steps to a successful startup",
+    "year": 2013,
+    "author": "Aulet, B.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Where to Play: 3 steps for discovering your most valuable market opportunity",
+    "year": 2017,
+    "author": "Gruber G. & Tal. S.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "The new business road test: What entrepreneurs and executives should do before writing a business plan",
+    "year": 2006,
+    "author": "Mullins, J.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Module 1: Start-up Exploration",
+  "code": "38301",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Module 2: Start-up Incubation",
+  "code": "38302",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Introduction to econometrics for Innovation and Entrepreneurship researchers",
+  "code": "38798",
+  "literature": [
+   {
+    "title": "Introductory Econometrics - A Modern Approach",
+    "year": 2009,
+    "author": "Wooldridge, J. M.",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "South Western"
+   }
+  ],
+  "department": "38 DTU Entrepreneurship",
+  "level": "Ph.D.",
+  "points": "3 ECTS"
+ },
+ {
+  "name": "Patent Course",
+  "code": "38799",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "Ph.D.",
+  "points": "3 ECTS"
+ },
+ {
+  "name": "Journal club in entrepreneurship and innovation research",
+  "code": "38888",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "Ph.D.",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Innovation in Engineering (Polytechnical Foundation)",
+  "code": "42500",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Innovation in Engineering (Polytechnical Foundation)",
+  "code": "42501",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Facilitating Innovation in Multidisciplinary Teams",
+  "code": "42502",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Facilitating Innovation in Multidisciplinary Teams",
+  "code": "42503",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Innovation in Engineering (Polytechnical Foundation)",
+  "code": "42504",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "Facilitating Innovation in Multidisciplinary Teams",
+  "code": "42505",
+  "literature": [],
+  "department": "38 DTU Entrepreneurship",
+  "level": "MSc",
+  "points": "5 ECTS"
+ }
+]

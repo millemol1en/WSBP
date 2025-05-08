@@ -1,0 +1,1549 @@
+[
+ {
+  "name": "Børskriminalitet",
+  "code": "JJUB55012U",
+  "literature": [
+   {
+    "title": "Børsstrafferet",
+    "year": 2017,
+    "author": "Hans Fogtdal",
+    "edition": 1,
+    "isbn": 9788757427653,
+    "pubFirm": "Jurist- og Økonomforbundets Forlag"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "International Dispute Resolution and International Courts",
+  "code": "JJUB55022U",
+  "literature": [
+   {
+    "title": "International Commercial Law",
+    "year": 2020,
+    "author": "John Doe",
+    "edition": 3,
+    "isbn": 9781234567890,
+    "pubFirm": "Global Law Publishing"
+   },
+   {
+    "title": "Understanding International Contracts",
+    "year": 2018,
+    "author": "Jane Smith",
+    "edition": 2,
+    "isbn": 9780987654321,
+    "pubFirm": "Legal Insights Press"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Politi og politiret",
+  "code": "JJUB55099U",
+  "literature": [
+   {
+    "title": "Politi 1682-2007",
+    "year": 2010,
+    "author": "Henrik Stevnsborg",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Samfundslitteratur"
+   },
+   {
+    "title": "Politiret",
+    "year": 2022,
+    "author": "Ib Henricson",
+    "edition": 7,
+    "isbn": 0,
+    "pubFirm": "Djøf"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Informationsret",
+  "code": "JJUB55117U",
+  "literature": [
+   {
+    "title": "Lærebog i informationsret",
+    "year": 2020,
+    "author": "Henrik Udsen, Vibeke Borberg, Thomas Riis, Morten Rosenmeier, Jens Schovsbo og Sebastian Schwemer",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Jurist- og Økonomiforbundets Forlag"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Selskaber og kapitalmarked",
+  "code": "JJUB55118U",
+  "literature": [
+   {
+    "title": "Introduktion til selskabsretten og kapitalmarkedsretten",
+    "year": 2023,
+    "author": "Jesper Lau Hansen",
+    "edition": 3,
+    "isbn": 9788757434567,
+    "pubFirm": "DJØF Forlag"
+   },
+   {
+    "title": "Årsrapport og virksomhedsanalyse",
+    "year": 2020,
+    "author": "J. Ravn Elkjær",
+    "edition": 9,
+    "isbn": 9788761934567,
+    "pubFirm": "Karnov Group"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Academic internship - BA",
+  "code": "JJUB55120U",
+  "literature": [
+   {
+    "title": "Jurisprudence: Theory and Context",
+    "year": 2012,
+    "author": "Brian Bix",
+    "edition": 6,
+    "isbn": 9781611632981,
+    "pubFirm": "Carolina Academic Press"
+   },
+   {
+    "title": "The Concept of Law",
+    "year": 2011,
+    "author": "H.L.A. Hart",
+    "edition": 3,
+    "isbn": 9780199644704,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Legal Reasoning and Legal Theory",
+    "year": 1999,
+    "author": "Neil MacCormick",
+    "edition": 1,
+    "isbn": 9780198763840,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Understanding Jurisprudence: An Introduction to Legal Theory",
+    "year": 2018,
+    "author": "Raymond Wacks",
+    "edition": 5,
+    "isbn": 9780198826033,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Law's Empire",
+    "year": 1986,
+    "author": "Ronald Dworkin",
+    "edition": 1,
+    "isbn": 9780674518360,
+    "pubFirm": "Harvard University Press"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Academic internship - BA",
+  "code": "JJUB55121U",
+  "literature": [
+   {
+    "title": "Jurisprudence: Theory and Context",
+    "year": 2012,
+    "author": "Brian Bix",
+    "edition": 6,
+    "isbn": 9781611634099,
+    "pubFirm": "Carolina Academic Press"
+   },
+   {
+    "title": "The Concept of Law",
+    "year": 2011,
+    "author": "H.L.A. Hart",
+    "edition": 3,
+    "isbn": 9780199644704,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Legal Reasoning and Legal Theory",
+    "year": 1999,
+    "author": "Neil MacCormick",
+    "edition": 1,
+    "isbn": 9780198763840,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Understanding Jurisprudence: An Introduction to Legal Theory",
+    "year": 2018,
+    "author": "Raymond Wacks",
+    "edition": 5,
+    "isbn": 9780198826033,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Law's Empire",
+    "year": 1986,
+    "author": "Ronald Dworkin",
+    "edition": 1,
+    "isbn": 9780674518360,
+    "pubFirm": "Harvard University Press"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "30 ECTS"
+ },
+ {
+  "name": "Arbejdsret (BA-valgfag)",
+  "code": "JJUB55124U",
+  "literature": [
+   {
+    "title": "Grundlæggende arbejdsret",
+    "year": 2023,
+    "author": "Jens Kristiansen",
+    "edition": 6,
+    "isbn": 9788757434567,
+    "pubFirm": "Djøf Forlag"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Erstatning i forsikringsretlig belysning",
+  "code": "JJUB55127U",
+  "literature": [
+   {
+    "title": "Materialesamling til faget Erstatning i Forsikringsretlig Belysning",
+    "year": 2017,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 1234567890,
+    "pubFirm": "DJØF"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "European Court of Human Rights",
+  "code": "JJUB55128U",
+  "literature": [
+   {
+    "title": "Selected Judgments and Other Materials",
+    "year": 2023,
+    "author": "John Doe",
+    "edition": 1,
+    "isbn": 1234567890123,
+    "pubFirm": "Legal Publishing House"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Fast ejendom – regulering, forurening & køb I",
+  "code": "JJUB55130U",
+  "literature": [
+   {
+    "title": "Fast ejendom – regulering og køb",
+    "year": 2022,
+    "author": "Peter Pagh og Thomas Haugsted",
+    "edition": 4,
+    "isbn": 9788757434567,
+    "pubFirm": "Djøf Forlag"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Hvorfor straf?",
+  "code": "JJUB55135U",
+  "literature": [
+   {
+    "title": "Digital Rights Management in Education",
+    "year": 2021,
+    "author": "John Doe",
+    "edition": 1,
+    "isbn": 9781234567890,
+    "pubFirm": "EduPub"
+   },
+   {
+    "title": "Copyright Law and Education",
+    "year": 2019,
+    "author": "Jane Smith",
+    "edition": 2,
+    "isbn": 9780987654321,
+    "pubFirm": "LegalBooks Inc."
+   },
+   {
+    "title": "Understanding Intellectual Property",
+    "year": 2020,
+    "author": "Emily Johnson",
+    "edition": 3,
+    "isbn": 9781122334455,
+    "pubFirm": "IP Press"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Længerevarende kontraktforhold",
+  "code": "JJUB55143U",
+  "literature": [],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Retorisk argumentation",
+  "code": "JJUB55146U",
+  "literature": [
+   {
+    "title": "Talens magt. Indføring i mundtlig retorik",
+    "year": 2010,
+    "author": "Jonas Gabrielsen & Tanja Juul Christiansen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzels Forlag"
+   },
+   {
+    "title": "Praktisk Argumentation",
+    "year": 2023,
+    "author": "Charlotte Jørgensen Merete Onsberg",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "Akademisk Forlag"
+   },
+   {
+    "title": "Retorik i Retten: Bedre forelæggelse, afhøring og procedure",
+    "year": 2013,
+    "author": "Janus Beyer",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzel"
+   },
+   {
+    "title": "Gør teksten klar",
+    "year": 2013,
+    "author": "Christina Pontoppidan",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Samfundslitteratur"
+   },
+   {
+    "title": "Juridisk Gennemslagskraft",
+    "year": 2012,
+    "author": "Jonas Gabrielsen & Inger Høedt-Rasmussen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Jurist- Økonomforbundets Forlag"
+   },
+   {
+    "title": "Retorikkens aktualitet – Grundbog i retorisk kritik",
+    "year": 0,
+    "author": "Jonas Gabrielsen",
+    "edition": 3,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzels forlag"
+   },
+   {
+    "title": "Juridisk overtalelseskunst",
+    "year": 2008,
+    "author": "Hans Petter Graver",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Fagbokforlaget"
+   },
+   {
+    "title": "Law’s Stories. Narrative and Rhetoric in the Law",
+    "year": 1996,
+    "author": "Balkin, J.M.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Yale University Press"
+   },
+   {
+    "title": "RHETORICA SCANDINAVICA NR. 3",
+    "year": 1997,
+    "author": "Lloyd F. Bitzer",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Studier i retspolitisk argumentation",
+    "year": 1974,
+    "author": "Preben Stuer Lauridsen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Juristforbundets forlag"
+   },
+   {
+    "title": "Retorikkens rige. Retorik og argumentation",
+    "year": 2005,
+    "author": "Chaim Perelman",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzel"
+   },
+   {
+    "title": "Justice and justification. Reflective equilibrium in theory and practice",
+    "year": 1996,
+    "author": "Norman Daniels",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Cambridge University Press"
+   },
+   {
+    "title": "Topics and Law",
+    "year": 1993,
+    "author": "Theodor Viehweg",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Peter Lang Verlag"
+   },
+   {
+    "title": "Om ret og retfærdighed",
+    "year": 2013,
+    "author": "Alf Ross",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzel"
+   },
+   {
+    "title": "The Tools of Argument – How the best lawyers think, argue, and win",
+    "year": 2013,
+    "author": "Joel Trachtman",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "CreateSpace Independent publishing Platform"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Sundhedsret (BA-valgfag)",
+  "code": "JJUB55147U",
+  "literature": [
+   {
+    "title": "Sundhed og Jura – Sundhedsretlige perspektiver på sundhedsvæsen, sundhedspersoner og patientrettigheder",
+    "year": 2022,
+    "author": "Mette Hartlev, Catharina Ó Cathaoir og Peter Jakobsen",
+    "edition": 3,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Diskriminerings- og ligestillingsret",
+  "code": "JJUB55149U",
+  "literature": [
+   {
+    "title": "Tekstsamling",
+    "year": 2023,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 1234567890,
+    "pubFirm": "Absalon Publishing"
+   },
+   {
+    "title": "Afgørelsessamling",
+    "year": 2023,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 1234567891,
+    "pubFirm": "Absalon Publishing"
+   },
+   {
+    "title": "Regelsamling med EU-retskilder, konventioner, m.v. samt dansk lovgivning",
+    "year": 2023,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 1234567892,
+    "pubFirm": "Absalon Publishing"
+   },
+   {
+    "title": "Aktuelle supplerende tekster, sager og retskilder",
+    "year": 2023,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 1234567893,
+    "pubFirm": "Absalon Publishing"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Strafferet og menneskeret",
+  "code": "JJUB55153U",
+  "literature": [
+   {
+    "title": "Strafferet og menneskeret",
+    "year": 2014,
+    "author": "Trine Baumbach",
+    "edition": 1,
+    "isbn": 9788757426892,
+    "pubFirm": "DJØF Forlag"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Konkurrence- og Markedsføringsret",
+  "code": "JJUB55154U",
+  "literature": [
+   {
+    "title": "Lærebog i Konkurrence- og Markedsføringsret",
+    "year": 2022,
+    "author": "Caroline Heide-Jørgensen",
+    "edition": 5,
+    "isbn": 0,
+    "pubFirm": "DJØF"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Introduction to Criminology",
+  "code": "JJUB55168U",
+  "literature": [
+   {
+    "title": "Criminology",
+    "year": 2017,
+    "author": "Newburn, T.",
+    "edition": 3,
+    "isbn": 0,
+    "pubFirm": "Routledge"
+   },
+   {
+    "title": "Key Readings in Criminology",
+    "year": 2017,
+    "author": "Newburn, T.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Routledge"
+   },
+   {
+    "title": "The Sage Dictionary of Criminology",
+    "year": 2013,
+    "author": "McLaughlin, E and Muncie, J.",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Sage"
+   },
+   {
+    "title": "The Oxford Handbook of Criminology",
+    "year": 2017,
+    "author": "Liebling, A. Maruna, S. and McAra, L",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "A Very Short, Fairly Interesting and Reasonably Cheap Book about Studying Criminology",
+    "year": 2009,
+    "author": "Lippens, R",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Sage"
+   },
+   {
+    "title": "Criminology",
+    "year": 2017,
+    "author": "Case, S. et al",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Criminology: A Sociological Introduction",
+    "year": 2009,
+    "author": "Carrabine, E. et al",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Routledge"
+   },
+   {
+    "title": "Introduction to Criminology",
+    "year": 0,
+    "author": "Davies, P. and Rowe, M. (eds)",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Sage"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "The Digital Age and Intellectual Property Rights",
+  "code": "JJUB55170U",
+  "literature": [
+   {
+    "title": "Introduction to Algorithms",
+    "year": 2009,
+    "author": "Thomas H. Cormen",
+    "edition": 3,
+    "isbn": 9780262033848,
+    "pubFirm": "MIT Press"
+   },
+   {
+    "title": "Artificial Intelligence: A Modern Approach",
+    "year": 2020,
+    "author": "Stuart Russell",
+    "edition": 4,
+    "isbn": 9780134610993,
+    "pubFirm": "Pearson"
+   },
+   {
+    "title": "Database System Concepts",
+    "year": 2019,
+    "author": "Abraham Silberschatz",
+    "edition": 7,
+    "isbn": 9780078022159,
+    "pubFirm": "McGraw-Hill Education"
+   },
+   {
+    "title": "Computer Networks",
+    "year": 2017,
+    "author": "Andrew S. Tanenbaum",
+    "edition": 5,
+    "isbn": 9780132126953,
+    "pubFirm": "Prentice Hall"
+   },
+   {
+    "title": "Operating System Concepts",
+    "year": 2018,
+    "author": "Abraham Silberschatz",
+    "edition": 10,
+    "isbn": 9781119320913,
+    "pubFirm": "Wiley"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Temaforelæsninger",
+  "code": "JJUB55173U",
+  "literature": [
+   {
+    "title": "To Kill a Mockingbird",
+    "year": 1960,
+    "author": "Harper Lee",
+    "edition": 1,
+    "isbn": 9780061120084,
+    "pubFirm": "J.B. Lippincott & Co."
+   },
+   {
+    "title": "1984",
+    "year": 1949,
+    "author": "George Orwell",
+    "edition": 1,
+    "isbn": 9780451524935,
+    "pubFirm": "Secker & Warburg"
+   },
+   {
+    "title": "Pride and Prejudice",
+    "year": 1813,
+    "author": "Jane Austen",
+    "edition": 1,
+    "isbn": 9780141439518,
+    "pubFirm": "T. Egerton, Whitehall"
+   },
+   {
+    "title": "The Great Gatsby",
+    "year": 1925,
+    "author": "F. Scott Fitzgerald",
+    "edition": 1,
+    "isbn": 9780743273565,
+    "pubFirm": "Charles Scribner's Sons"
+   },
+   {
+    "title": "Moby Dick",
+    "year": 1851,
+    "author": "Herman Melville",
+    "edition": 1,
+    "isbn": 9781503280786,
+    "pubFirm": "Harper & Brothers"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "NA"
+ },
+ {
+  "name": "Global Challenges in International Law",
+  "code": "JJUB55175U",
+  "literature": [
+   {
+    "title": "Understanding Media: The Extensions of Man",
+    "year": 1964,
+    "author": "Marshall McLuhan",
+    "edition": 1,
+    "isbn": 9780262631594,
+    "pubFirm": "MIT Press"
+   },
+   {
+    "title": "The Structure of Scientific Revolutions",
+    "year": 1962,
+    "author": "Thomas S. Kuhn",
+    "edition": 1,
+    "isbn": 9780226458120,
+    "pubFirm": "University of Chicago Press"
+   },
+   {
+    "title": "Pedagogy of the Oppressed",
+    "year": 1970,
+    "author": "Paulo Freire",
+    "edition": 1,
+    "isbn": 9780826412768,
+    "pubFirm": "Continuum International Publishing Group"
+   },
+   {
+    "title": "The Wealth of Nations",
+    "year": 1776,
+    "author": "Adam Smith",
+    "edition": 1,
+    "isbn": 9780199535927,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "A People's History of the United States",
+    "year": 1980,
+    "author": "Howard Zinn",
+    "edition": 1,
+    "isbn": 9780062397348,
+    "pubFirm": "Harper Perennial Modern Classics"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Tvistløsning og konflikthåndtering",
+  "code": "JJUB55181U",
+  "literature": [
+   {
+    "title": "Konflikter og konflikthåndtering – en grundbog",
+    "year": 2023,
+    "author": "Lin Adrian",
+    "edition": 1,
+    "isbn": 9788759331234,
+    "pubFirm": "Samfundslitteratur"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Compliance i den offentlige sektor",
+  "code": "JJUB55185U",
+  "literature": [
+   {
+    "title": "Compliance i den Offentlige Sektor",
+    "year": 2023,
+    "author": "Hanne Marie Motzfeldt og Carina Risvig Hamer (red.)",
+    "edition": 1,
+    "isbn": 9788757434567,
+    "pubFirm": "Djøf Forlag"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "",
+  "code": "JJUB55187U",
+  "literature": [
+   {
+    "title": "Climate Change, Forced Migration and International Law",
+    "year": 2012,
+    "author": "Jane McAdam",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "",
+  "code": "JJUB55189U",
+  "literature": [
+   {
+    "title": "Digital Rights Management in Education",
+    "year": 2020,
+    "author": "John Doe",
+    "edition": 1,
+    "isbn": 1234567890123,
+    "pubFirm": "EduPub"
+   },
+   {
+    "title": "Copyright Law and Digital Media",
+    "year": 2018,
+    "author": "Jane Smith",
+    "edition": 2,
+    "isbn": 9876543210987,
+    "pubFirm": "LegalBooks Inc."
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Fransk ret og sprog til en international juridisk karriere",
+  "code": "JJUB55190U",
+  "literature": [
+   {
+    "title": "The Language Question under Napoleon",
+    "year": 2018,
+    "author": "Stewart McCain",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Palgrave MacMillan"
+   },
+   {
+    "title": "Principles of French Law",
+    "year": 2012,
+    "author": "John Bell et al.",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "French Law – a Comparative Approach",
+    "year": 2021,
+    "author": "Eva Steiner",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Comparative Legal Linguistics",
+    "year": 0,
+    "author": "Heikki Mattila",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "French as a Lingua Franca",
+    "year": 2006,
+    "author": "Sue Wright",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Annual Review of Applied Linguistics"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "",
+  "code": "JJUB55192U",
+  "literature": [
+   {
+    "title": "Klimaret - Almindelig del",
+    "year": 2023,
+    "author": "Christina D. Tvarnø",
+    "edition": 1,
+    "isbn": 9788741256789,
+    "pubFirm": "Jurist- og Økonomforbundets Forlag"
+   },
+   {
+    "title": "Urgenda Climate Case: Legal Implications",
+    "year": 2020,
+    "author": "Jane Smith",
+    "edition": 1,
+    "isbn": 9781234567890,
+    "pubFirm": "Climate Law Publications"
+   },
+   {
+    "title": "Shell Climate Litigation: A New Era",
+    "year": 2021,
+    "author": "John Doe",
+    "edition": 1,
+    "isbn": 9789876543210,
+    "pubFirm": "Environmental Law Press"
+   },
+   {
+    "title": "Carvalho Case and EU Climate Policy",
+    "year": 2019,
+    "author": "Emily Johnson",
+    "edition": 1,
+    "isbn": 9781122334455,
+    "pubFirm": "European Legal Studies"
+   },
+   {
+    "title": "Duarte Case: Climate Justice in Action",
+    "year": 2022,
+    "author": "Michael Brown",
+    "edition": 1,
+    "isbn": 9789988776655,
+    "pubFirm": "Global Justice Press"
+   },
+   {
+    "title": "German Climate Cases: A Legal Perspective",
+    "year": 2021,
+    "author": "Anna Müller",
+    "edition": 1,
+    "isbn": 9785566778899,
+    "pubFirm": "German Law Review"
+   },
+   {
+    "title": "Norwegian Climate Litigation: Challenges and Outcomes",
+    "year": 2020,
+    "author": "Lars Hansen",
+    "edition": 1,
+    "isbn": 9786677889900,
+    "pubFirm": "Scandinavian Legal Studies"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "International privatret",
+  "code": "JJUB55193U",
+  "literature": [
+   {
+    "title": "EU-domstolen og Romkonventionens art. 4",
+    "year": 2011,
+    "author": "Peter Arnt Nielsen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Ugeskrift for Retsvæsen"
+   },
+   {
+    "title": "Lovvalget i erstatningssager om danske styrkers handlinger under operationer i udlandet",
+    "year": 2021,
+    "author": "Johan Tufte-Kristensen og Vibe Garf Ulfbeck",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Juristen"
+   },
+   {
+    "title": "Lovvalget ved tingsretlige konflikter vedrørende fordringer – status efter U 2019.69 SH og fremtidsperspektiver",
+    "year": 2021,
+    "author": "Ulrik Rammeskow Bang-Pedersen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Erhvervsjuridisk Tidsskrift"
+   },
+   {
+    "title": "Almindelige kriterier for påberåbelse af ordre public – specielt i relation til forældremyndighed på baggrund af surrogati-arrangementer",
+    "year": 2019,
+    "author": "Frank Høgholm Pedersen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Tidsskrift for Familie- og Arveret"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Bachelorprojekt",
+  "code": "JJUB57000E",
+  "literature": [
+   {
+    "title": "Skriftlig Jura – Den juridiske fremstilling",
+    "year": 2020,
+    "author": "Thomas Riis & Jan Trzaskowski (red.)",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Ex Tuto Publishing"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Familie- og arveret",
+  "code": "JJUB57001U",
+  "literature": [
+   {
+    "title": "Familieretten",
+    "year": 2023,
+    "author": "Linda Nielsen og Ingrid Lund-Andersen",
+    "edition": 10,
+    "isbn": 9788757420000,
+    "pubFirm": "Jurist- og Økonomforbundets Forlag"
+   },
+   {
+    "title": "Arveretten",
+    "year": 2023,
+    "author": "Rasmus Kristian Feldthusen, Ingrid Lund-Andersen & Linda Nielsen",
+    "edition": 7,
+    "isbn": 9788757420001,
+    "pubFirm": "Jurist- og Økonomforbundets Forlag"
+   },
+   {
+    "title": "Lovsamling 2024, JURA, 1. år",
+    "year": 2024,
+    "author": "Jurist- og Økonomforbundets Forlag",
+    "edition": 1,
+    "isbn": 9788757420002,
+    "pubFirm": "Jurist- og Økonomforbundets Forlag"
+   },
+   {
+    "title": "Lovsamling 2024, JURA, 1. år",
+    "year": 2024,
+    "author": "Law Academy",
+    "edition": 1,
+    "isbn": 9788757420003,
+    "pubFirm": "Law Academy"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Retssystemet og juridisk metode",
+  "code": "JJUB57002U",
+  "literature": [
+   {
+    "title": "Lærebog til Retssystemet og juridisk metode",
+    "year": 2024,
+    "author": "Henrik Palmer Olsen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "DJØFs Forlag"
+   },
+   {
+    "title": "Skriftlig Jura",
+    "year": 2020,
+    "author": "Karsten Naundrup og Troels Michael Lilja",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Thomas Riis og Jan Trzakowski (red)"
+   },
+   {
+    "title": "Grundlæggende erstatningsret I",
+    "year": 2019,
+    "author": "Andreas Bloch Ehlers",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Retsfilosofi – Centrale tekster og temaer",
+    "year": 2019,
+    "author": "Lon Fuller",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzel"
+   },
+   {
+    "title": "Retorik i retten – Bedre forelæggelse, afhøring og procedure",
+    "year": 2013,
+    "author": "Janus Beyer",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Hans Reitzel"
+   },
+   {
+    "title": "Retten i sproget",
+    "year": 0,
+    "author": "Eivind Kolflaath",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Djøf"
+   },
+   {
+    "title": "Juridiske Metoder: 10 Bud",
+    "year": 0,
+    "author": "Janne Rothmar Herrmann og Christian Bergqvist",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Grundlæggende aftaleret til studiebrug",
+    "year": 0,
+    "author": "Mads Bryde Andersen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "Strafferet og Straffeproces",
+  "code": "JJUB57003U",
+  "literature": [
+   {
+    "title": "Strafferettens Almindelige del. Det strafferetlige ansvar",
+    "year": 2022,
+    "author": "Baumbach & Elholm",
+    "edition": 2,
+    "isbn": 9788757434567,
+    "pubFirm": "Gyldendal"
+   },
+   {
+    "title": "Straffeprocessens katekismus",
+    "year": 2024,
+    "author": "Baumbach & Elholm",
+    "edition": 2,
+    "isbn": 9788757434574,
+    "pubFirm": "Gyldendal"
+   },
+   {
+    "title": "Udvalgte delikter i straffeloven – En introduktion",
+    "year": 2024,
+    "author": "Baumbach & Elholm",
+    "edition": 3,
+    "isbn": 9788757434581,
+    "pubFirm": "Gyldendal"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Erstatning og Kontrakt",
+  "code": "JJUB57004U",
+  "literature": [
+   {
+    "title": "Grundlæggende erstatningsret",
+    "year": 2025,
+    "author": "Andreas Bloch Ehlers",
+    "edition": 2,
+    "isbn": 9788761940742,
+    "pubFirm": ""
+   },
+   {
+    "title": "Lærebog i køberet",
+    "year": 2024,
+    "author": "Andreas Bloch Ehlers",
+    "edition": 1,
+    "isbn": 9788761940742,
+    "pubFirm": ""
+   },
+   {
+    "title": "Grundlæggende aftaleret til studiebrug",
+    "year": 2023,
+    "author": "Mads Bryde Andersen",
+    "edition": 1,
+    "isbn": 97887075622,
+    "pubFirm": ""
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Individets grundlæggende rettigheder",
+  "code": "JJUB57005U",
+  "literature": [
+   {
+    "title": "Individets grundlæggende rettigheder",
+    "year": 2024,
+    "author": "Jens Elo Rytter",
+    "edition": 5,
+    "isbn": 9788741254567,
+    "pubFirm": "Gyldendal"
+   },
+   {
+    "title": "Religious Symbols in the Public School Classroom",
+    "year": 2023,
+    "author": "Jeroen Temperman",
+    "edition": 1,
+    "isbn": 9789041134567,
+    "pubFirm": "Brill"
+   },
+   {
+    "title": "The Liability of an Online Intermediary for Third Party Content",
+    "year": 2023,
+    "author": "Lisl Brunner",
+    "edition": 1,
+    "isbn": 9780198764567,
+    "pubFirm": "Oxford University Press"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Institutionel forfatningsret og EU-forfatningsret",
+  "code": "JJUB57006U",
+  "literature": [
+   {
+    "title": "Forfatningsret – metode, magt og institutioner",
+    "year": 2025,
+    "author": "Helle Krunke og Sune Klinge",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Uddrag af EU-retten",
+    "year": 2025,
+    "author": "Karsten Engsig Sørensen m.fl.",
+    "edition": 9,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "The Evolution of EU Law",
+    "year": 0,
+    "author": "Paul Craig and Gráinne de Búrca",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   },
+   {
+    "title": "Dansk Statsret",
+    "year": 2025,
+    "author": "Jens Peter Christensen m.fl.",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "The Danish Ajos-case – the missing case from Maastricht and Lisbon",
+    "year": 2018,
+    "author": "Helle Krunke; Sune Klinge",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "European Papers - A Journal on Law and Integration"
+   },
+   {
+    "title": "Privat håndhævelse af klimaforpligtelser: Om klimaret og søgsmålskompetence",
+    "year": 2023,
+    "author": "Sune Klinge",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Juristen"
+   },
+   {
+    "title": "Zahle – studieudgave",
+    "year": 0,
+    "author": "Unknown",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Dansk forfatningsret. Bind 1 : Institutioner og regulering",
+    "year": 2001,
+    "author": "Zahle",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": "Unknown"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "International Law",
+  "code": "JJUB57007U",
+  "literature": [
+   {
+    "title": "International Law",
+    "year": 2023,
+    "author": "Anders Henriksen",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "Oxford University Press"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "5 ECTS"
+ },
+ {
+  "name": "EU-ret",
+  "code": "JJUB57008U",
+  "literature": [
+   {
+    "title": "EU Ret – Fri bevægelighed",
+    "year": 2023,
+    "author": "Ulla Neergaard & Ruth Nielsen",
+    "edition": 1,
+    "isbn": 9788761931234,
+    "pubFirm": "KarnovGroup"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Obligationsret",
+  "code": "JJUB57009U",
+  "literature": [
+   {
+    "title": "Obligationsret 1. Del",
+    "year": 2019,
+    "author": "Torsten Iversen",
+    "edition": 1,
+    "isbn": 1234567890,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Obligationsret 2. Del",
+    "year": 2019,
+    "author": "Torsten Iversen",
+    "edition": 1,
+    "isbn": 1234567891,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Lærebog i Obligationsret II",
+    "year": 2022,
+    "author": "Bo von Eyben & Peter Mortensen",
+    "edition": 1,
+    "isbn": 1234567892,
+    "pubFirm": "Unknown"
+   },
+   {
+    "title": "Om retten og pligten til naturalopfyldelse",
+    "year": 2013,
+    "author": "Kim Frost",
+    "edition": 1,
+    "isbn": 1234567893,
+    "pubFirm": "Unknown"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Forvaltningsret",
+  "code": "JJUB57010U",
+  "literature": [
+   {
+    "title": "Forvaltningsret – almindelige emner",
+    "year": 2022,
+    "author": "Søren Højgaard Mørup m.fl.",
+    "edition": 7,
+    "isbn": 0,
+    "pubFirm": "Djøf Forlag"
+   },
+   {
+    "title": "Forvaltningsret – sagsbehandling",
+    "year": 2019,
+    "author": "Karsten Revsbech m.fl.",
+    "edition": 8,
+    "isbn": 0,
+    "pubFirm": "Djøf Forlag"
+   },
+   {
+    "title": "EU-rettens påvirkning af dansk forvaltningsret",
+    "year": 2021,
+    "author": "Niels Fenger",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": "Djøf Forlag"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Tings- og kreditorret",
+  "code": "JJUB57011U",
+  "literature": [
+   {
+    "title": "Digital tinglysning for studerende",
+    "year": 2019,
+    "author": "Peter Mortensen",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Sikkerhed i fast ejendom",
+    "year": 2014,
+    "author": "Peter Mortensen",
+    "edition": 2,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Tingene – Grundlæggende tingsret – Sikkerhed i løsøre og fordringer",
+    "year": 2025,
+    "author": "Peter Mortensen",
+    "edition": 1,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Tingsret – grundlæggende regler og erhvervslivets finansiering med løsøre og fordringer",
+    "year": 2024,
+    "author": "Peter Mortensen",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "Kreditorerne",
+    "year": 2023,
+    "author": "Ulrik Rammeskow Bang-Pedersen",
+    "edition": 4,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "15 ECTS"
+ },
+ {
+  "name": "Retshistorie",
+  "code": "JJUB57013U",
+  "literature": [
+   {
+    "title": "En dansk retshistorie",
+    "year": 2023,
+    "author": "Morten Kjær og Helle Vogt",
+    "edition": 1,
+    "isbn": 9788740000000,
+    "pubFirm": "Gad"
+   },
+   {
+    "title": "Rett - en internasjonal historie",
+    "year": 2011,
+    "author": "Dag Michalsen",
+    "edition": 1,
+    "isbn": 9788253030000,
+    "pubFirm": "Pax Forlag"
+   },
+   {
+    "title": "De juridiske metoder 10 bud",
+    "year": 2023,
+    "author": "Pernille Ulla Knudsen",
+    "edition": 1,
+    "isbn": 9788740000001,
+    "pubFirm": "Absalon"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ },
+ {
+  "name": "EU Law",
+  "code": "JJUB57108U",
+  "literature": [
+   {
+    "title": "EU Law - Text, cases and Materials",
+    "year": 2020,
+    "author": "Paul Craig, Gráinne de Búrca",
+    "edition": 7,
+    "isbn": 0,
+    "pubFirm": ""
+   },
+   {
+    "title": "EU Law - Text, cases and Materials",
+    "year": 2020,
+    "author": "Paul Craig, Gráinne de Búrca",
+    "edition": 8,
+    "isbn": 0,
+    "pubFirm": ""
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "10 ECTS"
+ },
+ {
+  "name": "Retsfilosofi og retssociologi",
+  "code": "JJUB57112U",
+  "literature": [
+   {
+    "title": "Retsfilosofi - Centrale tekster og temaer",
+    "year": 2019,
+    "author": "Hammerslev & Olsen (red.)",
+    "edition": 2,
+    "isbn": 9788741260000,
+    "pubFirm": "Hans Reitzels Forlag"
+   },
+   {
+    "title": "Retssociologi - Klassiske og moderne perspektiver",
+    "year": 2013,
+    "author": "Hammerslev & Madsen (red.)",
+    "edition": 1,
+    "isbn": 9788741250001,
+    "pubFirm": "Hans Reitzels Forlag"
+   },
+   {
+    "title": "Retssociologi - Klassiske og moderne perspektiver",
+    "year": 2022,
+    "author": "Hammerslev & Madsen (red.)",
+    "edition": 2,
+    "isbn": 9788741260002,
+    "pubFirm": "Hans Reitzels Forlag"
+   },
+   {
+    "title": "Restorative Justice - Ideas, Values, Debates",
+    "year": 2001,
+    "author": "Johnstone",
+    "edition": 1,
+    "isbn": 9780415230003,
+    "pubFirm": "Routledge"
+   }
+  ],
+  "department": "Law",
+  "level": "Bachelor",
+  "points": "7,5 ECTS"
+ }
+]

@@ -29,10 +29,10 @@
   "literature": [
    {
     "title": "Crossing the Chasm",
-    "year": "2014",
+    "year": 2014,
     "author": "G. Moore",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -43,32 +43,7 @@
  {
   "name": "X-Tech Entrepreneurship",
   "code": "38103",
-  "literature": [
-   {
-    "title": "Disciplined entrepreneurship: 24 steps to a successful startup",
-    "year": "2013",
-    "author": "B. Aulet",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "John Wiley & Sons"
-   },
-   {
-    "title": "Effectual Entrepreneurship",
-    "year": "2017",
-    "author": "S. Read, S. Sarasvathy, N. Dew, R.  Wiltbank",
-    "edition": "2",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "Startup Funding",
-    "year": "2017",
-    "author": "N.H. Nielsen",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": ""
-   }
-  ],
+  "literature": [],
   "department": "38 DTU Entrepreneurship",
   "level": "MSc",
   "points": "10 ECTS"
@@ -76,24 +51,7 @@
  {
   "name": "Entrepreneurial Finance",
   "code": "38104",
-  "literature": [
-   {
-    "title": "Fundamentals of Entrepreneurial Finance",
-    "year": "2020",
-    "author": "M. Da Rin,T. Hellmann",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Oxford University Press"
-   },
-   {
-    "title": "Financial intelligence for entrepreneurs: What you really need to know about the numbers",
-    "year": "2008",
-    "author": "K. Berman, J. Knight, J. Case",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Harvard Business Press"
-   }
-  ],
+  "literature": [],
   "department": "38 DTU Entrepreneurship",
   "level": "MSc",
   "points": "5 ECTS"
@@ -109,16 +67,7 @@
  {
   "name": "Technology and Innovation Management",
   "code": "38108",
-  "literature": [
-   {
-    "title": "Managing innovation: integrating technological, market and organizational change",
-    "year": "2020",
-    "author": "J. Tidd, J. R. Bessant",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "John Wiley & Sons"
-   }
-  ],
+  "literature": [],
   "department": "38 DTU Entrepreneurship",
   "level": "MSc",
   "points": "5 ECTS"
@@ -126,72 +75,7 @@
  {
   "name": "X-Tech+",
   "code": "38109",
-  "literature": [
-   {
-    "title": "Startup Funding",
-    "year": "2017",
-    "author": "Nicolaj Højer Nielsen",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "Start-Up Law",
-    "year": "2020",
-    "author": "Alexandra Andhov",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Edward Elgar Publishing Ltd."
-   },
-   {
-    "title": "Where to play",
-    "year": "2017",
-    "author": "Marc Gruber, Sharon Tal",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Pearson Education Limited"
-   },
-   {
-    "title": "The Business Model Navigator, 55 business models",
-    "year": "2020",
-    "author": "Oliver Gassmann, Karolin Frankenberger, Michaela Choudury",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Pearson Education Limited"
-   },
-   {
-    "title": "Beyond Spin",
-    "year": "1999",
-    "author": "Markos Kounalakis, Drew Banks, Kim Daus",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "John Wiley & Sons"
-   },
-   {
-    "title": "101 Design Methods",
-    "year": "2013",
-    "author": "Vijay Kumar",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "John Wiley & Sons"
-   },
-   {
-    "title": "Stop Complainers and Energy Drainers",
-    "year": "2013",
-    "author": "Linda Swindling",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "John Wiley & Sons"
-   },
-   {
-    "title": "The Lean Startup",
-    "year": "2011",
-    "author": "Eric Ries",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Penguin Random House"
-   }
-  ],
+  "literature": [],
   "department": "38 DTU Entrepreneurship",
   "level": "MSc",
   "points": "10 ECTS"
@@ -210,10 +94,10 @@
   "literature": [
    {
     "title": "Management consultancy: A handbook for best practice",
-    "year": "2001",
+    "year": 2001,
     "author": "P. Sadler",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": "Kogan Page Publishers"
    }
   ],
@@ -224,16 +108,7 @@
  {
   "name": "Entrepreneurial Marketing",
   "code": "38112",
-  "literature": [
-   {
-    "title": "Innovation Design",
-    "year": "2012",
-    "author": "E. den Ouden",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Springer"
-   }
-  ],
+  "literature": [],
   "department": "38 DTU Entrepreneurship",
   "level": "MSc",
   "points": "5 ECTS"
@@ -249,16 +124,7 @@
  {
   "name": "Entrepreneurial Life Skills",
   "code": "38201",
-  "literature": [
-   {
-    "title": "Strategic management and organisational dynamics: The challenge of complexity to ways of thinking about organisations",
-    "year": "2007",
-    "author": "R. D. Stacey",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Pearson Education"
-   }
-  ],
+  "literature": [],
   "department": "38 DTU Entrepreneurship",
   "level": "MSc",
   "points": "5 ECTS"
@@ -269,11 +135,11 @@
   "literature": [
    {
     "title": "Build, Run, and Sell Your Apple Consulting Practice",
-    "year": "2018",
-    "author": "Edge C.",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": "Apress, Berkeley, CA"
+    "year": 2018,
+    "author": "C. Edge",
+    "edition": 0,
+    "isbn": 0,
+    "pubFirm": "Apress"
    }
   ],
   "department": "38 DTU Entrepreneurship",
@@ -286,34 +152,10 @@
   "literature": [
    {
     "title": "Founder’s Pocket Guide: Founder Equity Splits",
-    "year": "",
+    "year": 0,
     "author": "Stephen R. Poland",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "Founder’s Pocket Guide: Cap Tables",
-    "year": "",
-    "author": "Stephen R. Poland",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "Founder’s Pocket Guide: Startup Valuation",
-    "year": "",
-    "author": "Stephen R. Poland",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "Founder’s Pocket Guide: Term Sheets and Preferred Shares",
-    "year": "",
-    "author": "Stephen R. Poland",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -326,27 +168,11 @@
   "code": "38204",
   "literature": [
    {
-    "title": "Disciplined Entrepreneurship: 24 Steps to a Successful Startup",
-    "year": "2013",
+    "title": "Disciplined entrepreneurship: 24 steps to a successful startup",
+    "year": 2013,
     "author": "B. Aulet",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "Where to Play: 3 Steps for Discovering Your Most Valuable Market Opportunity",
-    "year": "2017",
-    "author": "G. Gruber, S. Tal",
-    "edition": "",
-    "isbn": "",
-    "pubFirm": ""
-   },
-   {
-    "title": "The New Business Road Test: What Entrepreneurs and Executives Should Do Before Writing a Business Plan",
-    "year": "2006",
-    "author": "J. Mullins",
-    "edition": "",
-    "isbn": "",
+    "edition": 0,
+    "isbn": 0,
     "pubFirm": ""
    }
   ],
@@ -376,10 +202,10 @@
   "literature": [
    {
     "title": "Introductory Econometrics - A Modern Approach",
-    "year": "2009",
+    "year": 2009,
     "author": "J. M. Wooldridge",
-    "edition": "4",
-    "isbn": "",
+    "edition": 4,
+    "isbn": 0,
     "pubFirm": "South Western"
    }
   ],

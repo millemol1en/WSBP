@@ -125,17 +125,25 @@ def exec_sorensen_dice(baseline_title, llm_title):
     for baseline, llm in zip(baseline_json, llm_json): 
         comparisons.append(compare_courses(baseline, llm))
 
-    threshold = 0.95
+    threshold = 0.80
     correct = 0
     total = len(comparisons)
-
+    
+    debug_counter = 0
     #? JUST PRINTS
+    
     for k, (baseline, comp) in enumerate(zip(baseline_json, comparisons)):
         # Use the course name, or fall back to the code if the name is empty
-        course_name = baseline.get("name") if baseline.get("name") else baseline.get("code")
-        print(f"Comparison for course {k} ({course_name}):")
-        print(json.dumps(comp, indent=2))
-        print("-" * 40)
+        #HERE
+        #! ONLY PRINT BAD RESULTS IF SATEMENT
+        #if comp.get("literature", 0.0) < threshold: 
+            
+            course_name = baseline.get("name") if baseline.get("name") else baseline.get("code")
+            #print(f"Comparison for course {k} ({course_name}, code: {baseline.get("code")}):")
+            #print(json.dumps(comp, indent=2))
+            #print("-" * 40)
+            debug_counter += 1
+
 
     #Calculating results
     for comp in comparisons:
@@ -144,27 +152,76 @@ def exec_sorensen_dice(baseline_title, llm_title):
     coefficient = round((correct / total), 2)
     data_accuracy = round((correct / total) * 100, 2)
     
-    #print(f"========== TEST RESULTS FOR {str(baseline_title).upper()} AND {str(llm_title).upper()} ==========")
-    #print(f"*** {correct} out of {total} courses matched with a threshold of {threshold} ***")
-    #print(f"*** {coefficient} -> {data_accuracy} % accuracy ***")
-
+    print(f"========== TEST RESULTS FOR {str(baseline_title).upper()} AND {str(llm_title).upper()} ==========")
+    print(f"*** {correct} out of {total} courses matched with a threshold of {threshold} ***")
+    print(f"*** {coefficient} -> {data_accuracy} % accuracy ***")
+    print(f"DEBUG COUNTER: {debug_counter}")
+    print(f"TOTAL COURSES: {total}")
     return data_accuracy
 
-print("**** KU COURSES ****")
-#exec_sorensen_dice("ku_baseline.json", "ku_gemini.json")
-#exec_sorensen_dice("ku_baseline.json", "ku_gpt.json")
+#! RAW v ZERO SHOT v GPT v FT
 
-print("\n**** KU COURSES ****")
-#exec_sorensen_dice("dtu_baseline.json", "dtu_gemini.json")
-#exec_sorensen_dice("dtu_baseline.json", "dtu_gpt.json")
 
-type = UniversityType.DTU
+def calc_ft_stats(baseline, manual_parser, uni_zeroshot, uni_gpt, uni_ft):
+
+    print("MANUAL PARSER")
+    print(exec_sorensen_dice(baseline, manual_parser))
+    
+    print("ZERO SHOT")
+    print(exec_sorensen_dice(baseline, uni_zeroshot))
+    
+    print("GPT")
+    print(exec_sorensen_dice(baseline, uni_gpt))
+
+    print("FINE TUNING")
+    print(exec_sorensen_dice(baseline, uni_ft))
+
+    print()
+
+# ! GPT:
+    #! - ZERO SHOT v GPT
+# ! GEMINI:
+    #! - ZERO SHOT v GEMINI
+    
+def calc_gemini_v_gpt(baseline, manual_parser, gpt_zeroshot, gemini_zeroshot, gpt, gemini):
+    print("MANUAL PARSER")
+    print(exec_sorensen_dice(baseline, manual_parser))
+
+    print("GPT ZERO SHOT")
+    print(exec_sorensen_dice(baseline, gpt_zeroshot))
+
+    print("GEMINI ZERO SHOT")
+    print(exec_sorensen_dice(baseline, gemini_zeroshot))
+
+    print("GPT")
+    print(exec_sorensen_dice(baseline, gpt))
+
+    print("GEMINI")
+    print(exec_sorensen_dice(baseline, gemini))
+    
+
+
+type = UniversityType.KU
+"""
+#! FINE TUNING TEST
 baseline = f"{type.value}/{type.value}_baseline.json"
-llm = f"{type.value}/{type.value}_gpt.json"
+manual_parser = f"{type.value}/{type.value}_raw.json"
+uni_zeroshot = f"{type.value}/{type.value}_gpt_zeroshot.json"
+uni_gpt = f"{type.value}/{type.value}_gpt.json"
+uni_ft = f"{type.value}/{type.value}_gpt_ft.json"
 
-exec_sorensen_dice(baseline, llm)
+calc_ft_stats(baseline, manual_parser, uni_zeroshot, uni_gpt, uni_ft)
+"""
+
+#! GPT v GEMINI TEST
+
 
 baseline = f"{type.value}/{type.value}_baseline.json"
-llm = f"{type.value}/{type.value}_gemini.json"
+manual_parser = f"{type.value}/{type.value}_raw.json"
+gpt_zeroshot = f"{type.value}/{type.value}_gpt_zeroshot.json"
+gemini_zeroshot = f"{type.value}/{type.value}_gemini_zeroshot.json"
+gpt = f"{type.value}/{type.value}_gpt.json"
+gemini = f"{type.value}/{type.value}_gemini.json"
 
-exec_sorensen_dice(baseline, llm)
+calc_gemini_v_gpt(baseline, manual_parser, gpt_zeroshot, gemini_zeroshot, gpt, gemini)
+
