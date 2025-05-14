@@ -125,7 +125,7 @@ def exec_sorensen_dice(baseline_title, llm_title):
     for baseline, llm in zip(baseline_json, llm_json): 
         comparisons.append(compare_courses(baseline, llm))
 
-    threshold = 0.80
+    threshold = 0.95
     correct = 0
     total = len(comparisons)
     
@@ -144,14 +144,32 @@ def exec_sorensen_dice(baseline_title, llm_title):
             #print("-" * 40)
             debug_counter += 1
 
-
+    
     #Calculating results
+
+    
+    #! CALCULATING PERCENTAGE WITH RATIOS
     for comp in comparisons:
         if all(value >= threshold for value in comp.values()):
             correct += 1
     coefficient = round((correct / total), 2)
     data_accuracy = round((correct / total) * 100, 2)
     
+
+    """
+    #! OUT-COMMENTEND SECTION MENTIONED IN 4.2.2.4
+    lit_added : int = 0
+    for comp in comparisons:
+        lit = comp["literature"]
+        lit_added += lit
+    
+    total = len(comparisons)
+    avg = lit_added / total
+    print("ASS n TITS")
+    print(f" --> {llm_title}: {avg}")
+    return avg
+    """
+
     print(f"========== TEST RESULTS FOR {str(baseline_title).upper()} AND {str(llm_title).upper()} ==========")
     print(f"*** {correct} out of {total} courses matched with a threshold of {threshold} ***")
     print(f"*** {coefficient} -> {data_accuracy} % accuracy ***")
